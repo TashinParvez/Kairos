@@ -96,10 +96,6 @@ if (isset($_GET['userHandle'])) {
     mysqli_close($conn);
 }
 
-
-
-
-
 ?>
 
 
@@ -122,8 +118,8 @@ if (isset($_GET['userHandle'])) {
     <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
 
 
-   
-    
+
+
     <!--  -->
     <script src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"></script>
     <!-- // last -->
@@ -240,12 +236,14 @@ if (isset($_GET['userHandle'])) {
                         <div class="dropdown">
                             <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
                                 <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
-                                <strong>mdo</strong>
+                                <strong>
+                                    <?php
+                                    echo htmlspecialchars($userHandle);
+                                    ?>
+                                </strong>
                             </a>
                             <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
-                                <li><a class="dropdown-item" href="#">New project...</a></li>
-                                <li><a class="dropdown-item" href="#">Settings</a></li>
-                                <li><a class="dropdown-item" href="#">Profile</a></li>
+                                <li><a class="dropdown-item" href="#">Edit Profile</a></li>
                                 <li>
                                     <hr class="dropdown-divider">
                                 </li>
@@ -260,127 +258,71 @@ if (isset($_GET['userHandle'])) {
             <!-- ------------------------------------ Second Block ------------------------------------- -->
 
             <div class="col-8 secondBlock rounded border">
+                <div class="container mb-4">
+                    <div class="row">
+                        <!-- Write Your Note Field (70% width) -->
+                        <div class="col-lg-9 " style=" position: sticky;    z-index: 1000; ">
+                            <input class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example">
+                        </div>
+                        <!-- Search Field (30% width) -->
+                        <div class="col-lg-3" style="      position: sticky;      z-index: 1000;">
+                            <div class="input-group mt-3">
+                                <input class="form-control form-control-lg pt-3 pb-3" type="text" placeholder="Search notes" aria-label=".form-control-lg example">
+                                <button class="btn btn-outline-secondary" type="button">
+                                    <img src="../images/Search-icon.png" alt="Search" style="height: 50%;">
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
                 <div class="block " style="height: 83.5vh; overflow-y: auto;">
                     <!-- Notes Block -->
                     <div class="">
 
                         <!-- Write note + search block -->
 
-                        <div class="container">
-                            <div class="row">
-                                <!-- Write Your Note Field (70% width) -->
-                                <div class="col-lg-9">
-                                    <input class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example">
-                                </div>
-                                <!-- Search Field (30% width) -->
-                                <div class="col-lg-3">
-                                    <div class="input-group mt-3">
-                                        <input class="form-control form-control-lg pt-3 pb-3" type="text" placeholder="Search notes" aria-label=".form-control-lg example">
-                                        <button class="btn btn-outline-secondary" type="button">
-                                            <img src="../images/Search-icon.png" alt="Search" style="height: 50%;">
-                                        </button>
+
+
+                        <!---------------------- Note Cards ---------------------->
+
+                        <div class="row row-cols-1 row-cols-md-3 g-4">
+
+                            <!-- cards creat -->
+
+                            <?php
+                            foreach ($Notes as $note) { ?>
+
+                                <div class="col">
+                                    <div class="card h-100">
+                                        <img src="/Images/logo.png" class="card-img-top" alt="...">
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <?php
+                                                echo htmlspecialchars($note[0]);
+                                                ?>
+                                            </h5>
+                                            <p class="card-text">
+                                                <?php
+                                                echo htmlspecialchars($note[1]);
+                                                ?>
+                                            </p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <small class="text-muted">Created
+                                                <?php
+                                                echo htmlspecialchars($note[2]);
+                                                ?>
+                                            </small>
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
+                            <?php } ?>
+
                         </div>
 
-                        <!--  -->
+                        <!-- ----------------------------------- -->
 
-
-                        Lorem ipsum dolor sit amet consectetur adipisicing elit. Quidem aliquid nam iste quisquam. Atque
-                        obcaecati adipisci quod asperiores sintes sint tenetur? Lorem ipsum dolor sit amet consectetur
-                        adipisicing elit. Alias illo nulla reiciendis, consequuntur saepe cupiditate accusantium.
-                        Dolorem cum esse officiis, modi natus quam incidunt sit nostrum consectetur tempore est rem
-                        quibusdam autem consequatur eaque culpa ratione ad pariatur asperiores sequi doloribus tenetur
-                        earum illo mollitia! Ut repudiandae culpa sint doloremque dolorem maxime et in exercitationem
-                        nostrum ex incidunt repellendus adipisci omnis necessitatibus molestiae tempora eum ipsam
-                        beatae, odio accusamus! Adipisci porro earum eligendi consectetur nesciunt rem laboriosam! Iure
-                        consequuntur fuga, impedit mollitia velit odit commodi quis veniam labore voluptatem magni
-                        incidunt excepturi laboriosam, accusamus atque maxime non rem corrupti similique.es sint
-                        tenetur? Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias illo nulla reiciendis,
-                        consequuntur saepe cupiditate accusantium. Dolorem cum esse officiis, modi natus quam incidunt
-                        sit nostrum consectetur tempore est rem quibusdam autem consequatur eaque culpa ratione ad
-                        pariatur asperiores sequi doloribus tenetur earum illo mollitia! Ut repudiandae culpa sint
-                        doloremque dolorem maxime et in exercitationem nostrum ex incidunt repellendus adipisci omnis
-                        necessitatibus molestiae tempora eum ipsam beatae, odio accusamus! Adipisci porro earum eligendi
-                        consectetur nesciunt rem laboriosam! Iure conseqsit amet consectetur adipisicing elit. Alias
-                        illo nulla reiciendis,
-                        consequuntur saepe cupiditate accusantium. Dolorem cum esse officiis, modi natus quam incidunt
-                        sit nostrum consectetur tempore est rem quibusdam autem consequatur eaque culpa ratione ad
-                        pariatur asperiores sequi doloribus tenetur earum illo mollitia! Ut repudiandae culpa sint
-                        doloremque dolorem maxime et in exercitationem nostrum ex incidunt repellendus adipisci omnis
-                        necessitatibus molestiae tempora eum ipsam beatae, odio accusamus! Adipisci porro earum eligendi
-                        consectetur nesciunt rem laboriosam! Iure conseqsit amet consectetur adipisicing elit. Alias
-                        illo nulla reiciendis,
-                        consequuntur saepe cupiditate accusantium. Dolorem cum esse officiis, modi natus quam incidunt
-                        sit nostrum consectetur tempore est rem quibusdam autem consequatur eaque culpa ratione ad
-                        pariatur asperiores sequi doloribus tenetur earum illo mollitia! Ut repudiandae culpa sint
-                        doloremque dolorem maxime et in exercitationem nostrum ex incidunt repellendus adipisci omnis
-                        necessitatibus molestiae tempora eum ipsam beatae, odio accusamus! Adipisci porro earum eligendi
-                        consectetur nesciunt rem laboriosam! Iure conseqsit amet consectetur adipisicing elit. Alias
-                        illo nulla reiciendis,
-                        consequuntur saepe cupiditate accusantium. Dolorem cum esse officiis, modi natus quam incidunt
-                        sit nostrum consectetur tempore est rem quibusdam autem consequatur eaque culpa ratione ad
-                        pariatur asperiores sequi doloribus tenetur earum illo mollitia! Ut repudiandae culpa sint
-                        doloremque dolorem maxime et in exercitationcusantium. Dolorem cum esse officiis, modi natus
-                        quam incidunt
-                        sit nostrum consectetur tempore est rem quibusdam autem consequatur eaque culpa ratione ad
-                        pariatur asperiores sequi doloribus tenetur earum illo mollitia! Ut repudiandae culpa sint
-                        doloremque dolorem maxime et in exercitationcusantium. Dolorem cum esse officiis, modi natus
-                        quam incidunt
-                        sit nostrum consectetur tempore est rem quibusdam autem consequatur eaque culpa ratione ad
-                        pariatur asperiores sequi doloribus tenetur earum illo mollitia! Ut repudiandae culpa sint
-                        doloremque dolorem maxime et in exercitationem nostrum ex incidunt repellendus adipisci omnis
-                        necessitatibus molestiae tempora eum ipsam beatae, odio accusamus! Adipisci porro earum eligendi
-                        consectetur nesciunt rem laboriosam! Iure conseqsit amet consectetur adipisicing elit. Alias
-                        illo nulla reiciendis,
-                        consequuntur saepe cupiditate accusantium. Dolorem cum esse officiis, modi natus quam incidunt
-                        sit nostrum consectetur tempore est rem quibusdam autem consequatur eaque culpa ratione ad
-                        pariatur asperiores sequi doloribus tenetur earum illo mollitia! Ut repudiandae culpa sint
-                        doloremque dolorem maxime et in exercitationem nostrum ex incidunt repellendus adipisci omnis
-                        necessitatibus molestiae tempora eum ipsam beatae, odio accusamus! Adipisci porro earum eligendi
-                        consectetur nesciunt rem laboriosam! Iure conseqsit amet consectetur adipisicing elit. Alias
-                        illo nulla reiciendis,
-                        consequuntur saepe cupiditate accusantium. Dolorem cum esse officiis, modi natus quam incidunt
-                        sit nostrum consectetur tempore est rem quibusdam autem consequatur eaque culpa ratione ad
-                        pariatur asperiores sequi doloribus tenetur earum illo mollitia! Ut repudiandae culpa sint
-                        doloremque dolorem maxime et in exercitationem nostrum ex incidunt repellendus adipisci omnis
-                        necessitatibus molestiae tempora eum ipsam beatae, odio accusamus! Adipisci porro earum eligendi
-                        consectetur nesciunt rem laboriosam! Iure conseqsit amet consectetur adipisicing elit. Alias
-                        illo nulla reiciendis,
-                        consequuntur saepe cupiditate accusantium. Dolorem cum esse officiis, modi natus quam incidunt
-                        sit nostrum consectetur tempore est rem quibusdam autem consequatur eaque culpa ratione ad
-                        pariatur asperiores sequi doloribus tenetur earum illo mollitia! Ut repudiandae culpa sint
-                        doloremque dolorem maxime et in exercitationem nostrum ex incidunt repellendus adipisci omnis
-                        necessitatibus molestiae tempora eum ipsam beatae, odio accusamus! Adipisci porro earum eligendi
-                        consectetur nesciunt rem laboriosam! Iure consequuntur fuga, impedit mollitia velit odit commodi
-                        quis veniam labore voluptatem magni incidunt excepturi laboriosam, accusamus atque maxime non
-                        rem corrupti similique.es sint tenetur? Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Alias illo nulla reiciendis, consequuntur saepe cupiditate accusantium. Dolorem cum esse
-                        officiis, modi natus quam incidunt sit nostrum consectetur tempore est rem quibusdam autem
-                        consequatur eaque culpa ratione ad pariatur asperiores sequi doloribus tenetur earum illo
-                        mollitia! Ut repudiandae culpa sint doloremque dolorem maxime et in exercitationem nostrum ex
-                        incidunt repellendus adipisci omnis necessitatibus molestiae tempora eum ipsam beatae, odio
-                        accusamus! Adipisci porro earum eligendi consectetur nesciunt rem laboriosam! Iure consequuntur
-                        fuga, impedit mollitia velit odit commodi quis veniam labore voluptatem magni incidunt excepturi
-                        laboriosam, accusamus atque maxime non rem corrupti similique.es sint tenetur? Lorem ipsum dolor
-                        sit amet consectetur adipisicing elit. Alias illo nulla reiciendis, consequuntur saepe
-                        cupiditate accusantium. Dolorem cum esse officiis, modi natus quam incidunt sit nostrum
-                        consectetur tempore est rem quibusdam autem consequatur eaque culpa ratione ad pariatur
-                        asperiores sequi doloribus tenetur earum illo mollitia! Ut repudiandae culpa sint doloremque
-                        dolorem maxime et in exercitationem nostrum ex incidunt repellendus adipisci omnis
-                        necessitatibus molestiae tempora eum ipsam beatae, odio accusamus! Adipisci porro earum eligendi
-                        consectetur nesciunt rem laboriosam! Iure consequuntur fuga, impedit mollitia velit odit commodi
-                        quis veniam labore voluptatem magni incidunt excepturi laboriosam, accusamus atque maxime non
-                        rem corrupti similique.es sint tenetur? Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                        Alias illo nulla reiciendis, consequuntur saepe cupiditate accusantium. Dolorem cum esse
-                        officiis, modi natus quam incidunt sit nostrum consectetur tempore est rem quibusdam autem
-                        consequatur eaque culpa ratione ad pariatur asperiores sequi doloribus tenetur earum illo
-                        mollitia! Ut repudiandae culpa sint doloremque dolorem maxime et in exercitationem nostrum ex
-                        incidunt repellendus adipisci omnis necessitatibus molestiae tempora eum ipsam beatae, odio
-                        accusamus! Adipisci porro earum eligendi consectetur nesciunt rem laboriosam! Iure consequuntur
-                        fuga, impedit mollitia velit odit commodi quis veniam labore voluptatem magni incidunt excepturi
-                        laboriosam, accusamus atque maxime non rem corrupti similique. tenetur?
                     </div>
 
                 </div>
