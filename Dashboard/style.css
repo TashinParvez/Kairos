@@ -2,12 +2,12 @@
   margin: 0;
   padding: 0;
 }
-body {
+
+/* body {
   background-color: #fdfae2;
-  /* background-color: #ffffff; */
-  /* opacity: 0.4; */
   background-color: transparent;
-}
+} */
+
 .nav-items {
   padding-left: 0px;
 }
