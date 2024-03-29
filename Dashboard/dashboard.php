@@ -134,53 +134,11 @@ if (isset($_GET['userHandle'])) {
     <!-------------------------------- Navbar -------------------------------->
     <!-- ------------------------------------------------------------------ -->
 
-    <nav class="navbar navbar-expand-lg bg-light m-3 border rounded">
-        <div class="container-fluid">
-            <a class="navbar-brand" href="#">
-                <img src="../images/logo2.png" alt="Bootstrap" height="55" style="
-                padding-left: 19px;">
-            </a>
-
-            <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarScroll" aria-controls="navbarScroll" aria-expanded="false" aria-label="Toggle navigation">
-                <span class="navbar-toggler-icon"></span>
-            </button>
-
-            <div class="collapse navbar-collapse" id="navbarScroll">
-                <ul class="navbar-nav me-auto my-2 my-lg-0 navbar-nav-scroll mx-auto" style="--bs-scroll-height: 100px;">
+    <?php
+        include('navbar.php');
+    ?>
 
 
-                    <li class="nav-item tashin">
-                        <a class="nav-link active fw-bold" aria-current="page" href="#">Home</a>
-                    </li>
-                    <li class="nav-item tashin ps-4">
-                        <a class="nav-link active fw-bold" aria-current="page" href="#">Community</a>
-                    </li>
-                    <li class="nav-item tashin ps-4">
-                        <a class="nav-link active fw-bold" aria-current="page" href="#">Goals</a>
-                    </li>
-                    <li class="nav-item tashin ps-4">
-                        <a class="nav-link active fw-bold" aria-current="page" href="#">Loops</a>
-                    </li>
-                    <li class="nav-item tashin ps-4">
-                        <a class="nav-link active fw-bold" aria-current="page" href="#">Blogs</a>
-                    </li>
-
-
-                    <li class="nav-item dropdown ps-4">
-                        <a class="nav-link dropdown-toggle fw-bold" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                            Link__TASHIN
-                        </a>
-                        <ul class="dropdown-menu">
-                            <li><a class="dropdown-item" href="#">Exersise</a></li>
-                            <hr class="dropdown-divider">
-                            <li><a class="dropdown-item" href="#">Diet</a></li>
-                        </ul>
-                    </li>
-                </ul>
-            </div>
-
-        </div>
-    </nav>
 
     <!-------------------- Body part of dashboard -------------------->
 

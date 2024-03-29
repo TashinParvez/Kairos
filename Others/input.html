@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Title and Description Input</title>
+<link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+<style>
+  .input-button {
+    background-color: white;
+    border: none;
+    padding: 10px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+  }
+  .input-button:focus {
+    background-color: yellow;
+  }
+</style>
+</head>
+<body>
+
+<div class="container mt-5">
+  <form action="process.php" method="post">
+    <div class="form-group">
+      <input type="text" class="form-control input-button" id="descriptionField" name="description" placeholder="Click me to enter description">
+    </div>
+    <!-- This hidden field will store the title -->
+    <input type="hidden" id="titleField" name="title">
+  </form>
+</div>
+
+<script>
+document.addEventListener('DOMContentLoaded', function() {
+  document.getElementById('descriptionField').addEventListener('click', function() {
+    // Get the value of the description field
+    var descriptionValue = this.value;
+    
+    // Create a new input field for the title
+    var titleField = document.createElement('input');
+    titleField.setAttribute('type', 'text');
+    titleField.setAttribute('class', 'form-control mt-3');
+    titleField.setAttribute('placeholder', 'Enter title');
+    titleField.setAttribute('id', 'newTitleField');
+    
+    // Insert the new title field above the description field
+    this.parentNode.insertBefore(titleField, this);
+    
+    // Set the value of the title field to the description value
+    document.getElementById('titleField').value = descriptionValue;
+    
+    // Remove the click event listener from the description field
+    this.removeEventListener('click', arguments.callee);
+    
+    // Focus on the description field
+    this.focus();
+  });
+});
+</script>
+
+</body>
+</html>

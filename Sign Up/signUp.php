@@ -15,9 +15,9 @@ if (isset($_POST['signUp'])) {
         echo 'Connection error: ' . mysqli_connect_error();
     }
 
-    //.............................*******************.............................
 
     //................ Retrieve all data  from input field ...............
+
     $firstName = $_POST['firstName'];
     $lastName = $_POST['lastName'];
     $nationality = $_POST['nationality'];
@@ -27,7 +27,9 @@ if (isset($_POST['signUp'])) {
     $password = $_POST['password'];
     $confirmPassword = $_POST['confirmPassword'];
 
+
     //................... escape sql chars .....................
+
     $firstName = mysqli_real_escape_string($conn, $_POST['firstName']);
     $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
     $nationality = mysqli_real_escape_string($conn, $_POST['nationality']);
@@ -35,6 +37,7 @@ if (isset($_POST['signUp'])) {
     $mail = mysqli_real_escape_string($conn, $_POST['mail']);
     $userHandle = mysqli_real_escape_string($conn, $_POST['userHandle']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
+
 
     //.............. All input field validation checking ...................
     // check first name
@@ -147,6 +150,8 @@ if (isset($_POST['signUp'])) {
 } // end POST check
 
 ?>
+
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -169,6 +174,7 @@ if (isset($_POST['signUp'])) {
             color: crimson;
         }
     </style>
+    
     <form action="signUp.php" method="POST">
 
         <div style="display: grid; place-items: center;">
