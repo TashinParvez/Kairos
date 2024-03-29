@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 26, 2024 at 07:35 PM
+-- Generation Time: Mar 29, 2024 at 07:13 AM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -241,27 +241,28 @@ CREATE TABLE `user_info` (
   `nationality` varchar(20) DEFAULT NULL,
   `userHandle` varchar(20) NOT NULL,
   `password` varchar(50) DEFAULT NULL,
-  `mail` varchar(20) DEFAULT NULL,
+  `mail` varchar(50) DEFAULT NULL,
   `religion` varchar(20) DEFAULT NULL,
-  `joinDate` timestamp NOT NULL DEFAULT current_timestamp()
+  `joinDate` timestamp NOT NULL DEFAULT current_timestamp(),
+  `about` varchar(500) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `user_info`
 --
 
-INSERT INTO `user_info` (`firstName`, `lastName`, `nationality`, `userHandle`, `password`, `mail`, `religion`, `joinDate`) VALUES
-('Abtahi', 'Arifeen', 'Bangladeshi', 'aarifeen', 'P@ssw0rd', 'aarifeen212044@bscse', 'ISLAM', '2024-03-26 18:35:33'),
-('Antar', 'Saha', 'Bangladeshi', 'antarsah', 'P@ssw0rd', 'antarsahaopeth@gmail', 'HINDU', '2024-03-26 18:35:33'),
-('Ashraful', 'Islam', 'Bangladeshi', 'ashrafu1', 'P@ssw0rd', 'ni7339849@gmail.com', 'ISLAM', '2024-03-26 18:35:33'),
-('Bijoy', 'Das Gupta', 'Bangladeshi', 'bijoy123', 'bijoy123', 'bgupta2330355@bscse.', 'HINDU', '2024-03-26 18:35:33'),
-('Saira Binte', 'Salek', 'Bangladeshi', 'bintesai', 'P@ssw0rd', 'bintesaira@gmail.com', 'ISLAM', '2024-03-26 18:35:33'),
-('Munna', NULL, 'Bangladeshi', 'munna', 'P@ssw0rd', 'mohaiminul010@gmail.', 'ISLAM', '2024-03-26 18:35:33'),
-('Musfiqur', NULL, 'Bangladeshi', 'musfiqur', 'P@ssw0rd', 'musfiqurm669@gmail.c', 'ISLAM', '2024-03-26 18:35:33'),
-('MD', 'Noman', 'B', 'noman123', 'noman123', 'noman@gmail.com', 'I', '2024-03-26 18:35:33'),
-('Rifat', 'Ibne Yousuf', 'Bangladeshi', 'rifatibn', 'P@ssw0rd', 'rifatibneyousuf@gmai', 'ISLAM', '2024-03-26 18:35:33'),
-('Readwanur', NULL, 'Bangladeshi', 'rrumon71', 'P@ssw0rd', 'rrumon710@gmail.com', 'ISLAM', '2024-03-26 18:35:33'),
-('Sharmin Sultana', 'Liza', 'Bangladeshi', 'sliza221', 'P@ssw0rd', 'sliza221331@bscse.ui', 'ISLAM', '2024-03-26 18:35:33');
+INSERT INTO `user_info` (`firstName`, `lastName`, `nationality`, `userHandle`, `password`, `mail`, `religion`, `joinDate`, `about`) VALUES
+('Abtahi', 'Arifeen', 'Bangladeshi', 'aarifeen', 'P@ssw0rd', 'aarifeen212044@bscse', 'ISLAM', '2024-03-26 18:35:33', ''),
+('Antar', 'Saha', 'Bangladeshi', 'antarsah', 'P@ssw0rd', 'antarsahaopeth@gmail', 'HINDU', '2024-03-26 18:35:33', ''),
+('Ashraful', 'Islam', 'Bangladeshi', 'ashrafu1', 'P@ssw0rd', 'ni7339849@gmail.com', 'ISLAM', '2024-03-26 18:35:33', ''),
+('Bijoy', 'Das Gupta', 'Bangladeshi', 'bijoy123', 'bijoy123', 'bgupta2330355@bscse.uiu.ac.bd', 'HINDU', '2024-03-26 18:35:33', ''),
+('Saira Binte', 'Salek', 'Bangladeshi', 'bintesai', 'P@ssw0rd', 'bintesaira@gmail.com', 'ISLAM', '2024-03-26 18:35:33', ''),
+('Munna', NULL, 'Bangladeshi', 'munna', 'P@ssw0rd', 'mohaiminul010@gmail.', 'ISLAM', '2024-03-26 18:35:33', ''),
+('Musfiqur', NULL, 'Bangladeshi', 'musfiqur', 'P@ssw0rd', 'musfiqurm669@gmail.c', 'ISLAM', '2024-03-26 18:35:33', ''),
+('MD', 'Noman', 'B', 'noman123', 'noman123', 'noman@gmail.com', 'I', '2024-03-26 18:35:33', ''),
+('Rifat', 'Ibne Yousuf', 'Bangladeshi', 'rifatibn', 'P@ssw0rd', 'rifatibneyousuf@gmai', 'ISLAM', '2024-03-26 18:35:33', ''),
+('Readwanur', NULL, 'Bangladeshi', 'rrumon71', 'P@ssw0rd', 'rrumon710@gmail.com', 'ISLAM', '2024-03-26 18:35:33', ''),
+('Sharmin Sultana', 'Liza', 'Bangladeshi', 'sliza221', 'P@ssw0rd', 'sliza221331@bscse.ui', 'ISLAM', '2024-03-26 18:35:33', '');
 
 -- --------------------------------------------------------
 
