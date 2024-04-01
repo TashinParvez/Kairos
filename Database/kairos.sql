@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Mar 29, 2024 at 07:13 AM
+-- Generation Time: Apr 01, 2024 at 08:29 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -138,12 +138,31 @@ INSERT INTO `label` (`userHandle`, `labelName`) VALUES
 --
 
 CREATE TABLE `life_library` (
-  `bookName` varchar(20) NOT NULL,
-  `authorName` varchar(20) NOT NULL,
-  `details` varchar(100) DEFAULT NULL,
-  `userHandle` varchar(20) DEFAULT NULL,
-  `date` date DEFAULT NULL
+  `bookName` varchar(100) NOT NULL,
+  `authorName` varchar(100) NOT NULL,
+  `details` varchar(500) DEFAULT NULL,
+  `clicked` int(11) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `life_library`
+--
+
+INSERT INTO `life_library` (`bookName`, `authorName`, `details`, `clicked`) VALUES
+('Atomic Habits', 'James Clear', 'James Clear presents a comprehensive guide to building and sustaining habits that lead to lasting chcomprehensive guide to building and sustaining habits that lead to lasting chcomprehensive guide to building and sustaining habits that lead to lasting chcomprehensive guide to building and sustaining habits that lead to lasting chcomprehensive guide to building and sustaining habits that lead to lasting chcomprehensive', 0),
+('Daring Greatly', 'Brené Brown', 'aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa', 0),
+('Eat That Frog!', 'Brian Tracy', 'Brian Tracy provides practical strategies for overcoming procrastination and increasing productivity', 0),
+('Emotional Intelligence', 'Daniel Goleman', 'Daniel Goleman introduces the concept of emotional intelligence (EQ) and its critical role in person', 0),
+('Man\'s Search for Meaning', 'Viktor E. Frankl', 'Psychiatrist Viktor Frankl reflects on his experiences as a Holocaust survivor and shares insights i', 0),
+('Mindset', 'Carol S. Dweck', 'Psychologist Carol S. Dweck explores the concept of mindset and its impact on achievement and person', 15),
+('Quiet', 'Susan Cain', 'Susan Cain celebrates the unique strengths of introverted individuals and', 0),
+('Start with Why', 'Simon Sinek', 'Simon Sinek explores the concept of the \"Golden Circle\" and the importance of starting with why – th', 0),
+('The 7 Habits of Highly Effective People', 'Stephen R. Covey', 'In this classic self-help book, Stephen Covey presents seven foundational habits that are key to per', 0),
+('The Four Agreements', 'Don Miguel Ruiz', 'Don Miguel Ruiz presents four guiding principles rooted in ancient Toltec wisdom that can transform ', 0),
+('The Power of Habit', 'Charles Duhigg', 'This book explores the science behind habit formation and how habits shape our lives, from individua', 10),
+('The Power of Now', 'Eckhart Tolle', 'Eckhart Tolle explores the concept of mindfulness and present moment awareness as a path to spiritua', 0),
+('The Subtle Art of Not Giving a F*ck', 'Mark Manson', 'Mark Manson challenges conventional self-help advice and encourages readers to embrace discomfort an', 0),
+('Thinking, Fast and Slow', 'Daniel Kahneman', 'Psychologist Daniel Kahneman delves into the workings of the human mind, exploring the interplay bet', 0);
 
 -- --------------------------------------------------------
 
@@ -173,22 +192,34 @@ CREATE TABLE `namaz_c` (
 CREATE TABLE `notes` (
   `userHandle` varchar(20) NOT NULL,
   `title` varchar(50) DEFAULT NULL,
-  `details` varchar(100) DEFAULT NULL,
-  `created_at` timestamp NOT NULL DEFAULT current_timestamp()
+  `details` varchar(5000) DEFAULT NULL,
+  `created_at` timestamp NOT NULL DEFAULT current_timestamp(),
+  `public` tinyint(1) NOT NULL,
+  `admin_approved` tinyint(1) NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
 
 --
 -- Dumping data for table `notes`
 --
 
-INSERT INTO `notes` (`userHandle`, `title`, `details`, `created_at`) VALUES
-('bijoy123', 'Course Withdraw', 'Students, willing to “Withdraw” course(s) in Spring 2024 Trimester, are requested to submit Course w', '2024-03-26 14:36:30'),
-('bijoy123', 'LIBRARY HOUR DURING THE HOLY MONTH OF RAMADAN', 'Please be informed that during the Holy Month of Ramadan, the library hours including three group st', '2024-03-26 14:38:54'),
-('bijoy123', 'The Great Gatsby', 'A classic novel set in the Jazz Age, portraying the glamorous and often tragic lives of the wealthy ', '2024-03-26 14:39:37'),
-('bijoy123', 'To Kill a Mockingbird', 'A timeless story of racial injustice and moral growth in the American South, told through the eyes o', '2024-03-26 14:39:58'),
-('bijoy123', 'The Road Not Taken', 'A reflective poem about decision-making and the choices we face in life, symbolized by a diverging p', '2024-03-26 14:43:25'),
-('bijoy123', 'Stopping by Woods on a Snowy Evening', 'A contemplative poem that captures the beauty of nature and the allure of a tranquil snowy landscape', '2024-03-26 14:43:41'),
-('musfiqur', 'UIU present ', 'ALTER TABLE label\r\nADD PRIMARY KEY (labelName,userHandle)ALTER TABLE label\r\nADD PRIMARY KEY (labelNa', '2024-03-26 15:23:28');
+INSERT INTO `notes` (`userHandle`, `title`, `details`, `created_at`, `public`, `admin_approved`) VALUES
+('bijoy123', 'Course Withdraw', 'Students, willing to “Withdraw” course(s) in Spring 2024 Trimester, are requested to submit Course w', '2024-03-26 14:36:30', 0, 0),
+('bijoy123', 'LIBRARY HOUR DURING THE HOLY MONTH OF RAMADAN', 'Please be informed that during the Holy Month of Ramadan, the library hours including three group st', '2024-03-26 14:38:54', 0, 0),
+('bijoy123', 'The Great Gatsby', 'A classic novel set in the Jazz Age, portraying the glamorous and often tragic lives of the wealthy ', '2024-03-26 14:39:37', 0, 0),
+('bijoy123', 'To Kill a Mockingbird', 'A timeless story of racial injustice and moral growth in the American South, told through the eyes o', '2024-03-26 14:39:58', 0, 0),
+('bijoy123', 'The Road Not Taken', 'A reflective poem about decision-making and the choices we face in life, symbolized by a diverging p', '2024-03-26 14:43:25', 0, 0),
+('bijoy123', 'Stopping by Woods on a Snowy Evening', 'A contemplative poem that captures the beauty of nature and the allure of a tranquil snowy landscape', '2024-03-26 14:43:41', 0, 0),
+('bijoy123', 'Atomic Habits', 'If you find yourself struggling to build a good habit or break a bad one, it is not because you have', '2024-03-29 06:36:07', 1, 0),
+('bijoy123', 'Atomic Habits', '“When nothing seems to help, I go and look at a stonecutter hammering away at his rock, perhaps a hu', '2024-03-29 06:36:38', 1, 0),
+('bijoy123', 'Atomic Habits', 'To form good habits, make them a part of your identity\r\nOur habits should be a part of our identity ', '2024-03-29 06:36:52', 0, 0),
+('bijoy123', 'Quiet', 'As a bookish, introverted child, I would have loved to have found this on a ‘books for introverts’ s', '2024-04-01 13:11:04', 1, 0),
+('musfiqur', 'UIU present ', 'ALTER TABLE label\r\nADD PRIMARY KEY (labelName,userHandle)ALTER TABLE label\r\nADD PRIMARY KEY (labelNa', '2024-03-26 15:23:28', 0, 0),
+('musfiqur', 'Atomic Habits', 'Over the long run, however, the real reason you fail to stick with habits is that your self-image ge', '2024-03-29 06:37:07', 0, 0),
+('musfiqur', 'Atomic Habits', 'If you’re still having trouble determining how to rate a particular habit, here is a question I like', '2024-03-29 06:37:22', 0, 0),
+('noman123', 'Eat That Frog!', 'Since being founded in 2011, we have steadily become the South Wests’ No.1 alternative education cen', '2024-03-29 06:38:14', 1, 0),
+('rifatibn', 'Eat That Frog!', 'Set the table”. This is your goal setting step, where you decide what you want to achieve and you wr', '2024-03-29 06:39:13', 0, 0),
+('rrumon71', 'Eat That Frog!', 'This month’s book review is of a book that was recommended to me by Coach Cati and instead of readin', '2024-03-29 06:38:56', 1, 0),
+('tashin19', 'Atomic Habits', 'Atomic Habits\" by James Clear is a groundbreaking book that provides transformative insights into th', '2024-04-01 14:05:49', 1, 0);
 
 -- --------------------------------------------------------
 
@@ -262,7 +293,8 @@ INSERT INTO `user_info` (`firstName`, `lastName`, `nationality`, `userHandle`, `
 ('MD', 'Noman', 'B', 'noman123', 'noman123', 'noman@gmail.com', 'I', '2024-03-26 18:35:33', ''),
 ('Rifat', 'Ibne Yousuf', 'Bangladeshi', 'rifatibn', 'P@ssw0rd', 'rifatibneyousuf@gmai', 'ISLAM', '2024-03-26 18:35:33', ''),
 ('Readwanur', NULL, 'Bangladeshi', 'rrumon71', 'P@ssw0rd', 'rrumon710@gmail.com', 'ISLAM', '2024-03-26 18:35:33', ''),
-('Sharmin Sultana', 'Liza', 'Bangladeshi', 'sliza221', 'P@ssw0rd', 'sliza221331@bscse.ui', 'ISLAM', '2024-03-26 18:35:33', '');
+('Sharmin Sultana', 'Liza', 'Bangladeshi', 'sliza221', 'P@ssw0rd', 'sliza221331@bscse.ui', 'ISLAM', '2024-03-26 18:35:33', ''),
+('Tashin', 'Parvez', 'Bangladeshi', 'tashin19', '123456789', 'tashin@gmail.com', 'Islam', '2024-04-01 14:04:19', '');
 
 -- --------------------------------------------------------
 
@@ -324,8 +356,7 @@ ALTER TABLE `label`
 -- Indexes for table `life_library`
 --
 ALTER TABLE `life_library`
-  ADD PRIMARY KEY (`bookName`,`authorName`),
-  ADD KEY `llfk` (`userHandle`,`date`);
+  ADD PRIMARY KEY (`bookName`,`authorName`);
 
 --
 -- Indexes for table `namaz_c`
