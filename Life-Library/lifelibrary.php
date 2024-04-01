@@ -3,7 +3,7 @@
 include('../Dashboard/connect_db.php'); // database connection
 
 
-// ------------------ For Most Read ----------------
+// ------------------------------ For Most Read ----------------------------
 // sql query
 
 $sql = "SELECT bookName, authorName
@@ -27,30 +27,38 @@ $mostRead = mysqli_fetch_all($resultantLabel); // conver to array
 // }
 
 
-//----------------- For Recently added ---------------
+//----------------------------- For Recently added ---------------------------
 
-// sql query 
-$sql = "SELECT DISTINCT l.bookName, l.authorName
-        FROM life_library AS l
+$sql = "SELECT life_library.bookName, life_library.authorName
+        FROM notes AS t
+        INNER JOIN (
+                    SELECT title, MAX(created_at) AS latest_created_at
+                    FROM notes
+                    WHERE public = 1
+                    GROUP BY title
+                    ) AS latest 
+        ON t.title = latest.title AND t.created_at = latest.latest_created_at
         INNER JOIN
-        (
-            SELECT *
-            FROM notes
-            WHERE public is TRUE
-        )AS pn
-        ON l.bookName = pn.title
-        ORDER BY pn.created_at DESC; ";
+        life_library 
+        ON t.title = life_library.bookName
+        ORDER BY created_at DESC
+        LIMIT 8";
 
-$resultantNotes =  mysqli_query($conn, $sql);  // get query result
+$result =  mysqli_query($conn, $sql);
 
-// $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
-$recentlyAdded = mysqli_fetch_all($resultantNotes); // conver to array
+$recentlyAdded = mysqli_fetch_all($result); // conver to array
 
 // print_r($recentlyAdded);
 
 
+// foreach ($recentlyAdded as $book) {
+//     print_r($book);
+//     echo '<br>';
+// }
 
-//----------------- For Alhabetically ---------------
+
+
+//--------------------------------- For Alhabetically -------------------------------
 
 $sql = "SELECT lf.bookName, lf.authorName, CONCAT(LEFT(lf.details, 68), '...') AS 'lf.details',
         CASE
@@ -95,37 +103,14 @@ $result =  mysqli_query($conn, $sql);  // get query result
 
 $ABCDRead = mysqli_fetch_all($result); // conver to array
 
+
 // print_r($ABCDRead);
-
-// foreach ($ABCDRead as $book) {
-//     print_r($book);
-//     echo '<br>';
-// }
-
-
-/*
-
-SELECT DISTINCT l.bookName, l.authorName, np.details
-FROM life_library AS l
-INNER JOIN
-(
-    SELECT *
-    FROM notes
-    WHERE public is TRUE
-    GROUP BY title
-    ORDER BY created_at DESC
-)AS pn
-ON l.bookName = pn.title
-ORDER BY pn.created_at DESC;
-
-
-*/
-
 
 
 
 // for memory free
 mysqli_free_result($resultantLabel);
+mysqli_free_result($result);
 mysqli_close($conn);
 
 
@@ -214,91 +199,36 @@ mysqli_close($conn);
     </div>
 
 
-
-    <!--------------------------------------------------------------->
-
-
-    <!-- Recently added read -->
-
-
+    <!------------------ Recently added read ------------------>
 
 
     <div class="container">
         <H4>Recently Added</H4>
         <hr class="double">
         <div class="container" style="background: snow;">
-
             <div class="row mt-1 p-2">
-                <div class="col card "><img src="../Images/logo2.png">
-                    <div class="card-body">
-                        <div class="layer">
-                            <h6>Book Name</h6>
-                            <p>Author Name</p>
+
+                <?php
+                foreach ($recentlyAdded as $read) { ?>
+
+                    <div class="col card ms-2 me-2 "><img src="../Images/logo2.png">
+                        <div class="card-body">
+                            <div class="layer">
+                                <h6> <?php echo htmlspecialchars($read[0]); ?></h6>
+                                <p> <?php echo htmlspecialchars($read[1]); ?> </p>
+                            </div>
                         </div>
                     </div>
-                </div>
-                <div class="col card ms-2 me-2"><img src="../Images/logo2.png">
-                    <div class="card-body">
-                        <div class="layer">
-                            <h6>Book Name</h6>
-                            <p>Author Name</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col card ms-2 me-2"><img src="../Images/logo2.png">
-                    <div class="card-body">
-                        <div class="layer">
-                            <h6>Book Name</h6>
-                            <p>Author Name</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col card ms-2 me-2"><img src="../Images/logo2.png">
-                    <div class="card-body">
-                        <div class="layer">
-                            <h6>Book Name</h6>
-                            <p>Author Name</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col card ms-2 me-2"><img src="../Images/logo2.png">
-                    <div class="card-body">
-                        <div class="layer">
-                            <h6>Book Name</h6>
-                            <p>Author Name</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col card ms-2 me-2"><img src="../Images/logo2.png">
-                    <div class="card-body">
-                        <div class="layer">
-                            <h6>Book Name</h6>
-                            <p>Author Name</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col card ms-2 me-2"><img src="../Images/logo2.png">
-                    <div class="card-body">
-                        <div class="layer">
-                            <h6>Book Name</h6>
-                            <p>Author Name</p>
-                        </div>
-                    </div>
-                </div>
-                <div class="col card "><img src="../Images/logo2.png">
-                    <div class="card-body">
-                        <div class="layer">
-                            <h6>Book Name</h6>
-                            <p>Author Name</p>
-                        </div>
-                    </div>
-                </div>
+
+                <?php } ?>
+
             </div>
         </div>
     </div>
 
 
-    <!-- alphabetically listed -->
+    <!------------------------- alphabetically listed ------------------------->
+
     <div class="container">
 
         <H4>ALL BOOKS</H4>
