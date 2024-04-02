@@ -48,7 +48,11 @@ if (isset($_GET['bookName'])) {
 
     //----------------- For Book Notes ---------------
 
-    $sql = "SELECT lib.bookName, lib.authorName, lib.details, ntb.userhandle, title, ntb.details, created_at
+    $sql = "SELECT lib.bookName, lib.authorName, lib.details, ntb.userhandle, title, ntb.details, DATE(created_at),
+            CASE
+                WHEN lastName IS NULL THEN firstName
+                ELSE CONCAT(firstName, ' ', lastName)
+            END AS fullName
             FROM life_library as lib 
             INNER JOIN
             (
@@ -57,7 +61,11 @@ if (isset($_GET['bookName'])) {
                 WHERE public = 1
             ) as ntb 
             ON ntb.title = lib.bookName
-            WHERE lib.bookName =  '$bName'";
+            INNER JOIN
+            user_info as ui
+            ON ui.userHandle = ntb.userHandle
+            WHERE lib.bookName =  '$bName'
+            ORDER BY created_at DESC;";
 
     $result =  mysqli_query($conn, $sql);
 
@@ -65,12 +73,36 @@ if (isset($_GET['bookName'])) {
 
     // print_r($notes);
 
-
     // foreach ($notes as $note) {
     //     print_r($note);
     //     echo '<br>';
     //     echo '<br>';
     // }
+
+    // ------------------------------ For Most Read ----------------------------
+    // sql query
+
+    $sql = "SELECT bookName, authorName, details
+            FROM life_library
+            ORDER BY clicked DESC
+            Limit 3";
+
+    $resultantLabel =  mysqli_query($conn, $sql);  // get query result
+
+    $mostRead = mysqli_fetch_all($resultantLabel); // conver to array
+
+    // print_r($mostRead);
+
+    // foreach ($mostRead as $label) {
+    //     echo htmlspecialchars($label[0]);
+    //     echo '  -->  ';
+    //     echo htmlspecialchars($label[1]);
+    //     echo '  -->  ';
+    //     echo htmlspecialchars($label[2]);
+    //     echo '<br>';
+    // }
+
+
 }
 
 
@@ -102,10 +134,10 @@ mysqli_close($conn);
 </head>
 
 <body>
-    <!-- Navbar -->
+    <!--------------------------------- Navbar --------------------------------->
     <?php include('/Kairos/Dashboard/navbar.php'); ?>
 
-    <!-- Header -->
+    <!--------------------------------- Header --------------------------------->
 
 
     <div class="container">
@@ -117,14 +149,14 @@ mysqli_close($conn);
                 </div>
                 <div class="col-md-8">
                     <div class="card-body">
-                        <h5 class="card-title">
-                            <?php echo htmlspecialchars($note[0]); ?>
-                        </h5>
-                        <h6>
-                            <?php echo htmlspecialchars($note[1]); ?>
+                        <h4 class="card-title text-center">
+                            <?php echo htmlspecialchars($notes[0][0]); ?>
+                        </h4>
+                        <h6 class="text-center">
+                            <?php echo htmlspecialchars($notes[0][1]); ?>
                         </h6>
                         <p class="card-text">
-                            <?php echo htmlspecialchars($note[2]); ?>
+                            <?php echo htmlspecialchars($notes[0][2]); ?>
                         </p>
                     </div>
                 </div>
@@ -133,21 +165,19 @@ mysqli_close($conn);
         <!-- </div> -->
     </div>
 
+    <!-------------------------    Notes Body  ------------------------->
+
     <div class="container">
         <div class="row ">
-            <div class="col-10">
-
-                <!-- SELECT lib.bookName, lib.authorName, lib.details, ntb.userhandle, title, ntb.details, created_at -->
-                <!-- $notes -->
-
+            <div class="col-9">
                 <?php
                 foreach ($notes as $note) { ?>
 
                     <!--  -->
-                    <div class="row card mb-3">
+                    <div class="row card mb-3 ps-3 pt-3 pb-3">
                         <div class="row g-0">
                             <!--  -->
-                            <div class="entry col-12">
+                            <div class="entry col-12 p-3">
                                 <div class="grid-inner row g-0">
                                     <div class="col-auto">
                                         <div class="entry-image">
@@ -157,7 +187,7 @@ mysqli_close($conn);
                                     <div class="col ps-3">
                                         <div class="entry-title">
                                             <h4>
-                                                <?php echo htmlspecialchars($note[3]); ?>
+                                                <?php echo htmlspecialchars($note[7]); ?>
                                             </h4>
                                         </div>
                                         <div class="entry-meta">
@@ -171,9 +201,10 @@ mysqli_close($conn);
                                     <p class="card-text">
                                         <?php echo htmlspecialchars($note[5]); ?>
                                     </p>
-                                    <p class="card-text"><small class="text-muted">Last updated
+                                    <p class="card-text"><small class="text-muted">Uploaded on
                                             <?php echo htmlspecialchars($note[6]); ?>
-                                            mins ago</small></p>
+                                            <?php echo '.'; ?>
+                                        </small></p>
                                 </div>
 
                             </div>
@@ -184,21 +215,85 @@ mysqli_close($conn);
             </div>
 
 
-            <div class="col-2">
-                <div class="row card mb-3">
-                    <div class="row g-0">
-                        <div class="col-md-4">
-                            <img src="..." class="img-fluid rounded-start" alt="...">
+            <!------------------------------- Side Bar ------------------------------->
+
+            <div class="col-3 ps-4">
+
+            <!------------------------- Carousel ------------------------->
+            <div class="row  bg-white rounded pb-3">
+                    <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
+                        <div class="carousel-indicators">
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="1" aria-label="Slide 2"></button>
+                            <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="2" aria-label="Slide 3"></button>
                         </div>
-                        <div class="col-md-8">
-                            <div class="card-body">
-                                <h5 class="card-title">Book Name</h5>
-                                <p class="card-text">This is a wider card with supporting text below as a natural lead-in to additional content. This content is a little bit longer.</p>
-                                <p class="card-text"><small class="text-muted">Last updated 3 mins ago</small></p>
+                        <div class="carousel-inner">
+
+                            <div class="carousel-item active" data-bs-interval="2000">
+                                <img src="../Images/Books/Atomic Habits.jpg" class="d-block w-100" alt="...">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <!-- <h5>First slide label</h5>
+                                    <p>Some representative placeholder content for the first slide.</p> -->
+                                </div>
+                            </div>
+
+                            <div class="carousel-item" data-bs-interval="2000">
+                                <img src="../Images/Books/Eat That Frog!.jpg" class="d-block w-100" alt="...">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <!-- <h5>Second slide label</h5>
+                                    <p>Some representative placeholder content for the second slide.</p> -->
+                                </div>
+                            </div>
+
+                            <div class="carousel-item">
+                                <img src="../Images/Books/The 4-Hour Work Week.jpg" class="d-block w-100" alt="...">
+                                <div class="carousel-caption d-none d-md-block">
+                                    <!-- <h5>Third slide label</h5>
+                                    <p>Some representative placeholder content for the third slide.</p> -->
+                                </div>
                             </div>
                         </div>
+                        <!-- <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="prev">
+                            <span class="carousel-control-prev-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Previous</span>
+                        </button>
+                        <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleDark" data-bs-slide="next">
+                            <span class="carousel-control-next-icon" aria-hidden="true"></span>
+                            <span class="visually-hidden">Next</span>
+                        </button> -->
                     </div>
                 </div>
+            <!--  -->
+
+
+                <!-------------------------- Most read -------------------------->
+                <div class="row  bg-white rounded pb-3 mt-3">
+                    <?php
+                    foreach ($mostRead as $read) { ?>
+
+                        <div class="col mt-3">
+                            <div class="card" style="width: 18rem;">
+                                <img src="../Images/logo2.png" class="card-img-top" alt="...">
+                                <div class="card-body">
+                                    <h5 class="card-title">
+                                        <h6> <?php echo htmlspecialchars($read[0]); ?></h6>
+                                    </h5>
+                                    <p class="card-text">
+                                    <h6> <?php echo htmlspecialchars($read[2]); ?></h6>
+                                    </p>
+                                    <a href="#" class="card-link">Read Now</a>
+                                </div>
+                            </div>
+                        </div>
+
+                    <?php } ?>
+
+                </div>
+                 
+
+                <!-- ---------------------- -->
+
+
             </div>
         </div>
     </div>
