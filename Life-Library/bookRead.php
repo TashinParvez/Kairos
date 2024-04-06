@@ -169,6 +169,7 @@ mysqli_close($conn);
 
     <div class="container">
         <div class="row ">
+            <!-------------------------    Users Notes   ------------------------->
             <div class="col-9">
                 <?php
                 foreach ($notes as $note) { ?>
@@ -219,8 +220,8 @@ mysqli_close($conn);
 
             <div class="col-3 ps-4">
 
-            <!------------------------- Carousel ------------------------->
-            <div class="row  bg-white rounded pb-3">
+                <!------------------------- Carousel ------------------------->
+                <div class="row  bg-white rounded pb-3">
                     <div id="carouselExampleDark" class="carousel carousel-dark slide" data-bs-ride="carousel">
                         <div class="carousel-indicators">
                             <button type="button" data-bs-target="#carouselExampleDark" data-bs-slide-to="0" class="active" aria-current="true" aria-label="Slide 1"></button>
@@ -263,7 +264,7 @@ mysqli_close($conn);
                         </button> -->
                     </div>
                 </div>
-            <!--  -->
+                <!--  -->
 
 
                 <!-------------------------- Most read -------------------------->
@@ -289,7 +290,7 @@ mysqli_close($conn);
                     <?php } ?>
 
                 </div>
-                 
+
 
                 <!-- ---------------------- -->
 

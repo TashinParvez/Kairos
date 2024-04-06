@@ -17,7 +17,7 @@ if (isset($_GET['userHandle'])) {
 
     $sql = "SELECT firstName, lastName, nationality,religion, mail, userHandle
             FROM user_info
-            WHERE userHandle = '$userHandle'; ";
+            WHERE userHandle = '$userHandle'; "; 
 
     $result =  mysqli_query($conn, $sql);  // get query result
 
