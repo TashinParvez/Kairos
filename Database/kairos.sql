@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: 127.0.0.1
--- Generation Time: Apr 01, 2024 at 08:29 PM
+-- Generation Time: Apr 02, 2024 at 09:03 PM
 -- Server version: 10.4.27-MariaDB
 -- PHP Version: 8.2.0
 
@@ -44,6 +44,23 @@ CREATE TABLE `blog` (
   `topicName` varchar(50) DEFAULT NULL,
   `description` varchar(100) DEFAULT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_general_ci;
+
+--
+-- Dumping data for table `blog`
+--
+
+INSERT INTO `blog` (`userHandle`, `created_at`, `topicName`, `description`) VALUES
+('aarifeen', '2024-04-02 06:35:58', 'Technology Trends in 2024', 'In this blog post, we will explore the latest trends in technology, including AI, blockchain, and cy'),
+('antarsah', '2024-04-02 06:36:15', 'Healthy Eating Habits', 'Learn about the importance of maintaining a balanced diet and incorporating healthy eating habits in'),
+('ashrafu1', '2024-04-02 06:36:31', 'Fitness Tips for Beginners', 'Starting a fitness journey can be daunting, but with the right guidance, anyone can achieve their fi'),
+('bijoy123', '2024-04-02 06:37:18', 'Traveling on a Budget', 'Traveling doesn\'t have to break the bank! Discover budget-friendly travel tips, including how to fin'),
+('bintesai', '2024-04-02 06:37:37', 'Effective Time Management Techniques', 'Mastering time management is essential for productivity and success. Explore proven techniques for p'),
+('munna', '2024-04-02 06:38:11', 'Mindfulness Meditation for Stress Relief', 'Reduce stress and enhance well-being with mindfulness meditation. Learn how to incorporate mindfulne'),
+('musfiqur', '2024-04-02 06:38:11', 'DIY Home Improvement Projects', 'Transform your living space with these DIY home improvement projects. From painting techniques to fu'),
+('noman123', '2024-04-02 06:38:11', 'Effective Communication Skills', 'Communication is key in both personal and professional relationships. Explore strategies for improvi'),
+('rifatibn', '2024-04-02 06:38:29', 'Exploring World Cuisine', 'Embark on a culinary journey around the globe and discover the diverse flavors of world cuisine. Fro'),
+('rrumon71', '2024-04-02 06:38:41', 'Introduction to Sustainable Living', 'Learn about the principles of sustainable living and how to reduce your environmental footprint. Dis'),
+('sliza221', '2024-04-02 06:39:56', 'Topic_350', 'Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolor sit amet, Lorem ipsum dolo');
 
 -- --------------------------------------------------------
 
@@ -209,17 +226,19 @@ INSERT INTO `notes` (`userHandle`, `title`, `details`, `created_at`, `public`, `
 ('bijoy123', 'To Kill a Mockingbird', 'A timeless story of racial injustice and moral growth in the American South, told through the eyes o', '2024-03-26 14:39:58', 0, 0),
 ('bijoy123', 'The Road Not Taken', 'A reflective poem about decision-making and the choices we face in life, symbolized by a diverging p', '2024-03-26 14:43:25', 0, 0),
 ('bijoy123', 'Stopping by Woods on a Snowy Evening', 'A contemplative poem that captures the beauty of nature and the allure of a tranquil snowy landscape', '2024-03-26 14:43:41', 0, 0),
-('bijoy123', 'Atomic Habits', 'If you find yourself struggling to build a good habit or break a bad one, it is not because you have', '2024-03-29 06:36:07', 1, 0),
+('bijoy123', 'Atomic Habits', 'If you find yourself struggling to build a good habit or break a bad one, it is not because you have scientific research, Clear explains how tiny changes in behavior can lead to remarkable results over time. What sets this book apart is its emphasis on identity-based habits, which focus on becoming the type of person you want to be rather than just achieving specific outcomes.', '2024-03-29 06:36:07', 1, 0),
 ('bijoy123', 'Atomic Habits', '“When nothing seems to help, I go and look at a stonecutter hammering away at his rock, perhaps a hu', '2024-03-29 06:36:38', 1, 0),
 ('bijoy123', 'Atomic Habits', 'To form good habits, make them a part of your identity\r\nOur habits should be a part of our identity ', '2024-03-29 06:36:52', 0, 0),
 ('bijoy123', 'Quiet', 'As a bookish, introverted child, I would have loved to have found this on a ‘books for introverts’ s', '2024-04-01 13:11:04', 1, 0),
 ('musfiqur', 'UIU present ', 'ALTER TABLE label\r\nADD PRIMARY KEY (labelName,userHandle)ALTER TABLE label\r\nADD PRIMARY KEY (labelNa', '2024-03-26 15:23:28', 0, 0),
 ('musfiqur', 'Atomic Habits', 'Over the long run, however, the real reason you fail to stick with habits is that your self-image ge', '2024-03-29 06:37:07', 0, 0),
-('musfiqur', 'Atomic Habits', 'If you’re still having trouble determining how to rate a particular habit, here is a question I like', '2024-03-29 06:37:22', 0, 0),
+('musfiqur', 'Atomic Habits', 'If you’re still having trouble determining how to rate a particular habit, here is a question I like scientific research, Clear explains how tiny changes in behavior can lead to remarkable results over time. What sets this book apart is its emphasis on identity-based habits, which focus on becoming the type of person you want to be rather than just. ', '2024-03-29 06:37:22', 1, 0),
 ('noman123', 'Eat That Frog!', 'Since being founded in 2011, we have steadily become the South Wests’ No.1 alternative education cen', '2024-03-29 06:38:14', 1, 0),
-('rifatibn', 'Eat That Frog!', 'Set the table”. This is your goal setting step, where you decide what you want to achieve and you wr', '2024-03-29 06:39:13', 0, 0),
+('rifatibn', 'Eat That Frog!', 'Set the table”. This is your goal setting step, where you decide what you want to achieve and you wr', '2024-03-29 06:39:13', 1, 0),
 ('rrumon71', 'Eat That Frog!', 'This month’s book review is of a book that was recommended to me by Coach Cati and instead of readin', '2024-03-29 06:38:56', 1, 0),
-('tashin19', 'Atomic Habits', 'Atomic Habits\" by James Clear is a groundbreaking book that provides transformative insights into th', '2024-04-01 14:05:49', 1, 0);
+('rrumon71', 'Atomic Habits', 'Atomic Habits\" by James Clear is a transformative guide to understanding and optimizing the power of habits in our lives. Clear\'s insights are practical, actionable, and backed by scientific research, making them accessible to readers of all backgrounds. Through compelling anecdotes and relatable examples, Clear illustrates how small changes in behavior can lead to remarkable outcomes over time. What sets this book apart is its focus on the underlying mechanisms of habit formation and the strategies for effectively implementing change. Whether you\'re looking to break bad habits, build new ones, or simply optimize your daily routines, \"Atomic Habits\" provides a comprehensive blueprint for personal transformation', '2024-04-02 17:56:01', 1, 1),
+('tashin19', 'Atomic Habits', 'Atomic Habits\" by James Clear is a game-changer for anyone looking to make positive changes in their life. Clear\'s approach to habit formation is refreshingly practical and actionable, making it easy for readers to implement his strategies into their daily lives. Through engaging storytelling and scientific research, Clear explains how tiny changes in behavior can lead to remarkable results over time. What sets this book apart is its emphasis on identity-based habits, which focus on becoming the type of person you want to be rather than just achieving specific outcomes. Overall, \"Atomic Habits\" is a must-read for anyone seeking to cultivate lasting habits and achieve their goals.', '2024-04-01 14:05:49', 1, 0),
+('tashin19', 'The Power of Habit', 'Through compelling narratives and insightful research, Duhigg explores how habits shape our lives and offers practical strategies for harnessing their power. From personal anecdotes to organizational case studies, the book provides valuable insights into the neurological processes behind habit formation and the role of cues, routines, and rewards. Duhigg\'s engaging storytelling and actionable advice make this book a must-read for anyone seeking to understand and change their habits for the better. ', '2024-04-02 17:19:59', 1, 1);
 
 -- --------------------------------------------------------
 

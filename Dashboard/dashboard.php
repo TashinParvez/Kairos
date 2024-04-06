@@ -147,10 +147,10 @@ if (isset($_GET['userHandle'])) {
 
             <!-- -------------------------------- First Block ---------------------------------------- -->
 
+            <!------------------ Side Bar ------------------>
             <div class="col-2 pe-0">
                 <div class="block" style="height: 200px; ">
 
-                    <!------------------ Side Bar ------------------>
 
                     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light ms-1 rounded border" style=" width: 270px;  height: 83.5vh;">
                         <a href="" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
