@@ -1,0 +1,641 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kairos</title>
+    <link rel="icon" type="image/x-icon" href="Images/Logo/Picture1.png"></link>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+</head>
+<body>
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+            background-color: #f1f4fb;
+            font-family: 'Ubuntu', sans-serif;
+        }
+        body, html {
+            overflow: hidden;
+        }
+        body{
+            height: 100vh;
+            background-color: #eff2f9;
+            display: grid;
+            grid-template-columns: 300px 1fr 0.1fr;
+            grid-template-rows: 80px 1fr;
+            grid-template-areas: 
+                "side header upContainer"
+                "side main main"
+            ;
+            gap: 10px;
+        }
+        .upContainer {
+            background-color: white;
+            grid-area: upContainer;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+            margin-right: 10px;
+            display: flex; /* Use flexbox */
+            align-items: center; /* Center items vertically */
+            justify-content: space-between; /* Space items horizontally */
+        }
+
+        .upContainerProfile,
+        .upContainerSignOut {
+            display: flex; /* Use flexbox */
+            align-items: center; /* Center items vertically */
+        }
+
+        .upContainerProfile img,
+        .upContainerSignOut img {
+            background-color: transparent;
+            width: 40px; /* Set the width of the images */
+            height: auto; /* Maintain aspect ratio */
+            margin: 0 5px; /* Adjust margin as needed */
+            z-index: 1;
+        }
+
+
+        .header{
+            background-color: white;
+            grid-area: header;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+            position: relative;
+        }
+        .search { /* Adjust the value as needed to be higher than the main class */
+            position: relative; /* This ensures that z-index is applied correctly */
+            max-width: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+        }
+
+        .search form {
+            display: flex;
+            align-items: center;
+            background-color: #eff2f9;
+            border-radius: 10px;
+            padding: 2px;
+        }
+
+        .search input[type="search"] {
+            border: none;
+            padding: 8px;
+            flex: 1;
+            max-width: 150px;
+        }
+
+        .icon-button {
+            background-color: transparent;
+            padding: 5px;
+        }
+
+        .icon {
+            width: 20px;
+            height: 20px;
+        }
+
+        .sidebar{
+            background-color: white;
+            grid-area: side;
+            display: grid;
+            grid-template-columns: 1fr;
+            grid-template-rows: 70px 40px 40px 40px 40px 40px 40px 40px 40px;
+            grid-template-areas: 
+                "temp1"
+                "temp2"
+                "temp3"
+                "temp4"
+                "temp5"
+                "temp6"
+                "temp7"
+                "temp8"
+                "temp9"
+            ;
+            padding: 10px;
+            border-radius: 10px;
+            margin-top: 10px;
+            margin-left: 10px;
+            margin-bottom: 10px;
+            padding: 20px;
+            gap: 35px;
+        }
+        .temp{
+            border-radius: 10px;
+            padding: 2px;
+            background-color: transparent;
+        }
+        .temp:nth-child(1){
+            grid-area: temp1;
+        }
+        .temp:nth-child(2){
+            grid-area: temp2;
+        }
+        .temp:nth-child(3){
+            grid-area: temp3;
+        }
+        .temp:nth-child(4){
+            grid-area: temp4;
+        }
+        .temp:nth-child(5){
+            grid-area: temp5;
+        }
+        .temp:nth-child(6){
+            grid-area: temp6;
+        }
+        .temp:nth-child(7){
+            grid-area: temp7;
+        }
+        .temp:nth-child(8){
+            grid-area: temp8;
+        }
+        .temp:nth-child(9){
+            grid-area: temp9;
+        }
+        .main{
+            background-color: white;
+            grid-area: main;
+            gap: 20px;
+            padding: 20px;
+            border-radius: 10px;
+            margin: 10px;
+            overflow-y: auto;
+        }
+        /* Custom scrollbar styles for modern browsers */
+        .main::-webkit-scrollbar {
+            width: 8px; /* Set the width of the scrollbar */
+        }
+
+        .main::-webkit-scrollbar-track {
+            background: transparent;
+        }
+        .main::-webkit-scrollbar-thumb {
+            background-color: #888;
+            border-radius: 5px;
+            opacity: 0;
+        }
+        .main:hover::-webkit-scrollbar-thumb {
+            opacity: 1;
+        }
+        .main::-webkit-scrollbar-thumb:hover {
+            background-color: #555; 
+        }
+        .card{
+            background-color: transparent;
+            border-radius: 10px;
+            padding: 20px;
+            overflow-wrap: break-word;
+        }
+        .card:nth-child(1){
+            grid-area: c1;
+        }
+        .card:nth-child(2){
+            grid-area: c2;
+        }
+        .card:nth-child(3){
+            grid-area: c3;
+        }
+        .card:nth-child(4){
+            grid-area: c4;
+        }
+        .card:nth-child(5){
+            grid-area: c5;
+        }
+        .card:nth-child(6){
+            grid-area: c6;
+        }
+        .temp img {
+            max-width: 40%;
+            height: auto;
+            display: block;
+            float: left;
+            border-radius: 10px;
+            margin-right: 10px;
+            background-color: transparent;
+        }
+        .brand {
+            font-size: 24px;
+            margin-top: 30px;
+            background-color: transparent;
+        }
+        .temp .btn-primary {
+            background-color: transparent !important;
+            border-color: transparent;
+            color: black; /* Set text color to black */
+        }
+
+        .temp .btn-primary span img {
+            margin-right: 5px; /* Adjust the margin between the image and the text */
+        }
+
+        .btn-primary:hover {
+            outline: transparent;
+            
+        }
+        @media (max-width: 925px) {
+            .main{
+                grid-template-columns: 1fr;
+                grid-template-rows: repeat(6, 200px);
+                grid-template-areas: initial;
+            }
+
+            .card{
+                grid-area: initial !important;
+            }
+        }
+        h1,p{
+            background-color: white;
+        }
+        .header {
+            position: relative;
+        }
+
+        .btn-custom {
+            position: absolute;
+            top: 50%;
+            right: 10px; /* Adjust as needed */
+            transform: translateY(-50%);
+        }
+        .btn-custom span img {
+            background-color: white !important; /* Make the background of the SVG transparent */
+        }
+        .header img{
+            background-color: white;
+            max-width: 30px;
+            height: auto;
+        }
+        .icon-button {
+            display: inline-block;
+            background-color: #fff; /* Button background color */
+            color: #fff; /* Text color */
+            padding: 1px; /* Padding around the icon */
+            border-radius: 5px; /* Rounded corners */
+            text-decoration: none; /* Remove default underline */
+        }
+
+        /* Style for the icon */
+        .icon {
+            background-color: transparent;
+            width: 100px; /* Set the width of the images */
+            height: auto; /* Maintain aspect ratio */
+            margin: 0px; /* Adjust margin as needed */
+            z-index: 1;
+        }
+        .iconSearch {
+            background-color: transparent;
+            width: 200px; /* Set the width of the images */
+            height: auto; /* Maintain aspect ratio */
+            margin: 0 1px; /* Adjust margin as needed */
+            z-index: 1;
+        }
+        .profile{
+            z-index: 1;
+            background-color: transparent;
+        }
+        .profile a{
+            background-color: transparent;
+        }
+        .signOut{
+            z-index: 1;
+            background-color: transparent;
+        }
+        .signOut a{
+            background-color: transparent;
+        }
+
+
+        form{
+            position: relative;
+            top: 50%;
+            right: 10px;
+            translate:(-50%,-50%);
+            transition: all 1s;
+            width: 50px;
+            height: 50px;
+            background: white;
+            box-sizing: border-box;
+            border-radius: 25px;
+            border: 4px solid white;
+            padding: 5px;
+            z-index: 1;
+        }
+
+        input{
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;;
+            height: 42.5px;
+            line-height: 30px;
+            outline: 0;
+            border: 0;
+            display: none;
+            font-size: 1em;
+            border-radius: 20px;
+            padding: 0 20px;
+        }
+
+        .fa{
+            box-sizing: border-box;
+            padding: 10px;
+            width: 42.5px;
+            height: 42.5px;
+            position: absolute;
+            top: 0;
+            right: 0;
+            border-radius: 50%;
+            color: #07051a;
+            text-align: center;
+            font-size: 1.2em;
+            transition: all 1s;
+        }
+        .fa-search {
+            background-color: #fff;
+        }
+        form:hover,
+        form:valid{
+            width: 200px;
+            cursor: pointer;
+        }
+        form:hover,
+        form:valid #search-txt{
+            color: transparent;
+        }
+
+        form:hover input,
+        form:valid input{
+            display: block;
+        }
+
+        form:hover .fa,
+        form:valid .fa{
+            background: #07051a;
+            color: white;
+        }
+        form:valid a {
+        display: block;
+        }
+        .search {
+            position: absolute;
+            max-width: 200px;
+            left: 50%;
+            transform: translateX(-50%);
+            transition: all 1s;
+            z-index: 2;
+        }
+        #search-txt {
+            position: absolute;
+            z-index: 1;
+            background-color: transparent;
+            top: 50%;
+            left: calc(100% - 4px);
+            transform: translateY(-50%);
+            font-size: 1em;
+        }
+        .search:hover #search-txt {
+            display: none;
+        }
+        
+
+        .card {
+            height: 450px; /* Set fixed height */
+            margin-right: 20px; /* Add margin between cards */
+            margin-bottom: 20px; /* Add margin between rows of cards */
+            /* Remove the "flex" property */
+        }
+
+        
+        .card-body {
+            padding: 10px;
+            height: 100%;
+            display: flex;
+            flex-direction: column;
+        }
+        .card-title {
+            font-size: 18px;
+            font-weight: bold;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            margin-bottom: 10px;
+        }
+        .card-text {
+            flex-grow: 1;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+        .card-button {
+            margin-top: auto;
+        }
+        
+    </style>
+     <header class="header shadow ">
+        <div class="container-fluid" style="background-color: transparent;">
+
+            <div class="d-flex justify-content-between align-items-center gap-1 p-2"
+                style="background-color: transparent;">
+
+                <nav class="flex-grow-1" style="background-color: transparent;">
+                    <img src="Images/label-svgrepo-com.svg" alt="">
+                    <button type="button" class="btn" data-bs-toggle="button">Reflective Growth</button>
+                    <button type="button" class="btn" data-bs-toggle="button">Bookworms</button>
+                    <button type="button" class="btn" data-bs-toggle="button">Salah</button>
+                </nav>
+                <!-- <button type="button" class="btn btn-custom">
+                    <span><img src="Images/back-svgrepo-com.svg" width="25" height="25"></span>
+                    Back
+                </button> -->
+            </div>
+        </div>
+    </header>
+    <header class="upContainer shadow ">
+        <div class="upContainerProfile">
+            <div class="profile">
+                <a href="#">
+                    <img src="Images/profile-svgrepo-com.svg">
+                </a>
+            </div>            
+        </div>
+        <div class="upContainerSignOut">
+            <div class="signOut">
+                <a href="#">
+                    <img src="Images/exit-svgrepo-com.svg" alt="">
+                </a>
+            </div>
+        </div>
+    </header>
+    <section class="sidebar shadow ">
+        <div class="temp">
+            <img src="Images/Logo/logo2.png">
+            <p class="brand">Kairos</p>
+        </div>
+        <hr>
+        <div class="temp">
+            <div class="container-fluid bg-white center">
+                <form action="">
+                    <div class="searchSide">
+                        <input type="search" required>
+                        <i class="fa fa-search"></i>
+                        <span id="search-txt">Search</span>
+                        <a-main href="javascript:void(0)" id="clear-btn"></a-main>
+                    </div>
+                    </form>
+            </div>
+        </div>
+        <div class="temp">
+            <div class="temp">
+                <button type="button" class="btn btn-primary">
+                    <span><img src="Images/home-1-svgrepo-com.svg" width="25" height="25"></span>
+                    Home
+                </button>
+            </div>
+        </div>
+        <div class="temp">
+            <button type="button" class="btn btn-primary">
+                <span><img src="Images/link-square-svgrepo-com.svg" width="25" height="25"></span>
+                Community
+            </button>
+        </div>
+        <div class="temp">
+            <button type="button" class="btn btn-primary">
+                <span><img src="Images/ranking-svgrepo-com.svg" width="25" height="25"></span>
+                Goals
+            </button>
+        </div>
+        <div class="temp">
+            <button type="button" class="btn btn-primary">
+                <span><img src="Images/share-circle-svgrepo-com.svg" width="25" height="25"></span>
+                Loops
+            </button>
+        </div>
+        <div class="temp">
+            <button type="button" class="btn btn-primary">
+                <span><img src="Images/pen-2-svgrepo-com.svg" width="25" height="25"></span>
+                Blogs
+            </button>
+        </div>
+        <div class="temp">
+            <button type="button" class="btn btn-primary">
+                <span><img src="Images/bicycling-svgrepo-com.svg" width="25" height="25"></span>
+                Exercise
+            </button>
+        </div>
+        <div class="temp">
+            <button type="button" class="btn btn-primary">
+                <span><img src="Images/heart-pulse-svgrepo-com.svg" width="25" height="25"></span>
+                Diet
+            </button>
+        </div>
+    </section>
+    <div class="upContainer shadow "></div>
+    <main class="main shadow">
+        <div class="row bg-white">
+            <div class="col-sm-6 bg-white">
+                <h1>Communities</h1>
+            </div>
+            <div class="col-sm-4 bg-white"></div>
+            <div class="col-sm-auto bg-white">
+                <div class="container-fluid bg-white p-2 align-items-right">
+                    <form action="">
+                        <input type="search" required>
+                        <i class="fa fa-search"></i>
+                        <span id="search-txt">Search</span>
+                        <a-main href="javascript:void(0)" id="clear-btn"></a-main>
+                    </form>
+                </div>
+            </div>
+        </div>
+        
+        
+        
+            <div class="bg-white">
+                <div class="row bg-white">
+                    <div class="col-sm-auto bg-white">
+                        <div class="card bg-white" style="width: 18rem;">
+                            <img src="Images/Community/employees-giving-hands-helping-colleagues-walk-upstairs_74855-5236.jpg" class="card-img-top" alt="...">
+                            <div class="card-body bg-white">
+                              <h5 class="card-title bg-white">Reflective Growth Bubble</h5>
+                              <p class="card-text">Forum to Discuss about Personal problems and solutions</p>
+                              <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-auto bg-white">
+                        <div class="card bg-white" style="width: 18rem;">
+                            <img src="Images/Community/Namaz.jpg" class="card-img-top" alt="...">
+                            <div class="card-body bg-white">
+                              <h5 class="card-title bg-white">Salah</h5>
+                              <p class="card-text">Forum where we keep track of your Namaz</p>
+                              <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-auto bg-white">
+                        <div class="card bg-white" style="width: 18rem;">
+                            <img src="Images/Community/Books.jpg" class="card-img-top" alt="...">
+                            <div class="card-body bg-white">
+                              <h5 class="card-title bg-white">Bookworms</h5>
+                              <p class="card-text">Where book lovers gather to explore diverse literary worlds, share insights, and foster a community of passionate readers.</p>
+                              <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <h4 class="bg-white">Recommended for you</h4>
+                <div class="row bg-white">
+                    <div class="col-sm-auto bg-white">
+                        <div class="card bg-white" style="width: 18rem;">
+                            <img src="Images/Community/employees-giving-hands-helping-colleagues-walk-upstairs_74855-5236.jpg" class="card-img-top" alt="...">
+                            <div class="card-body bg-white">
+                              <h5 class="card-title bg-white">Reflective Growth Bubble</h5>
+                              <p class="card-text">Forum to Discuss about Personal problems and solutions</p>
+                              <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-auto bg-white">
+                        <div class="card bg-white" style="width: 18rem;">
+                            <img src="Images/Community/Namaz.jpg" class="card-img-top" alt="...">
+                            <div class="card-body bg-white">
+                              <h5 class="card-title bg-white">Salah</h5>
+                              <p class="card-text">Forum where we keep track of your Namaz</p>
+                              <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-sm-auto bg-white">
+                        <div class="card bg-white" style="width: 18rem;">
+                            <img src="Images/Community/Books.jpg" class="card-img-top" alt="...">
+                            <div class="card-body bg-white">
+                              <h5 class="card-title bg-white">Bookworms</h5>
+                              <p class="card-text">Where book lovers gather to explore diverse literary worlds, share insights, and foster a community of passionate readers.</p>
+                              <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            
+        </div>
+        
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    <script>
+        const clearInput = () => {
+            const input = document.getElementsByTagName("input")[0];
+            input.value = "";
+        }
+            const clearBtn = document.getElementById("clear-btn");
+            clearBtn.addEventListener("click", clearInput);
+    </script>
+</body>
+</html>
