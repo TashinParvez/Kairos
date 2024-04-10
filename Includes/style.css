@@ -4,10 +4,12 @@
   background-color: #f1f4fb;
   font-family: "Ubuntu", sans-serif;
 }
+
 body,
 html {
   overflow: hidden;
 }
+
 body {
   height: 100vh;
   background-color: #eff2f9;
@@ -19,6 +21,7 @@ body {
     "side main main";
   gap: 10px;
 }
+
 .upContainer {
   background-color: white;
   grid-area: upContainer;
