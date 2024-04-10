@@ -85,7 +85,7 @@ if (isset($_GET['userHandle'])) {
 
     $resultantNotes =  mysqli_query($conn, $sql);  // get query result
 
-    // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
+    // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array 
     $Notes = mysqli_fetch_all($resultantNotes); // conver to array
 
     // print_r($Notes);
@@ -135,7 +135,7 @@ if (isset($_GET['userHandle'])) {
     <!-- ------------------------------------------------------------------ -->
 
     <?php
-        include('navbar.php');
+    include('navbar.php');
     ?>
 
 
@@ -147,10 +147,10 @@ if (isset($_GET['userHandle'])) {
 
             <!-- -------------------------------- First Block ---------------------------------------- -->
 
+            <!------------------ Side Bar ------------------>
             <div class="col-2 pe-0">
                 <div class="block" style="height: 200px; ">
 
-                    <!------------------ Side Bar ------------------>
 
                     <div class="d-flex flex-column flex-shrink-0 p-3 bg-light ms-1 rounded border" style=" width: 270px;  height: 83.5vh;">
                         <a href="" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
@@ -222,6 +222,7 @@ if (isset($_GET['userHandle'])) {
                         <div class="col-lg-9 " style=" position: sticky;    z-index: 1000; ">
                             <input class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example">
                         </div>
+
                         <!-- Search Field (30% width) -->
                         <div class="col-lg-3" style="      position: sticky;      z-index: 1000;">
                             <div class="input-group mt-3">
@@ -231,6 +232,16 @@ if (isset($_GET['userHandle'])) {
                                 </button>
                             </div>
                         </div>
+
+
+
+
+
+
+
+                        <!-- ---------- -->
+
+
                     </div>
                 </div>
 

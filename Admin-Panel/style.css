@@ -1,0 +1,22 @@
+sidebar {
+  height: 100vh;
+}
+
+
+.card-grid {
+  display: flex;
+  overflow-x: auto;
+  white-space: nowrap;
+}
+
+.card-container {
+  display: inline-block;
+  width: 100%;
+}
+
+.card {
+  display: inline-block;
+  width: 330px;
+  margin-right: 10px;
+  vertical-align: top;
+}

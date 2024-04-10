@@ -1,0 +1,17 @@
+.col img {
+  width: 15vh;
+}
+
+  
+.card-deck {
+  display: flex;
+  flex-wrap: wrap;
+  margin-left: -15px;  
+  margin-right: -15px;  
+}
+
+ 
+ hr.double {
+  border-top: 3px double;
+  border-bottom: none;
+ }
