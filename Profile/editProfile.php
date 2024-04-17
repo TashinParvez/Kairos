@@ -4,12 +4,14 @@ include('../Dashboard/connect_db.php'); // database connection
 
 $firstName = $lastName = $nationality = $religion = $mail = $userHandle = $password = $confirmPassword = $oldPassword = '';
 
-$previousUserHandle = $_GET['userHandle'];
+$errors = array('firstName' => '', 'lastName' => '', 'nationality' => '', 'religion' => '', 'mail' => '', 'userHandle' => '', 'password' => '', 'confirmPassword' => '', 'oldPassword' => '');
 
 // check get request userHandle 
 if (isset($_GET['userHandle'])) {
 
     $userHandle = mysqli_real_escape_string($conn, $_GET['userHandle']);
+
+    // ............*** Showing information in fields ***..............
 
     //----------------- Get users Info ---------------
 
@@ -18,29 +20,6 @@ if (isset($_GET['userHandle'])) {
     $sql = "SELECT firstName, lastName, nationality,religion, mail, userHandle
             FROM user_info
             WHERE userHandle = '$userHandle' ";
-
-    $result =  mysqli_query($conn, $sql);  // get query result
-
-    $userInfo = mysqli_fetch_all($result); // conver to array
-
-    // print_r($userInfo);
-
-
-    // for memory free
-    mysqli_free_result($result);
-    mysqli_close($conn);
-} else {  // full else remove after adding login 
-
-
-    $userHandle = mysqli_real_escape_string($conn, 'bijoy123');
-
-    //----------------- Get users Info ---------------
-
-    // sql query
-
-    $sql = "SELECT firstName, lastName, nationality,religion, mail, userHandle
-            FROM user_info
-            WHERE userHandle = '$userHandle'; ";
 
 
 
@@ -59,192 +38,335 @@ if (isset($_GET['userHandle'])) {
 
     // $password = $userInfo[0][0]; 
 
-
-    // print_r($userInfo);
-
-
     // for memory free
     mysqli_free_result($result);
-    mysqli_close($conn);
-}
 
-if (isset($_POST['cancel'])) {
-    header('Location: editProfile.php');
-}
-
-$errors = array('firstName' => '', 'lastName' => '', 'nationality' => '', 'religion' => '', 'mail' => '', 'userHandle' => '', 'password' => '', 'confirmPassword' => '', 'oldPassword' => '');
-
-if (isset($_POST['update'])) {
-
-
-    //................ Retrieve all data  from input field ...............
-
-    $firstName = $_POST['firstName'];
-    $lastName = $_POST['lastName'];
-    $nationality = $_POST['nationality'];
-    $religion = $_POST['religion'];
-    // $mail = $_POST['mail'];
-    $userHandle = $_POST['userHandle'];
-
-    $password = $_POST['password'];
-    $confirmPassword = $_POST['confirmPassword'];
-    $oldPassword = $_POST['oldPassword'];
-
-
-    //................... escape sql chars .....................
-
-    $firstName = mysqli_real_escape_string($conn, $_POST['firstName']);
-    $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
-    $nationality = mysqli_real_escape_string($conn, $_POST['nationality']);
-    $religion = mysqli_real_escape_string($conn, $_POST['religion']);
-    // $mail = mysqli_real_escape_string($conn, $_POST['mail']);
-    $userHandle = mysqli_real_escape_string($conn, $_POST['userHandle']);
-    $password = mysqli_real_escape_string($conn, $_POST['password']);
-
-
-    //.............. All input field validation checking ...................
-    // check first name
-    if (empty($firstName)) {
-        $errors['firstName'] = 'This field cannot be empty!';
-    } else {
-        if (!preg_match('/^[a-zA-Z\s\.]+$/', $firstName)) {
-            $errors['firstName'] = 'This field contains letters and space only!';
-        }
+    //.......*** 'Cancel' button clicked ***...........
+    if (isset($_POST['cancel'])) {
+        header('Location: editProfile.php');
     }
 
-    // check last name
-    if (empty($lastName)) {
-        $errors['lastName'] = 'This field cannot be empty!';
-    } else {
-        if (!preg_match('/^[a-zA-Z0-9\s\.]+$/', $lastName)) {
-            $errors['lastName'] = 'This field contains letters and spaces only!';
-        }
-    }
+    //.......*** 'Update' button clicked ***...........
+    if (isset($_POST['update'])) {
 
-    // check nationality
-    if (empty($nationality)) {
-        $errors['nationality'] = 'This field cannot be empty!';
-    } else {
-        if (!preg_match('/^[a-zA-Z0-9\s\.]+$/', $nationality)) {
-            $errors['nationality'] = 'This field contains letters and spaces only!';
-        }
-    }
+        $previousUserHandle = $_GET['userHandle'];
+        //................ Retrieve all data  from input field ...............
 
-    // check religion
-    if (empty($religion)) {
-        $errors['religion'] = 'This field cannot be empty!';
-    } else {
-        if (!preg_match('/^[a-zA-Z\s]+$/', $religion)) {
-            $errors['religion'] = 'This field contains letters and spaces only!';
-        }
-    }
+        $firstName = $_POST['firstName'];
+        $lastName = $_POST['lastName'];
+        $nationality = $_POST['nationality'];
+        $religion = $_POST['religion'];
+        $userHandle = $_POST['userHandle'];
 
-    // check email  ** Mail checking is unnecessary as it cannot be changed **
+        $password = $_POST['password'];
+        $confirmPassword = $_POST['confirmPassword'];
+        $oldPassword = $_POST['oldPassword'];
 
-    // if (empty($mail)) {
-    //     $errors['mail'] = 'This field cannot be empty!';
-    // } else {
-    //     if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-    //         $errors['mail'] = 'Invalid email!';
-    //     } else {
 
-    //         // Duplication checking for email
-    //         $sql = "SELECT userHandle FROM user_info WHERE mail = '$mail'";
-    //         $result = mysqli_query($conn, $sql);
-    //         if ($result && mysqli_num_rows($result) > 0) {
-    //             $errors['mail'] = 'Sorry, this email is already registered!
-    //                                 Please use a different one';
-    //         }
-    //     }
-    // }
+        //................... escape sql chars .....................
 
-    // check user handle
-    if (empty($userHandle)) {
-        $errors['userHandle'] = 'This field cannot be empty!';
-    } else {
-        if (strlen($userHandle) < 8) {
-            $errors['userHandle'] = 'User handle length(8-20)!';
-        } else if ((!preg_match('/^[a-zA-Z0-9\-\@\_\.]+$/', $userHandle)) ||
-            (!(strtoupper($userHandle[0]) >= 'A' || strtoupper($userHandle[0]) <= 'Z'))
-        ) {
-            $errors['userHandle'] = 'Invalid user handle!';
+        $firstName = mysqli_real_escape_string($conn, $_POST['firstName']);
+        $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
+        $nationality = mysqli_real_escape_string($conn, $_POST['nationality']);
+        $religion = mysqli_real_escape_string($conn, $_POST['religion']);
+        $userHandle = mysqli_real_escape_string($conn, $_POST['userHandle']);
+        $password = mysqli_real_escape_string($conn, $_POST['password']);
+
+
+        //.............. All input field validation checking ...................
+        // check first name
+        if (empty($firstName)) {
+            $errors['firstName'] = 'This field cannot be empty!';
         } else {
-
-            // Duplication checking for user handle
-            $sql = "SELECT userHandle FROM user_info WHERE userHandle = '$userHandle'";
-            $result = mysqli_query($conn, $sql);
-            $userHandleValue = mysqli_fetch_assoc($result);
-            if (($result && mysqli_num_rows($result) > 0) && ($previousUserHandle !== $userHandleValue['userHandle'])) {
-                $errors['userHandle'] = 'The username you entered is not available!
-                                            Please try another one';
+            if (!preg_match('/^[a-zA-Z\s\.]+$/', $firstName)) {
+                $errors['firstName'] = 'This field contains letters and space only!';
             }
-            mysqli_free_result($result);
         }
-    }
 
-    // check password
-    // if (empty($password)) {
-    //     $errors['password'] = 'This field cannot be empty!';
-    // } else {
-    //     if (strlen($password) < 8) {
-    //         $errors['password'] = 'Password length(8-20)';
-    //     }
-    // }
-
-    // password field empty means user don't want to change the password
-    $sql = "SELECT password
-    FROM user_info
-    WHERE userHandle = '$previousUserHandle'";
-
-    $result = mysqli_query($conn, $sql);
-    $passwordValue = mysqli_fetch_assoc($result);
-    mysqli_free_result($result);
-
-    if (!empty($password)) {
-        if (strlen($password) < 8) {
-            $errors['password'] = 'Password length(8-20)';
+        // check last name
+        if (empty($lastName)) {
+            $errors['lastName'] = 'This field cannot be empty!';
         } else {
-            // check confirm password
-            if (!empty($password) && $confirmPassword !== $password) {
-                $errors['confirmPassword'] = "Password doesn't match!";
+            if (!preg_match('/^[a-zA-Z0-9\s\.]+$/', $lastName)) {
+                $errors['lastName'] = 'This field contains letters and spaces only!';
+            }
+        }
+
+        // check nationality
+        if (empty($nationality)) {
+            $errors['nationality'] = 'This field cannot be empty!';
+        } else {
+            if (!preg_match('/^[a-zA-Z0-9\s\.]+$/', $nationality)) {
+                $errors['nationality'] = 'This field contains letters and spaces only!';
+            }
+        }
+
+        // check religion
+        if (empty($religion)) {
+            $errors['religion'] = 'This field cannot be empty!';
+        } else {
+            if (!preg_match('/^[a-zA-Z\s]+$/', $religion)) {
+                $errors['religion'] = 'This field contains letters and spaces only!';
+            }
+        }
+
+
+
+        // check user handle
+        if (empty($userHandle)) {
+            $errors['userHandle'] = 'This field cannot be empty!';
+        } else {
+            if (strlen($userHandle) < 8) {
+                $errors['userHandle'] = 'User handle length(8-20)!';
+            } else if ((!preg_match('/^[a-zA-Z0-9\-\@\_\.]+$/', $userHandle)) ||
+                (!(strtoupper($userHandle[0]) >= 'A' || strtoupper($userHandle[0]) <= 'Z'))
+            ) {
+                $errors['userHandle'] = 'Invalid user handle!';
             } else {
-                if (!empty($password) && !empty($confirmPassword)) {
-                    if ($passwordValue) {
-                        if ($oldPassword !== $passwordValue['password']) {
-                            $errors['oldPassword'] = "Incorrect password!";
+
+                // Duplication checking for user handle
+                $sql = "SELECT userHandle FROM user_info WHERE userHandle = '$userHandle'";
+                $result = mysqli_query($conn, $sql);
+                $userHandleValue = mysqli_fetch_assoc($result);
+                if (($result && mysqli_num_rows($result) > 0) && ($previousUserHandle !== $userHandleValue['userHandle'])) {
+                    $errors['userHandle'] = 'The username you entered is not available!
+                                                Please try another one';
+                }
+                mysqli_free_result($result);
+            }
+        }
+
+        // password checking if it's changed
+
+        // SQL for getting password
+        $sql = "SELECT password
+        FROM user_info
+        WHERE userHandle = '$previousUserHandle'";
+
+        $result = mysqli_query($conn, $sql);
+        $passwordValue = mysqli_fetch_assoc($result);
+        mysqli_free_result($result);
+
+        if (!empty($password)) { // password field empty means user don't want to change the password
+            if (strlen($password) < 8) {
+                $errors['password'] = 'Password length(8-20)';
+            } else {
+                // check confirm password
+                if (!empty($password) && $confirmPassword !== $password) {
+                    $errors['confirmPassword'] = "Password doesn't match!";
+                } else {
+                    if (!empty($password) && !empty($confirmPassword)) {
+                        if (empty($oldPassword)) {
+                            $errors['oldPassword'] = "Must enter the old password!";
+                        } else if ($passwordValue) {
+                            if ($oldPassword !== $passwordValue['password']) {
+                                $errors['oldPassword'] = "Incorrect password!";
+                            }
                         }
                     }
                 }
             }
+        } else {
+            $password = $passwordValue['password'];
         }
-    } else {
-        $password = $passwordValue['password'];
+
+        // If all data set perfectly
+        if (!array_filter($errors)) {
+
+            // create sql
+            $sql = "UPDATE user_info SET firstName = '$firstName', lastName ='$lastName', nationality = '$nationality',
+            userHandle ='$userHandle', password = '$password', religion = '$religion'
+            WHERE userHandle = '$previousUserHandle'";
+
+            // save to db and check
+            if (mysqli_query($conn, $sql)) {
+                // success
+                header('Location: editProfile.php');
+            } else {
+                echo 'query error: ' . mysqli_error($conn);
+            }
+        }
+    } // end POST check
+
+    mysqli_close($conn);
+} else {  // full else remove after adding login 
+    $userHandle = mysqli_real_escape_string($conn, 'rrumon71');
+
+    // ............*** Showing information in fields ***..............
+
+    //----------------- Get users Info ---------------
+
+    // sql query
+
+    $sql = "SELECT firstName, lastName, nationality,religion, mail, userHandle
+            FROM user_info
+            WHERE userHandle = '$userHandle' ";
+
+
+
+
+    $result =  mysqli_query($conn, $sql);  // get query result
+
+    $userInfo = mysqli_fetch_all($result); // conver to array
+
+
+    $firstName = $userInfo[0][0];
+    $lastName = $userInfo[0][1];
+    $nationality = $userInfo[0][2];
+    $religion = $userInfo[0][3];
+    $mail = $userInfo[0][4];
+    $userHandle = $userInfo[0][5];
+
+    // $password = $userInfo[0][0]; 
+
+    // for memory free
+    mysqli_free_result($result);
+
+    //.......*** 'Cancel' button clicked ***...........
+    if (isset($_POST['cancel'])) {
+        header('Location: editProfile.php');
     }
 
+    //.......*** 'Update' button clicked ***...........
+    if (isset($_POST['update'])) {
+
+        $previousUserHandle = 'rrumon71';
+        //................ Retrieve all data  from input field ...............
+
+        $firstName = $_POST['firstName'];
+        $lastName = $_POST['lastName'];
+        $nationality = $_POST['nationality'];
+        $religion = $_POST['religion'];
+        $userHandle = $_POST['userHandle'];
+
+        $password = $_POST['password'];
+        $confirmPassword = $_POST['confirmPassword'];
+        $oldPassword = $_POST['oldPassword'];
 
 
-    if (!array_filter($errors)) {
+        //................... escape sql chars .....................
 
-        // create sql
-        $sql = "UPDATE user_info SET firstName = '$firstName', lastName ='$lastName', nationality = '$nationality',
-        userHandle ='$userHandle', password = '$password', religion = '$religion'
+        $firstName = mysqli_real_escape_string($conn, $_POST['firstName']);
+        $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
+        $nationality = mysqli_real_escape_string($conn, $_POST['nationality']);
+        $religion = mysqli_real_escape_string($conn, $_POST['religion']);
+        $userHandle = mysqli_real_escape_string($conn, $_POST['userHandle']);
+        $password = mysqli_real_escape_string($conn, $_POST['password']);
+
+
+        //.............. All input field validation checking ...................
+        // check first name
+        if (empty($firstName)) {
+            $errors['firstName'] = 'This field cannot be empty!';
+        } else {
+            if (!preg_match('/^[a-zA-Z\s\.]+$/', $firstName)) {
+                $errors['firstName'] = 'This field contains letters and space only!';
+            }
+        }
+
+        // check last name
+        if (empty($lastName)) {
+            $errors['lastName'] = 'This field cannot be empty!';
+        } else {
+            if (!preg_match('/^[a-zA-Z0-9\s\.]+$/', $lastName)) {
+                $errors['lastName'] = 'This field contains letters and spaces only!';
+            }
+        }
+
+        // check nationality
+        if (empty($nationality)) {
+            $errors['nationality'] = 'This field cannot be empty!';
+        } else {
+            if (!preg_match('/^[a-zA-Z0-9\s\.]+$/', $nationality)) {
+                $errors['nationality'] = 'This field contains letters and spaces only!';
+            }
+        }
+
+        // check religion
+        if (empty($religion)) {
+            $errors['religion'] = 'This field cannot be empty!';
+        } else {
+            if (!preg_match('/^[a-zA-Z\s]+$/', $religion)) {
+                $errors['religion'] = 'This field contains letters and spaces only!';
+            }
+        }
+
+        // check user handle
+        if (empty($userHandle)) {
+            $errors['userHandle'] = 'This field cannot be empty!';
+        } else {
+            if (strlen($userHandle) < 8) {
+                $errors['userHandle'] = 'User handle length(8-20)!';
+            } else if ((!preg_match('/^[a-zA-Z0-9\-\@\_\.]+$/', $userHandle)) ||
+                (!(strtoupper($userHandle[0]) >= 'A' || strtoupper($userHandle[0]) <= 'Z'))
+            ) {
+                $errors['userHandle'] = 'Invalid user handle!';
+            } else {
+
+                // Duplication checking for user handle
+                $sql = "SELECT userHandle FROM user_info WHERE userHandle = '$userHandle'";
+                $result = mysqli_query($conn, $sql);
+                $userHandleValue = mysqli_fetch_assoc($result);
+                if (($result && mysqli_num_rows($result) > 0) && ($previousUserHandle !== $userHandleValue['userHandle'])) {
+                    $errors['userHandle'] = 'The username you entered is not available!
+                                                Please try another one';
+                }
+                mysqli_free_result($result);
+            }
+        }
+
+        // password checking if it's changed
+
+        // SQL for getting password
+        $sql = "SELECT password
+        FROM user_info
         WHERE userHandle = '$previousUserHandle'";
 
-        // save to db and check
-        if (mysqli_query($conn, $sql)) {
-            // success
-            header('Location: editProfile.php');
+        $result = mysqli_query($conn, $sql);
+        $passwordValue = mysqli_fetch_assoc($result);
+        mysqli_free_result($result);
+
+        if (!empty($password)) { // password field empty means user don't want to change the password
+            if (strlen($password) < 8) {
+                $errors['password'] = 'Password length(8-20)';
+            } else {
+                // check confirm password
+                if (!empty($password) && $confirmPassword !== $password) {
+                    $errors['confirmPassword'] = "Password doesn't match!";
+                } else {
+                    if (!empty($password) && !empty($confirmPassword)) {
+                        if ($passwordValue) {
+                            if ($oldPassword !== $passwordValue['password']) {
+                                $errors['oldPassword'] = "Incorrect password!";
+                            }
+                        }
+                    }
+                }
+            }
         } else {
-            echo 'query error: ' . mysqli_error($conn);
+            $password = $passwordValue['password'];
         }
 
-        // close connection
-        mysqli_close($conn);
-    }
-} // end POST check
+        // If all data set perfectly
+        if (!array_filter($errors)) {
 
+            // create sql
+            $sql = "UPDATE user_info SET firstName = '$firstName', lastName ='$lastName', nationality = '$nationality',
+            userHandle ='$userHandle', password = '$password', religion = '$religion'
+            WHERE userHandle = '$previousUserHandle'";
 
+            // save to db and check
+            if (mysqli_query($conn, $sql)) {
+                // success
+                header('Location: editProfile.php');
+            } else {
+                echo 'query error: ' . mysqli_error($conn);
+            }
+        }
+    } // end POST check
 
+    mysqli_close($conn);
+}
 ?>
 
 
@@ -266,6 +388,31 @@ if (isset($_POST['update'])) {
 </head>
 
 <body>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            var emailField = document.getElementById("eMail");
+            var emailErrorMessage = document.getElementById("emailErrorMessage");
+
+            // Event listener for when the email field is clicked
+            emailField.addEventListener("click", function() {
+                // Change the border color of the email field to red
+                emailField.style.borderColor = "red";
+
+                // Display the error message
+                emailErrorMessage.style.display = "block";
+
+                // Set a timeout to hide the error message after 3 seconds (3000 milliseconds)
+                setTimeout(function() {
+                    emailErrorMessage.style.display = "none";
+                    // Reset the border color of the email field to its original color
+                    emailField.style.borderColor = ""; // Reset to default
+                }, 3000); // 3000 milliseconds = 3 seconds
+            });
+        });
+    </script>
+
+
     <!-- Navbar -->
 
     <?php include('../Dashboard/navbar.php'); ?>
@@ -330,14 +477,14 @@ if (isset($_POST['update'])) {
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label for="fullName">Naionality</label>
-                                        <input type="text" name="nationality" class="form-control" id="fullName" placeholder="Naionality" value="<?php echo htmlspecialchars($nationality) ?>">
+                                        <input type="text" name="nationality" class="form-control" id="nationality" placeholder="Naionality" value="<?php echo htmlspecialchars($nationality) ?>">
                                     </div>
                                 </div>
 
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label for="fullName">Religion</label>
-                                        <input type="text" name="religion" class="form-control" id="fullName" placeholder="Religion" value="<?php echo htmlspecialchars($religion) ?>">
+                                        <input type="text" name="religion" class="form-control" id="religion" placeholder="Religion" value="<?php echo htmlspecialchars($religion) ?>">
                                     </div>
                                 </div>
 
@@ -345,13 +492,14 @@ if (isset($_POST['update'])) {
                                     <div class="form-group">
                                         <label for="eMail">Email</label>
                                         <input type="email" name="mail" class="form-control" id="eMail" placeholder="Email" value="<?php echo htmlspecialchars($mail) ?>" readonly>
+                                        <div id="emailErrorMessage" class="text-danger" style="display: none; font-size: 0.95rem;">Clicking on the email field is not allowed.</div>
                                     </div>
                                 </div>
 
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label for="fullName">User Name</label>
-                                        <input type="text" name="userHandle" class="form-control" id="fullName" placeholder="User Name" value="<?php echo htmlspecialchars($userHandle) ?>">
+                                        <input type="text" name="userHandle" class="form-control" id="userHandle" placeholder="User Name" value="<?php echo htmlspecialchars($userHandle) ?>">
                                     </div>
                                 </div>
 
@@ -393,12 +541,24 @@ if (isset($_POST['update'])) {
 
                             <div class="row gutters mt-2">
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <div class="text-right">
+                                    <div class="d-flex justify-content-start align-items-center mb-2">
+                                        <div class="text-right me-3">
 
-                                        <button type="submit" id="cancel" name="cancel" class="btn btn-secondary">Cancel</button>
+                                            <button type="submit" id="cancel" name="cancel" class="btn btn-secondary">Cancel</button>
 
-                                        <button type="submit" id="update" name="update" class="btn btn-primary">Update</button>
+                                            <button type="submit" id="update" name="update" class="btn btn-primary">Update</button>
 
+                                        </div>
+                                        <div style="font-size: medium; color: crimson;">
+                                            <?php
+                                            foreach ($errors as $error) {
+                                                if (!empty($error)) {
+                                                    echo $error;
+                                                    break;
+                                                }
+                                            }
+                                            ?>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
