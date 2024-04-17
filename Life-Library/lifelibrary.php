@@ -96,7 +96,7 @@ $sql = "SELECT lf.bookName, lf.authorName, CONCAT(LEFT(lf.details, 68), '...') A
         ) AS ntb
         ON bookName =  ntb.title
         
-        ORDER BY lf.bookName, ntb.created_at DESC;";
+        ORDER BY lf.bookName, ntb.created_at DESC";
 
 
 $result =  mysqli_query($conn, $sql);  // get query result

@@ -2,9 +2,9 @@
 
 include('../Dashboard/connect_db.php'); // database connection
 
-$firstName = $lastName = $nationality = $religion = $mail = $userHandle = $password = $confirmPassword = '';
+$firstName = $lastName = $nationality = $religion = $mail = $userHandle = $password = $confirmPassword = $oldPassword = '';
 
-
+$previousUserHandle = $_GET['userHandle'];
 
 // check get request userHandle 
 if (isset($_GET['userHandle'])) {
@@ -17,7 +17,7 @@ if (isset($_GET['userHandle'])) {
 
     $sql = "SELECT firstName, lastName, nationality,religion, mail, userHandle
             FROM user_info
-            WHERE userHandle = '$userHandle'; "; 
+            WHERE userHandle = '$userHandle' ";
 
     $result =  mysqli_query($conn, $sql);  // get query result
 
@@ -27,8 +27,7 @@ if (isset($_GET['userHandle'])) {
 
 
     // for memory free
-    mysqli_free_result($resultantLabel);
-    mysqli_free_result($resultantNotes);
+    mysqli_free_result($result);
     mysqli_close($conn);
 } else {  // full else remove after adding login 
 
@@ -69,7 +68,11 @@ if (isset($_GET['userHandle'])) {
     mysqli_close($conn);
 }
 
-$errors = array('firstName' => '', 'lastName' => '', 'nationality' => '', 'religion' => '', 'mail' => '', 'userHandle' => '', 'password' => '', 'confirmPassword' => '');
+if (isset($_POST['cancel'])) {
+    header('Location: editProfile.php');
+}
+
+$errors = array('firstName' => '', 'lastName' => '', 'nationality' => '', 'religion' => '', 'mail' => '', 'userHandle' => '', 'password' => '', 'confirmPassword' => '', 'oldPassword' => '');
 
 if (isset($_POST['update'])) {
 
@@ -80,11 +83,12 @@ if (isset($_POST['update'])) {
     $lastName = $_POST['lastName'];
     $nationality = $_POST['nationality'];
     $religion = $_POST['religion'];
-    $mail = $_POST['mail'];
+    // $mail = $_POST['mail'];
     $userHandle = $_POST['userHandle'];
 
-    // $password = $_POST['password'];
-    // $confirmPassword = $_POST['confirmPassword'];
+    $password = $_POST['password'];
+    $confirmPassword = $_POST['confirmPassword'];
+    $oldPassword = $_POST['oldPassword'];
 
 
     //................... escape sql chars .....................
@@ -93,7 +97,7 @@ if (isset($_POST['update'])) {
     $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
     $nationality = mysqli_real_escape_string($conn, $_POST['nationality']);
     $religion = mysqli_real_escape_string($conn, $_POST['religion']);
-    $mail = mysqli_real_escape_string($conn, $_POST['mail']);
+    // $mail = mysqli_real_escape_string($conn, $_POST['mail']);
     $userHandle = mysqli_real_escape_string($conn, $_POST['userHandle']);
     $password = mysqli_real_escape_string($conn, $_POST['password']);
 
@@ -135,23 +139,24 @@ if (isset($_POST['update'])) {
         }
     }
 
-    // check email
-    if (empty($mail)) {
-        $errors['mail'] = 'This field cannot be empty!';
-    } else {
-        if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
-            $errors['mail'] = 'Invalid email!';
-        } else {
+    // check email  ** Mail checking is unnecessary as it cannot be changed **
 
-            // Duplication checking for email
-            $sql = "SELECT userHandle FROM user_info WHERE mail = '$mail'";
-            $result = mysqli_query($conn, $sql);
-            if ($result && mysqli_num_rows($result) > 0) {
-                $errors['mail'] = 'Sorry, this email is already registered!
-                                    Please use a different one';
-            }
-        }
-    }
+    // if (empty($mail)) {
+    //     $errors['mail'] = 'This field cannot be empty!';
+    // } else {
+    //     if (!filter_var($mail, FILTER_VALIDATE_EMAIL)) {
+    //         $errors['mail'] = 'Invalid email!';
+    //     } else {
+
+    //         // Duplication checking for email
+    //         $sql = "SELECT userHandle FROM user_info WHERE mail = '$mail'";
+    //         $result = mysqli_query($conn, $sql);
+    //         if ($result && mysqli_num_rows($result) > 0) {
+    //             $errors['mail'] = 'Sorry, this email is already registered!
+    //                                 Please use a different one';
+    //         }
+    //     }
+    // }
 
     // check user handle
     if (empty($userHandle)) {
@@ -168,37 +173,67 @@ if (isset($_POST['update'])) {
             // Duplication checking for user handle
             $sql = "SELECT userHandle FROM user_info WHERE userHandle = '$userHandle'";
             $result = mysqli_query($conn, $sql);
-            if ($result && mysqli_num_rows($result) > 0) {
+            $userHandleValue = mysqli_fetch_assoc($result);
+            if (($result && mysqli_num_rows($result) > 0) && ($previousUserHandle !== $userHandleValue['userHandle'])) {
                 $errors['userHandle'] = 'The username you entered is not available!
                                             Please try another one';
             }
+            mysqli_free_result($result);
         }
     }
 
     // check password
-    if (empty($password)) {
-        $errors['password'] = 'This field cannot be empty!';
-    } else {
+    // if (empty($password)) {
+    //     $errors['password'] = 'This field cannot be empty!';
+    // } else {
+    //     if (strlen($password) < 8) {
+    //         $errors['password'] = 'Password length(8-20)';
+    //     }
+    // }
+
+    // password field empty means user don't want to change the password
+    $sql = "SELECT password
+    FROM user_info
+    WHERE userHandle = '$previousUserHandle'";
+
+    $result = mysqli_query($conn, $sql);
+    $passwordValue = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+
+    if (!empty($password)) {
         if (strlen($password) < 8) {
             $errors['password'] = 'Password length(8-20)';
+        } else {
+            // check confirm password
+            if (!empty($password) && $confirmPassword !== $password) {
+                $errors['confirmPassword'] = "Password doesn't match!";
+            } else {
+                if (!empty($password) && !empty($confirmPassword)) {
+                    if ($passwordValue) {
+                        if ($oldPassword !== $passwordValue['password']) {
+                            $errors['oldPassword'] = "Incorrect password!";
+                        }
+                    }
+                }
+            }
         }
+    } else {
+        $password = $passwordValue['password'];
     }
 
-    // check confirm password
-    if (!empty($password) && $confirmPassword !== $password) {
-        $errors['confirmPassword'] = "Password doesn't match!";
-    }
+
 
     if (!array_filter($errors)) {
 
         // create sql
-        $sql = "INSERT INTO user_info(firstName, lastName, nationality, religion, mail, userHandle, password)
-                VALUES('$firstName', '$lastName', '$nationality', '$religion', '$mail', '$userHandle','$password')";
+        $sql = "UPDATE user_info SET firstName = '$firstName', lastName ='$lastName', nationality = '$nationality',
+        userHandle ='$userHandle', password = '$password', religion = '$religion'
+        WHERE userHandle = '$previousUserHandle'";
 
         // save to db and check
         if (mysqli_query($conn, $sql)) {
             // success
-            header('Location: #');
+            header('Location: editProfile.php');
         } else {
             echo 'query error: ' . mysqli_error($conn);
         }
@@ -233,7 +268,7 @@ if (isset($_POST['update'])) {
 <body>
     <!-- Navbar -->
 
-    <?php include('/Kairos/Dashboard/navbar.php'); ?>
+    <?php include('../Dashboard/navbar.php'); ?>
 
     <!-- Edit Profile -->
 
@@ -280,7 +315,7 @@ if (isset($_POST['update'])) {
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label for="fullName">First Name</label>
-                                        <input type="text" name="firstname" class="form-control" id="fullName" placeholder="First name" value="<?php echo htmlspecialchars($firstName) ?>">
+                                        <input type="text" name="firstName" class="form-control" id="fullName" placeholder="First name" value="<?php echo htmlspecialchars($firstName) ?>">
                                     </div>
                                 </div>
 
@@ -309,7 +344,7 @@ if (isset($_POST['update'])) {
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
                                         <label for="eMail">Email</label>
-                                        <input type="email" name="mail" class="form-control" id="eMail" placeholder="Email" value="<?php echo htmlspecialchars($mail) ?>">
+                                        <input type="email" name="mail" class="form-control" id="eMail" placeholder="Email" value="<?php echo htmlspecialchars($mail) ?>" readonly>
                                     </div>
                                 </div>
 
@@ -328,30 +363,29 @@ if (isset($_POST['update'])) {
 
 
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <h6 class="mt-3 mb-2 text-primary">Confirm Your Password</h6>
+                                    <h6 class="mt-3 mb-2 text-primary">Change Your Password</h6>
                                 </div>
-
 
                                 <div class="row gutters">
                                     <div class="col-12">
                                         <div class="form-group">
-                                            <label for="Street">Old Password</label>
-                                            <input type="password" class="form-control" id="Street" placeholder="Enter Old Password">
+                                            <label for="oldPassword">Old Password</label>
+                                            <input type="password" class="form-control" id="oldPassword" name="oldPassword" placeholder="Enter Old Password">
                                         </div>
                                     </div>
                                 </div>
 
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label for="Street">New Password</label>
-                                        <input type="password" class="form-control" id="Street" placeholder="Enter New Password">
+                                        <label for="password">New Password</label>
+                                        <input type="password" class="form-control" id="password" name="password" placeholder="Enter New Password">
                                     </div>
                                 </div>
 
                                 <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
                                     <div class="form-group">
-                                        <label for="ciTy">Confirm Password</label>
-                                        <input type="password" class="form-control" id="ciTy" placeholder="Confirm Password">
+                                        <label for="confirmPassword">Confirm Password</label>
+                                        <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
                                     </div>
                                 </div>
 
@@ -361,9 +395,9 @@ if (isset($_POST['update'])) {
                                 <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
                                     <div class="text-right">
 
-                                        <button type="button" id="submit" name="submit" class="btn btn-secondary">Cancel</button>
+                                        <button type="submit" id="cancel" name="cancel" class="btn btn-secondary">Cancel</button>
 
-                                        <button type="button" id="update" name="update" class="btn btn-primary">Update</button>
+                                        <button type="submit" id="update" name="update" class="btn btn-primary">Update</button>
 
                                     </div>
                                 </div>
