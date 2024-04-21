@@ -28,7 +28,6 @@
             <div class="container-fluid bg-white align-items-right">
             <form class="searchBar" action="">
             <input type="search" required>
-            <span bg-white>Search</span>
             <i class="fa fa-search"></i>
         </form>
 
