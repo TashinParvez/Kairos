@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Document</title>
+  </head>
+  <body>
+    <style>
+      .container {
+        display: grid;
+        grid-template-rows: 50vh 50vh;
+        grid-template-columns: 0.5fr .5fr;
+        grid-template-areas:
+          "text1 image"
+          "text2 image";
+      }
+      header {
+        grid-area: text1;
+        background-color: aqua;
+      }
+      main {
+        grid-area: text2;
+        background-color: red;
+      }
+      nav {
+        grid-area: image;
+        background-color: antiquewhite;
+      }
+    </style>
+    <div class="container">
+      <header class="text1"></header>
+      <nav class="image"></nav>
+      <main class="text2"></main>
+    </div>
+  </body>
+</html>

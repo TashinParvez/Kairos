@@ -4,12 +4,10 @@
   background-color: #f1f4fb;
   font-family: "Ubuntu", sans-serif;
 }
-
 body,
 html {
   overflow: hidden;
 }
-
 body {
   height: 100vh;
   background-color: #eff2f9;
@@ -21,7 +19,6 @@ body {
     "side main main";
   gap: 10px;
 }
-
 .upContainer {
   background-color: white;
   grid-area: upContainer;
@@ -270,11 +267,11 @@ p {
   z-index: 1;
   background-color: transparent;
 }
-form {
+.searchBar {
   position: relative;
   top: 50%;
-  right: 10px;
-  translate: (-50%, -50%);
+  left: 50%;
+  transform: translate(-50%, -50%);
   transition: all 1s;
   width: 50px;
   height: 50px;
@@ -283,10 +280,9 @@ form {
   border-radius: 25px;
   border: 4px solid white;
   padding: 5px;
-  z-index: 1;
 }
 
-input {
+.searchBar input {
   position: absolute;
   top: 0;
   left: 0;
@@ -301,7 +297,7 @@ input {
   padding: 0 20px;
 }
 
-.fa {
+.searchBar .fa {
   box-sizing: border-box;
   padding: 10px;
   width: 42.5px;
@@ -315,53 +311,27 @@ input {
   font-size: 1.2em;
   transition: all 1s;
 }
-.fa-search {
-  background-color: #fff;
-}
-form:hover,
-form:valid {
+
+.searchBar:hover,
+.searchBar:valid {
   width: 200px;
   cursor: pointer;
 }
-form:hover,
-form:valid #search-txt {
-  color: transparent;
-}
 
-form:hover input,
-form:valid input {
+.searchBar:hover input,
+.searchBar:valid input {
   display: block;
 }
 
-form:hover .fa,
-form:valid .fa {
+.searchBar:hover .fa,
+.searchBar:valid .fa {
   background: #07051a;
   color: white;
 }
-form:valid a {
+
+.searchBar:valid a {
   display: block;
 }
-.search {
-  position: absolute;
-  max-width: 200px;
-  left: 50%;
-  transform: translateX(-50%);
-  transition: all 1s;
-  z-index: 2;
-}
-#search-txt {
-  position: absolute;
-  z-index: 1;
-  background-color: transparent;
-  top: 50%;
-  left: calc(100% - 4px);
-  transform: translateY(-50%);
-  font-size: 1em;
-}
-.search:hover #search-txt {
-  display: none;
-}
-
 .card {
   height: 450px; /* Set fixed height */
   margin-right: 20px; /* Add margin between cards */
@@ -390,4 +360,24 @@ form:valid a {
 }
 .card-button {
   margin-top: auto;
+}
+.search {
+  position: absolute;
+  max-width: 200px;
+  left: 50%;
+  transform: translateX(-50%);
+  transition: all 1s;
+  z-index: 2;
+}
+#search-txt {
+  position: absolute;
+  z-index: 1;
+  background-color: transparent;
+  top: 50%;
+  left: calc(100% - 4px);
+  transform: translateY(-50%);
+  font-size: 1em;
+}
+.search:hover #search-txt {
+  display: none;
 }
