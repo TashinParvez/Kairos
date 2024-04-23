@@ -15,7 +15,13 @@
         $eveningPrayer = isset($_POST['eveningPrayer']) ? 1 : 0;
         
         $sql = "INSERT INTO puja_c (userHandle, categoryID, morningPrayer, eveningPrayer) 
-        VALUES ('$userHandle', (SELECT id FROM category WHERE name=(SELECT religion FROM user_info WHERE userHandle='$userHandle')), $morningPrayer, $eveningPrayer)";
+        VALUES ('$userHandle', 
+                (SELECT id FROM category WHERE name=(SELECT religion FROM user_info WHERE userHandle='$userHandle')), 
+                $morningPrayer, $eveningPrayer)
+        ON DUPLICATE KEY UPDATE 
+        morningPrayer = VALUES(morningPrayer), 
+        eveningPrayer = VALUES(eveningPrayer);
+        ";
         if ($conn->query($sql) === TRUE) {
         } else {
             echo json_encode(array("status" => "error", "message" => $conn->error));
@@ -42,8 +48,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kairos</title>
     <link rel="stylesheet" href="style.css">
-    <link rel="icon" type="image/x-icon" href="/Images/Picture1.png">
-    </link>
+    <link rel="icon" type="image/x-icon" href="/Images/Picture1.png"></link>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
