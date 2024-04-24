@@ -106,15 +106,20 @@ mysqli_close($conn);
 
     <style>
         #customModal {
-            width: 80%;
+            width: 100%;
             /* Adjust the width as needed */
-            max-width: 800px;
+            max-width: 80vw;
             /* Set a maximum width if desired */
-            height: 100vh;
+            height: 80%;
             /* Adjust the height as needed */
-            max-height: 1000px;
+            max-height: 70vh;
             /* Set a maximum height if desired */
             /* Add any other styles as needed */
+        }
+
+        #blogDescription {
+            height: 100%;
+            max-height: 60vh;
         }
     </style>
 
@@ -246,6 +251,7 @@ mysqli_close($conn);
             </div>
         </div>
     </div>
+
 
 </body>
 
