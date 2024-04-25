@@ -89,29 +89,31 @@ $noteCountsCTE = "WITH NoteCounts AS (
                         WHERE n.public = 1 AND n.admin_approved = 0 AND l.bookName IS NOT NULL
                     )";
 
-
-// default = order by CREATED_AT DESC 
+// default = order by CREATED_AT DESC  -> newest first
 $sql1 = $noteCountsCTE . "
-        SELECT n.userHandle, n.title, n.created_at, n.details, nc.cnt
+        SELECT n.userHandle, n.title, n.created_at, n.details, CONCAT(LEFT(n.details, 112), '...') AS shortDesc, nc.cnt
         FROM notes AS n
         JOIN NoteCounts AS nc 
         LEFT JOIN life_library AS l ON n.title = l.bookName
+        WHERE n.public = 1 AND n.admin_approved = 0 AND l.bookName IS NOT NULL
         ORDER BY n.created_at DESC;";
 
-// Order by books popularity
+// Order by books popularity --> most popular book
 $sql2 = $noteCountsCTE . "
-        SELECT n.userHandle, n.title, n.created_at, n.details, nc.cnt
+        SELECT n.userHandle, n.title, n.created_at, n.details, CONCAT(LEFT(n.details, 112), '...') AS shortDesc, nc.cnt
         FROM notes AS n
         JOIN NoteCounts AS nc 
         LEFT JOIN life_library AS l ON n.title = l.bookName
+        WHERE n.public = 1 AND n.admin_approved = 0 AND l.bookName IS NOT NULL
         ORDER BY l.clicked DESC;";
 
-// order by alphabetically DESC
+// order by alphabetically DESC  --> alphabetically
 $sql3 = $noteCountsCTE . "
         SELECT n.userHandle, n.title, n.created_at, n.details, CONCAT(LEFT(n.details, 112), '...') AS shortDesc, nc.cnt
         FROM notes AS n
         JOIN NoteCounts AS nc 
         LEFT JOIN life_library AS l ON n.title = l.bookName
+        WHERE n.public = 1 AND n.admin_approved = 0 AND l.bookName IS NOT NULL
         ORDER BY n.title;";
 
 
@@ -169,7 +171,33 @@ $authorName = '';
                 </div>
             </div>
             <!----------------------------------- Main Block ----------------------------------->
+
             <div class="col-9 p-0 me-5 ">
+                <!--------- Search and filter --------->
+
+                <div class="row">
+
+                    <nav class="navbar bg-light col-10">
+                        <div class="container-fluid">
+                            <form class="d-flex" role="search">
+                                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" style="width: 127vh;">
+                                <button class="btn btn-outline-success" type="submit" style="position: absolute;">Search</button>
+                            </form>
+                        </div>
+                    </nav>
+
+                    <div class="dropdown col-2">
+                        <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
+                            Filter
+                        </button>
+                        <ul class="dropdown-menu dropdown-menu-dark">
+                            <li><a class="dropdown-item" href="#"> newest first</a></li>
+                            <li><a class="dropdown-item" href="#"> most popular book</a></li>
+                            <li><a class="dropdown-item" href="#"> alphabetically</a></li>
+                        </ul>
+                    </div>
+                </div>
+
 
                 <!------------------ Books need to add ------------------>
 
@@ -208,7 +236,7 @@ $authorName = '';
                                                         <div class="modal-body">
 
                                                             <?php echo htmlspecialchars($note[3]); ?>
-                                                            
+
                                                             <h6>
                                                                 Written by
                                                                 <?php echo htmlspecialchars($note[0]); ?>
