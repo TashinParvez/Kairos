@@ -268,11 +268,8 @@ p {
   background-color: transparent;
 }
 .searchBar {
-  position: relative;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition: all 1s;
+  position: absolute;
+  left: 33px;
   width: 50px;
   height: 50px;
   background: white;
@@ -280,8 +277,17 @@ p {
   border-radius: 25px;
   border: 4px solid white;
   padding: 5px;
-}
 
+  /* New transition properties */
+  transition-property: width, border-radius; /* Only transition width and border-radius */
+  transition-duration: 1s; /* Animation duration */
+  transition-timing-function: ease;
+}
+.searchBar:hover,
+.searchBar:focus {
+  width: 200px; /* Change width on hover or focus */
+  cursor: pointer;
+}
 .searchBar input {
   position: absolute;
   top: 0;
@@ -296,7 +302,10 @@ p {
   border-radius: 20px;
   padding: 0 20px;
 }
-
+.searchBar:hover input,
+.searchBar:focus-within input {
+  display: block; /* Display input field on hover or when searchBar has focus */
+}
 .searchBar .fa {
   box-sizing: border-box;
   padding: 10px;
@@ -310,6 +319,7 @@ p {
   text-align: center;
   font-size: 1.2em;
   transition: all 1s;
+  background: white;
 }
 
 .searchBar:hover,
@@ -317,7 +327,11 @@ p {
   width: 200px;
   cursor: pointer;
 }
-
+.searchBar:hover .fa,
+.searchBar:focus-within .fa {
+  background: #07051a;
+  color: white;
+}
 .searchBar:hover input,
 .searchBar:valid input {
   display: block;
@@ -378,6 +392,6 @@ p {
   transform: translateY(-50%);
   font-size: 1em;
 }
-.search:hover #search-txt {
+.searchBar:hover #search-txt {
   display: none;
 }

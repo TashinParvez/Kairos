@@ -189,7 +189,7 @@ mysqli_close($conn);
                     <div class="container bg-white">
                         <div class="row bg-white">
                             <div class="form-floating bg-white">
-                                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" name="title"></textarea>
+                                <textarea class="form-control bg-white" placeholder="Leave a comment here" id="floatingTextarea" name="title"></textarea>
                                 <label for="floatingTextarea">Title</label>
                             </div>
                         </div>
@@ -213,7 +213,6 @@ mysqli_close($conn);
                     </div>
                 </div>
                 <hr class="m-0">
-
                 <div class="container bg-white">
                     <!-- FOReach Loop -->
 

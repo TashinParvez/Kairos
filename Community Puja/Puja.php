@@ -15,13 +15,7 @@
         $eveningPrayer = isset($_POST['eveningPrayer']) ? 1 : 0;
         
         $sql = "INSERT INTO puja_c (userHandle, categoryID, morningPrayer, eveningPrayer) 
-        VALUES ('$userHandle', 
-                (SELECT id FROM category WHERE name=(SELECT religion FROM user_info WHERE userHandle='$userHandle')), 
-                $morningPrayer, $eveningPrayer)
-        ON DUPLICATE KEY UPDATE 
-        morningPrayer = VALUES(morningPrayer), 
-        eveningPrayer = VALUES(eveningPrayer);
-        ";
+        VALUES ('$userHandle', (SELECT id FROM category WHERE name=(SELECT religion FROM user_info WHERE userHandle='$userHandle')), $morningPrayer, $eveningPrayer)";
         if ($conn->query($sql) === TRUE) {
         } else {
             echo json_encode(array("status" => "error", "message" => $conn->error));
