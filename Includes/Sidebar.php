@@ -18,22 +18,21 @@
 </head>
 <body>
     
-    <section class="sidebar shadow ">
+    <section class="sidebar shadow z-2">
         <div class="temp">
             <img src="\Images\logoWithoutName.png">
             <p class="brand">Kairos</p>
         </div>
         <hr>
         <div class="temp">
-            <div class="container-fluid bg-white center">
-                <form action="">
-                    <div class="searchSide">
-                        <input type="search" required>
-                        <i class="fa fa-search"></i>
-                        <span id="search-txt">Search</span>
-                        <a-main href="javascript:void(0)" id="clear-btn"></a-main>
-                    </div>
-                    </form>
+            <div class="container-fluid bg-white align-items-right">
+            <form class="searchBar" action="">
+            <span id="search-txt">Search</span>
+            <input type="search" required>
+            <i class="fa fa-search"></i>
+
+        </form>
+
             </div>
         </div>
         <div class="temp">
@@ -56,6 +55,7 @@
                     <path d="M10 12C10 14.8284 10 16.2426 10.8787 17.1213C11.7574 18 13.1716 18 16 18C18.8284 18 20.2426 18 21.1213 17.1213C22 16.2426 22 14.8284 22 12C22 9.17157 22 7.75736 21.1213 6.87868C20.2426 6 18.8284 6 16 6" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
                     </svg></span>
                 Community
+                
             </button>
         </div>
         <div class="temp">
