@@ -27,12 +27,10 @@
         <div class="temp">
             <div class="container-fluid bg-white align-items-right">
             <form class="searchBar" action="">
-            <span id="search-txt">Search</span>
-            <input type="search" required>
-            <i class="fa fa-search"></i>
-
-        </form>
-
+                <span id="search-txt">Search</span>
+                <input type="search" required>
+                <i class="fa fa-search"></i>
+            </form>
             </div>
         </div>
         <div class="temp">

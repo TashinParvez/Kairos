@@ -113,11 +113,9 @@ mysqli_close($conn);
 
 <body>
     <?php
-    // include('../Includes/NavBar.php'); // uncomment
-    // include('../Includes/Sidebar.php'); // uncomment
+        include('../Includes/NavBar.php'); // uncomment
+        include('../Includes/Sidebar.php'); // uncomment
     ?>
-
-    <!-- ------------------------ Main Segment ------------------------------- -->
 
     <main class="main bg-white shadow">
 
