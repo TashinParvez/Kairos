@@ -159,6 +159,7 @@ if (isset($_POST['signUp'])) {
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <title>KAIROS</title>
+    <link rel="icon" type="image/x-icon" href="/Images/Picture1.png">
 </head>
 
 <body>
@@ -173,88 +174,95 @@ if (isset($_POST['signUp'])) {
             font-size: smaller;
             color: crimson;
         }
+        .container{
+            width: fit-content;
+            height: fit-content;
+            align-items: center;
+            justify-content: center;
+        }
     </style>
+    <div class="container shadow rounded">
+        <form action="signUp.php" method="POST">
+            <div style="display: grid; place-items: center;">
+                <h2 class="center">Sign Up</h2>
+            </div>
+
+            <div class="input-group mb-2">
+                <div class="input-group mb">
+                    <span class="input-group-text">First Name</span>
+                    <input type="text" class="form-control" name="firstName" value="<?php echo htmlspecialchars($firstName) ?>">
+                </div>
+                <div class="red_text"><?php echo $errors['firstName']; ?></div>
+            </div>
+
+            <div class="input-group mb-2">
+                <div class="input-group mb">
+                    <span class="input-group-text">Last Name</span>
+                    <input type="text" class="form-control" name="lastName" value="<?php echo htmlspecialchars($lastName) ?>">
+                </div>
+                <div class="red_text"><?php echo $errors['lastName']; ?></div>
+            </div>
+
+            <div class="input-group mb-2">
+                <div class="input-group mb">
+                    <span class="input-group-text">Nationality</span>
+                    <input type="text" class="form-control" name="nationality" value="<?php echo htmlspecialchars($nationality) ?>">
+                </div>
+                <div class="red_text"><?php echo $errors['nationality']; ?></div>
+            </div>
+
+            <div class="input-group mb-2">
+                <div class="input-group mb">
+                    <span class="input-group-text">Religion</span>
+                    <input type="text" class="form-control" name="religion" value="<?php echo htmlspecialchars($religion) ?>">
+                </div>
+                <div class="red_text"><?php echo $errors['religion']; ?></div>
+            </div>
+
+            <div class="input-group mb-2">
+                <div class="input-group mb">
+                    <span class="input-group-text">Email</span>
+                    <input type="text" class="form-control" name="mail" value="<?php echo htmlspecialchars($mail) ?>">
+                </div>
+                <div class="red_text"><?php echo $errors['mail']; ?></div>
+            </div>
+
+            <div class="input-group mb-2">
+                <div class="input-group mb">
+                    <span class="input-group-text">User Handle</span>
+                    <input type="text" class="form-control" name="userHandle" value="<?php echo htmlspecialchars($userHandle) ?>">
+                </div>
+                <div class="red_text"><?php echo $errors['userHandle']; ?></div>
+            </div>
+
+            <div class="input-group mb-2">
+                <div class="input-group mb">
+                    <span class="input-group-text">Password</span>
+                    <input type="password" class="form-control" name="password" value="<?php echo htmlspecialchars($password) ?>">
+                </div>
+                <div class="red_text"><?php echo $errors['password']; ?></div>
+            </div>
+
+            <div class="input-group mb-2">
+                <div class="input-group mb">
+                    <span class="input-group-text">Confirm Password</span>
+                    <input type="password" class="form-control" name="confirmPassword" value="<?php echo htmlspecialchars($confirmPassword) ?>">
+                </div>
+                <div class="red_text"><?php echo $errors['confirmPassword']; ?></div>
+            </div>
+
+
+            <div style="display: grid; place-items: center;" class="input-group mb">
+                <button class="btn btn-outline-secondary" type="submit" name="signUp">Sign Up</button>
+            </div>
+
+            <div style="display: grid; place-items: center;">
+                <span>Already have an account? <a href="login.php">Login</a></span>
+            </div>
+        </form>
+    </div>
     
-    <form action="signUp.php" method="POST">
-
-        <div style="display: grid; place-items: center;">
-            <h2 class="center">Sign Up</h2>
-        </div>
-
-        <div class="input-group mb-2">
-            <div class="input-group mb">
-                <span class="input-group-text">First Name</span>
-                <input type="text" class="form-control" name="firstName" value="<?php echo htmlspecialchars($firstName) ?>">
-            </div>
-            <div class="red_text"><?php echo $errors['firstName']; ?></div>
-        </div>
-
-        <div class="input-group mb-2">
-            <div class="input-group mb">
-                <span class="input-group-text">Last Name</span>
-                <input type="text" class="form-control" name="lastName" value="<?php echo htmlspecialchars($lastName) ?>">
-            </div>
-            <div class="red_text"><?php echo $errors['lastName']; ?></div>
-        </div>
-
-        <div class="input-group mb-2">
-            <div class="input-group mb">
-                <span class="input-group-text">Nationality</span>
-                <input type="text" class="form-control" name="nationality" value="<?php echo htmlspecialchars($nationality) ?>">
-            </div>
-            <div class="red_text"><?php echo $errors['nationality']; ?></div>
-        </div>
-
-        <div class="input-group mb-2">
-            <div class="input-group mb">
-                <span class="input-group-text">Religion</span>
-                <input type="text" class="form-control" name="religion" value="<?php echo htmlspecialchars($religion) ?>">
-            </div>
-            <div class="red_text"><?php echo $errors['religion']; ?></div>
-        </div>
-
-        <div class="input-group mb-2">
-            <div class="input-group mb">
-                <span class="input-group-text">Email</span>
-                <input type="text" class="form-control" name="mail" value="<?php echo htmlspecialchars($mail) ?>">
-            </div>
-            <div class="red_text"><?php echo $errors['mail']; ?></div>
-        </div>
-
-        <div class="input-group mb-2">
-            <div class="input-group mb">
-                <span class="input-group-text">User Handle</span>
-                <input type="text" class="form-control" name="userHandle" value="<?php echo htmlspecialchars($userHandle) ?>">
-            </div>
-            <div class="red_text"><?php echo $errors['userHandle']; ?></div>
-        </div>
-
-        <div class="input-group mb-2">
-            <div class="input-group mb">
-                <span class="input-group-text">Password</span>
-                <input type="password" class="form-control" name="password" value="<?php echo htmlspecialchars($password) ?>">
-            </div>
-            <div class="red_text"><?php echo $errors['password']; ?></div>
-        </div>
-
-        <div class="input-group mb-2">
-            <div class="input-group mb">
-                <span class="input-group-text">Confirm Password</span>
-                <input type="password" class="form-control" name="confirmPassword" value="<?php echo htmlspecialchars($confirmPassword) ?>">
-            </div>
-            <div class="red_text"><?php echo $errors['confirmPassword']; ?></div>
-        </div>
-
-
-        <div style="display: grid; place-items: center;" class="input-group mb">
-            <button class="btn btn-outline-secondary" type="submit" name="signUp">Sign Up</button>
-        </div>
-
-        <div style="display: grid; place-items: center;">
-            <span>Already have an account? <a href="login.php">Login</a></span>
-        </div>
-    </form>
-
+    
 </body>
 
 </html>

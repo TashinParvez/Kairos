@@ -18,22 +18,19 @@
 </head>
 <body>
     
-    <section class="sidebar shadow ">
+    <section class="sidebar shadow z-2">
         <div class="temp">
             <img src="\Images\logoWithoutName.png">
             <p class="brand">Kairos</p>
         </div>
         <hr>
         <div class="temp">
-            <div class="container-fluid bg-white center">
-                <form action="">
-                    <div class="searchSide">
-                        <input type="search" required>
-                        <i class="fa fa-search"></i>
-                        <span id="search-txt">Search</span>
-                        <a-main href="javascript:void(0)" id="clear-btn"></a-main>
-                    </div>
-                    </form>
+            <div class="container-fluid bg-white align-items-right">
+            <form class="searchBar" action="">
+            <input type="search" required>
+            <i class="fa fa-search"></i>
+        </form>
+
             </div>
         </div>
         <div class="temp">
