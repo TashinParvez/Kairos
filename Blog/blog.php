@@ -236,7 +236,7 @@ mysqli_close($conn);
                 </div>
                 <div class="modal-body">
                     <!-- Form for creating a blog -->
-                    <form action="blog.php" method="POST"> <!-- Now123 -->
+                    <form action="blog.php" method="POST">
                         <div class="mb-3">
                             <label for="blogTopic" class="form-label">Blog Topic</label>
                             <input type="text" class="form-control" id="blogTopic" name="blogTopic" required>
