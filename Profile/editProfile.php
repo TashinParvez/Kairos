@@ -1,19 +1,18 @@
 <?php
 
-include('../Dashboard/connect_db.php'); // database connection
+include '../Dashboard/connect_db.php'; // database connection
 
 $firstName = $lastName = $nationality = $religion = $mail = $userHandle = $password = $confirmPassword = $oldPassword = '';
 
-$errors = array('firstName' => '', 'lastName' => '', 'nationality' => '', 'religion' => '', 'mail' => '', 'userHandle' => '', 'password' => '', 'confirmPassword' => '', 'oldPassword' => '');
+$errors = ['firstName' => '', 'lastName' => '', 'nationality' => '', 'religion' => '', 'mail' => '', 'userHandle' => '', 'password' => '', 'confirmPassword' => '', 'oldPassword' => ''];
 
-// check get request userHandle 
+// check get request userHandle
 if (isset($_GET['userHandle'])) {
-
     $userHandle = mysqli_real_escape_string($conn, $_GET['userHandle']);
 
     // ............*** Showing information in fields ***..............
 
-    //----------------- Get users Info ---------------
+    // ----------------- Get users Info ---------------
 
     // sql query
 
@@ -21,13 +20,9 @@ if (isset($_GET['userHandle'])) {
             FROM user_info
             WHERE userHandle = '$userHandle' ";
 
-
-
-
-    $result =  mysqli_query($conn, $sql);  // get query result
+    $result = mysqli_query($conn, $sql);  // get query result
 
     $userInfo = mysqli_fetch_all($result); // conver to array
-
 
     $firstName = $userInfo[0][0];
     $lastName = $userInfo[0][1];
@@ -36,21 +31,20 @@ if (isset($_GET['userHandle'])) {
     $mail = $userInfo[0][4];
     $userHandle = $userInfo[0][5];
 
-    // $password = $userInfo[0][0]; 
+    // $password = $userInfo[0][0];
 
     // for memory free
     mysqli_free_result($result);
 
-    //.......*** 'Cancel' button clicked ***...........
+    // .......*** 'Cancel' button clicked ***...........
     if (isset($_POST['cancel'])) {
         header('Location: editProfile.php');
     }
 
-    //.......*** 'Update' button clicked ***...........
+    // .......*** 'Update' button clicked ***...........
     if (isset($_POST['update'])) {
-
         $previousUserHandle = $_GET['userHandle'];
-        //................ Retrieve all data  from input field ...............
+        // ................ Retrieve all data  from input field ...............
 
         $firstName = $_POST['firstName'];
         $lastName = $_POST['lastName'];
@@ -62,8 +56,7 @@ if (isset($_GET['userHandle'])) {
         $confirmPassword = $_POST['confirmPassword'];
         $oldPassword = $_POST['oldPassword'];
 
-
-        //................... escape sql chars .....................
+        // ................... escape sql chars .....................
 
         $firstName = mysqli_real_escape_string($conn, $_POST['firstName']);
         $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
@@ -72,8 +65,7 @@ if (isset($_GET['userHandle'])) {
         $userHandle = mysqli_real_escape_string($conn, $_POST['userHandle']);
         $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-
-        //.............. All input field validation checking ...................
+        // .............. All input field validation checking ...................
         // check first name
         if (empty($firstName)) {
             $errors['firstName'] = 'This field cannot be empty!';
@@ -110,20 +102,17 @@ if (isset($_GET['userHandle'])) {
             }
         }
 
-
-
         // check user handle
         if (empty($userHandle)) {
             $errors['userHandle'] = 'This field cannot be empty!';
         } else {
             if (strlen($userHandle) < 8) {
                 $errors['userHandle'] = 'User handle length(8-20)!';
-            } else if ((!preg_match('/^[a-zA-Z0-9\-\@\_\.]+$/', $userHandle)) ||
-                (!(strtoupper($userHandle[0]) >= 'A' || strtoupper($userHandle[0]) <= 'Z'))
+            } elseif ((!preg_match('/^[a-zA-Z0-9\-\@\_\.]+$/', $userHandle))
+                || (!(strtoupper($userHandle[0]) >= 'A' || strtoupper($userHandle[0]) <= 'Z'))
             ) {
                 $errors['userHandle'] = 'Invalid user handle!';
             } else {
-
                 // Duplication checking for user handle
                 $sql = "SELECT userHandle FROM user_info WHERE userHandle = '$userHandle'";
                 $result = mysqli_query($conn, $sql);
@@ -157,10 +146,10 @@ if (isset($_GET['userHandle'])) {
                 } else {
                     if (!empty($password) && !empty($confirmPassword)) {
                         if (empty($oldPassword)) {
-                            $errors['oldPassword'] = "Must enter the old password!";
-                        } else if ($passwordValue) {
+                            $errors['oldPassword'] = 'Must enter the old password!';
+                        } elseif ($passwordValue) {
                             if ($oldPassword !== $passwordValue['password']) {
-                                $errors['oldPassword'] = "Incorrect password!";
+                                $errors['oldPassword'] = 'Incorrect password!';
                             }
                         }
                     }
@@ -172,7 +161,6 @@ if (isset($_GET['userHandle'])) {
 
         // If all data set perfectly
         if (!array_filter($errors)) {
-
             // create sql
             $sql = "UPDATE user_info SET firstName = '$firstName', lastName ='$lastName', nationality = '$nationality',
             userHandle ='$userHandle', password = '$password', religion = '$religion'
@@ -183,18 +171,18 @@ if (isset($_GET['userHandle'])) {
                 // success
                 header('Location: editProfile.php');
             } else {
-                echo 'query error: ' . mysqli_error($conn);
+                echo 'query error: '.mysqli_error($conn);
             }
         }
     } // end POST check
 
     mysqli_close($conn);
-} else {  // full else remove after adding login 
+} else {  // full else remove after adding login
     $userHandle = mysqli_real_escape_string($conn, 'rrumon71');
 
     // ............*** Showing information in fields ***..............
 
-    //----------------- Get users Info ---------------
+    // ----------------- Get users Info ---------------
 
     // sql query
 
@@ -202,13 +190,9 @@ if (isset($_GET['userHandle'])) {
             FROM user_info
             WHERE userHandle = '$userHandle' ";
 
-
-
-
-    $result =  mysqli_query($conn, $sql);  // get query result
+    $result = mysqli_query($conn, $sql);  // get query result
 
     $userInfo = mysqli_fetch_all($result); // conver to array
-
 
     $firstName = $userInfo[0][0];
     $lastName = $userInfo[0][1];
@@ -217,21 +201,20 @@ if (isset($_GET['userHandle'])) {
     $mail = $userInfo[0][4];
     $userHandle = $userInfo[0][5];
 
-    // $password = $userInfo[0][0]; 
+    // $password = $userInfo[0][0];
 
     // for memory free
     mysqli_free_result($result);
 
-    //.......*** 'Cancel' button clicked ***...........
+    // .......*** 'Cancel' button clicked ***...........
     if (isset($_POST['cancel'])) {
         header('Location: editProfile.php');
     }
 
-    //.......*** 'Update' button clicked ***...........
+    // .......*** 'Update' button clicked ***...........
     if (isset($_POST['update'])) {
-
         $previousUserHandle = 'rrumon71';
-        //................ Retrieve all data  from input field ...............
+        // ................ Retrieve all data  from input field ...............
 
         $firstName = $_POST['firstName'];
         $lastName = $_POST['lastName'];
@@ -243,8 +226,7 @@ if (isset($_GET['userHandle'])) {
         $confirmPassword = $_POST['confirmPassword'];
         $oldPassword = $_POST['oldPassword'];
 
-
-        //................... escape sql chars .....................
+        // ................... escape sql chars .....................
 
         $firstName = mysqli_real_escape_string($conn, $_POST['firstName']);
         $lastName = mysqli_real_escape_string($conn, $_POST['lastName']);
@@ -253,8 +235,7 @@ if (isset($_GET['userHandle'])) {
         $userHandle = mysqli_real_escape_string($conn, $_POST['userHandle']);
         $password = mysqli_real_escape_string($conn, $_POST['password']);
 
-
-        //.............. All input field validation checking ...................
+        // .............. All input field validation checking ...................
         // check first name
         if (empty($firstName)) {
             $errors['firstName'] = 'This field cannot be empty!';
@@ -297,12 +278,11 @@ if (isset($_GET['userHandle'])) {
         } else {
             if (strlen($userHandle) < 8) {
                 $errors['userHandle'] = 'User handle length(8-20)!';
-            } else if ((!preg_match('/^[a-zA-Z0-9\-\@\_\.]+$/', $userHandle)) ||
-                (!(strtoupper($userHandle[0]) >= 'A' || strtoupper($userHandle[0]) <= 'Z'))
+            } elseif ((!preg_match('/^[a-zA-Z0-9\-\@\_\.]+$/', $userHandle))
+                || (!(strtoupper($userHandle[0]) >= 'A' || strtoupper($userHandle[0]) <= 'Z'))
             ) {
                 $errors['userHandle'] = 'Invalid user handle!';
             } else {
-
                 // Duplication checking for user handle
                 $sql = "SELECT userHandle FROM user_info WHERE userHandle = '$userHandle'";
                 $result = mysqli_query($conn, $sql);
@@ -337,7 +317,7 @@ if (isset($_GET['userHandle'])) {
                     if (!empty($password) && !empty($confirmPassword)) {
                         if ($passwordValue) {
                             if ($oldPassword !== $passwordValue['password']) {
-                                $errors['oldPassword'] = "Incorrect password!";
+                                $errors['oldPassword'] = 'Incorrect password!';
                             }
                         }
                     }
@@ -349,7 +329,6 @@ if (isset($_GET['userHandle'])) {
 
         // If all data set perfectly
         if (!array_filter($errors)) {
-
             // create sql
             $sql = "UPDATE user_info SET firstName = '$firstName', lastName ='$lastName', nationality = '$nationality',
             userHandle ='$userHandle', password = '$password', religion = '$religion'
@@ -360,7 +339,7 @@ if (isset($_GET['userHandle'])) {
                 // success
                 header('Location: editProfile.php');
             } else {
-                echo 'query error: ' . mysqli_error($conn);
+                echo 'query error: '.mysqli_error($conn);
             }
         }
     } // end POST check
@@ -389,6 +368,10 @@ if (isset($_GET['userHandle'])) {
 
 <body>
 
+<?php
+        include '../Includes/NavBarSecond.php'; // uncomment
+include '../Includes/Sidebar.php'; // uncomment
+?>
     <script>
         document.addEventListener("DOMContentLoaded", function() {
             var emailField = document.getElementById("eMail");
@@ -412,35 +395,30 @@ if (isset($_GET['userHandle'])) {
         });
     </script>
 
-
-    <!-- Navbar -->
-
-    <?php include('../Dashboard/navbar.php'); ?>
-
     <!-- Edit Profile -->
-
-    <div class="container">
-        <div class="row gutters">
-            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12">
-                <div class="card h-100">
-                    <div class="card-body">
-                        <div class="account-settings">
-                            <div class="user-profile">
-                                <div class="user-avatar d-flex justify-content-center mb-4">
-                                    <img src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
+<main class="main bg-white">
+    <div class="container bg-white">
+        <div class="row gutters bg-white">
+            <div class="col-xl-3 col-lg-3 col-md-12 col-sm-12 col-12 bg-white">
+                <div class="card h-100 bg-white">
+                    <div class="card-body bg-white">
+                        <div class="account-settings bg-white">
+                            <div class="user-profile bg-white">
+                                <div class="user-avatar d-flex justify-content-center mb-4 bg-white">
+                                    <img class="bg-white" src="https://bootdey.com/img/Content/avatar/avatar7.png" alt="Maxwell Admin">
                                 </div>
-                                <h6 class="user-name">
+                                <h6 class="user-name bg-white">
                                     <?php echo htmlspecialchars($userHandle); ?>
                                 </h6>
-                                <h4 class="user-name">
-                                    <?php echo htmlspecialchars($firstName . " " . $lastName); ?>
+                                <h4 class="user-name bg-white">
+                                    <?php echo htmlspecialchars($firstName.' '.$lastName); ?>
                                 </h4>
-                                <h6 class="user-email">
+                                <h6 class="user-email bg-white">
                                     <?php echo htmlspecialchars($mail); ?>
                                 </h6>
                             </div>
-                            <div class="about mt-3">
-                                <h5>About</h5>
+                            <div class="about mt-3 bg-white">
+                                <h5 class="bg-white">About</h5>
                                 <p>I'm Yuki. Full Stack Designer I enjoy creating user-centric, delightful and human experiences.</p>
                             </div>
                         </div>
@@ -449,57 +427,57 @@ if (isset($_GET['userHandle'])) {
             </div>
 
 
-            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12">
-                <form action="editProfile.php" method="POST">
-                    <div class="card h-100">
-                        <div class="card-body">
-                            <div class="row gutters">
+            <div class="col-xl-9 col-lg-9 col-md-12 col-sm-12 col-12 bg-white">
+                <form action="editProfile.php" method="POST" class="bg-white">
+                    <div class="card h-100 bg-white">
+                        <div class="card-body bg-white">
+                            <div class="row gutters bg-white">
 
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <h6 class="mb-2 text-primary">Personal Details</h6>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 bg-white">
+                                    <h6 class="mb-2 text-primary bg-white">Personal Details</h6>
                                 </div>
 
-                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                    <div class="form-group">
-                                        <label for="fullName">First Name</label>
-                                        <input type="text" name="firstName" class="form-control" id="fullName" placeholder="First name" value="<?php echo htmlspecialchars($firstName) ?>">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 bg-white">
+                                    <div class="form-group bg-white">
+                                        <label class="bg-white" for="fullName">First Name</label>
+                                        <input type="text" name="firstName" class="form-control bg-white" id="fullName" placeholder="First name" value="<?php echo htmlspecialchars($firstName); ?>">
                                     </div>
                                 </div>
 
 
-                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                    <div class="form-group">
-                                        <label for="fullName">Last Name</label>
-                                        <input type="text" name="lastName" class="form-control" id="fullName" placeholder="Last name" value="<?php echo htmlspecialchars($lastName) ?>">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 bg-white">
+                                    <div class="form-group bg-white">
+                                        <label for="fullName" class="bg-white">Last Name</label>
+                                        <input type="text" name="lastName" class="form-control bg-white" id="fullName" placeholder="Last name" value="<?php echo htmlspecialchars($lastName); ?>">
                                     </div>
                                 </div>
 
-                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                    <div class="form-group">
-                                        <label for="fullName">Naionality</label>
-                                        <input type="text" name="nationality" class="form-control" id="nationality" placeholder="Naionality" value="<?php echo htmlspecialchars($nationality) ?>">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 bg-white">
+                                    <div class="form-group bg-white">
+                                        <label for="fullName" class="bg-white">Naionality</label>
+                                        <input type="text" name="nationality" class="form-control bg-white" id="nationality" placeholder="Naionality" value="<?php echo htmlspecialchars($nationality); ?>">
                                     </div>
                                 </div>
 
-                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                    <div class="form-group">
-                                        <label for="fullName">Religion</label>
-                                        <input type="text" name="religion" class="form-control" id="religion" placeholder="Religion" value="<?php echo htmlspecialchars($religion) ?>">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 bg-white">
+                                    <div class="form-group bg-white">
+                                        <label for="fullName" class="bg-white">Religion</label>
+                                        <input type="text" name="religion" class="form-control" id="religion" placeholder="Religion" value="<?php echo htmlspecialchars($religion); ?>">
                                     </div>
                                 </div>
 
-                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                    <div class="form-group">
-                                        <label for="eMail">Email</label>
-                                        <input type="email" name="mail" class="form-control" id="eMail" placeholder="Email" value="<?php echo htmlspecialchars($mail) ?>" readonly>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 bg-white">
+                                    <div class="form-group bg-white">
+                                        <label for="eMail" class="bg-white">Email</label>
+                                        <input type="email" name="mail" class="form-control" id="eMail" placeholder="Email" value="<?php echo htmlspecialchars($mail); ?>" readonly>
                                         <div id="emailErrorMessage" class="text-danger" style="display: none; font-size: 0.95rem;">Clicking on the email field is not allowed.</div>
                                     </div>
                                 </div>
 
-                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                    <div class="form-group">
-                                        <label for="fullName">User Name</label>
-                                        <input type="text" name="userHandle" class="form-control" id="userHandle" placeholder="User Name" value="<?php echo htmlspecialchars($userHandle) ?>">
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 bg-white">
+                                    <div class="form-group bg-white">
+                                        <label for="fullName" class="bg-white">User Name</label>
+                                        <input type="text" name="userHandle" class="form-control" id="userHandle" placeholder="User Name" value="<?php echo htmlspecialchars($userHandle); ?>">
                                     </div>
                                 </div>
 
@@ -507,32 +485,32 @@ if (isset($_GET['userHandle'])) {
 
 
 
-                            <div class="row gutters">
+                            <div class="row gutters bg-white">
 
 
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <h6 class="mt-3 mb-2 text-primary">Change Your Password</h6>
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 bg-white">
+                                    <h6 class="mt-3 mb-2 text-primary bg-white">Change Your Password</h6>
                                 </div>
 
-                                <div class="row gutters">
-                                    <div class="col-12">
-                                        <div class="form-group">
-                                            <label for="oldPassword">Old Password</label>
-                                            <input type="password" class="form-control" id="oldPassword" name="oldPassword" placeholder="Enter Old Password">
+                                <div class="row gutters bg-white">
+                                    <div class="col-12 bg-white">
+                                        <div class="form-group bg-white">
+                                            <label for="oldPassword" class="bg-white">Old Password</label>
+                                            <input type="password" class="form-control bg-white" id="oldPassword" name="oldPassword" placeholder="Enter Old Password">
                                         </div>
                                     </div>
                                 </div>
 
-                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                    <div class="form-group">
-                                        <label for="password">New Password</label>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 bg-white">
+                                    <div class="form-group bg-white">
+                                        <label for="password" class="bg-white">New Password</label>
                                         <input type="password" class="form-control" id="password" name="password" placeholder="Enter New Password">
                                     </div>
                                 </div>
 
-                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12">
-                                    <div class="form-group">
-                                        <label for="confirmPassword">Confirm Password</label>
+                                <div class="col-xl-6 col-lg-6 col-md-6 col-sm-6 col-12 bg-white">
+                                    <div class="form-group bg-white">
+                                        <label for="confirmPassword"class="bg-white">Confirm Password</label>
                                         <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
                                     </div>
                                 </div>
@@ -540,9 +518,9 @@ if (isset($_GET['userHandle'])) {
                             </div>
 
                             <div class="row gutters mt-2">
-                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12">
-                                    <div class="d-flex justify-content-start align-items-center mb-2">
-                                        <div class="text-right me-3">
+                                <div class="col-xl-12 col-lg-12 col-md-12 col-sm-12 col-12 bg-white">
+                                    <div class="d-flex justify-content-start align-items-center mb-2 bg-white">
+                                        <div class="text-right me-3 bg-white">
 
                                             <button type="submit" id="cancel" name="cancel" class="btn btn-secondary">Cancel</button>
 
@@ -557,7 +535,7 @@ if (isset($_GET['userHandle'])) {
                                                     break;
                                                 }
                                             }
-                                            ?>
+?>
                                         </div>
                                     </div>
                                 </div>
@@ -569,7 +547,7 @@ if (isset($_GET['userHandle'])) {
             </div>
         </div>
     </div>
-
+    </main>
 </body>
 
 </html>
