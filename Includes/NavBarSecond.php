@@ -207,7 +207,7 @@
     <header class="upContainer shadow z-2">
         <div class="upContainerProfile">
             <div class="profile">
-                <a href="#">
+                <a href="\Profile\editProfile.php">
                     <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                     <svg class="bg-white" width="40" height="40" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
