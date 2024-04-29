@@ -92,32 +92,33 @@ if (isset($_POST['save']) || isset($_POST['newSlice'])) {
     }
 }
 
+
 //  ...........for save data without pressing any button...........
 // Check if the request is an AJAX request
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
     // Check if the request method is POST
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Retrieve data sent via POST request
-        $title = mysqli_real_escape_string($conn, $_POST['title']);
-        $details = mysqli_real_escape_string($conn, $_POST['details']);
+        $title = $_POST['title'];
+        $details = $_POST['details'];
+
+        include('../Dashboard/connect_db.php');
 
         // Prepare and bind the SQL statement
-        if (empty($title) && empty($details)) {
-            $errors['title&details'] = 'At least Have to fill one'; // can't save
+        $stmt = $conn->prepare("INSERT INTO personal_journal(userHandle, title, details, saved)
+                                VALUES('tashin19','$title', '$details', 0)");
+        $stmt->bind_param("ss", $title, $details);
+
+        // Execute the SQL statement
+        if ($stmt->execute()) {
+            echo "Slice saved successfully";
+        } else {
+            echo "Error: " . $stmt->error;
         }
 
-        if (!array_filter($errors)) {
-
-            $sql = "INSERT INTO personal_journal(userHandle, title, details, saved)
-                    VALUES('tashin19','$title', '$details', 0)";
-
-            // save to db and check
-            if (mysqli_query($conn, $sql)) {
-                header('Location: Personal-Journal.php');
-            } else {
-                echo 'query error: ' . mysqli_error($conn);
-            }
-        }
+        // Close statement and database connection
+        $stmt->close();
+        mysqli_close($conn);
     } else {
         // Request method is not POST
         http_response_code(400);
@@ -128,7 +129,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     http_response_code(403);
     echo "Forbidden";
 }
-// .........................................
+// ......................
+
 
 
 $today = date("F j, Y", strtotime("today"));  // today's date
@@ -167,17 +169,16 @@ mysqli_close($conn);
     <!-- for save data without pressing any button -->
     <script>
         $(document).ready(function() {
-
             // Function to save slice data
             function saveSliceData() {
                 // Get the form data
-                // var formData = $('#sliceForm').serialize();
+                var formData = $('#sliceForm').serialize();
 
                 // Send an AJAX request to save data
                 $.ajax({
-                    url: 'Personal-Journal.php', // Replace with your server-side script URL
+                    url: 'temp-personalJournal.php', // Replace with your server-side script URL
                     type: 'POST',
-                    // data: formData,
+                    data: formData,
                     success: function(response) {
                         console.log('Data saved successfully');
                     },
@@ -191,9 +192,18 @@ mysqli_close($conn);
             $(window).on('beforeunload', function() {
                 saveSliceData();
             });
+
+            // Capture form submission events
+            $('#sliceForm').submit(function(event) {
+                // Prevent the default form submission
+                event.preventDefault();
+
+                // Save the slice data
+                saveSliceData();
+            });
         });
     </script>
-    <!-- ................................. -->
+    <!-- .............................. -->
 
     <!-- ------------------------ Main Segment ------------------------------- -->
 
@@ -265,18 +275,21 @@ mysqli_close($conn);
                     <hr class="m-0">
                     <!-- now123 -->
                     <div class="container">
-                        <div class="row">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" name="title"></textarea>
-                                <label for="floatingTextarea">Title</label>
+                        <form id="sliceForm">
+                            <div class="row">
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" name="title"></textarea>
+                                    <label for="floatingTextarea">Title</label>
+                                </div>
                             </div>
-                        </div>
-                        <div class="row">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" name="details" style="height: 40vh"></textarea>
-                                <label for="floatingTextarea2">Details</label>
+                            <div class="row">
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" name="details" style="height: 40vh"></textarea>
+                                    <label for="floatingTextarea2">Details</label>
+                                </div>
                             </div>
-                        </div>
+                        </form>
+
                     </div>
                 </form>
             </div>
