@@ -193,11 +193,20 @@ include '../Includes/Sidebar.php'; // uncomment
                     <h5 class="modal-title bg-white" id="createBlogModalLabel">Create a Blog</h5>
                     <button type="button" class="btn-close bg-white" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
+<<<<<<< HEAD
                 <div class="modal-body bg-white">
                     <form action="blog.php" method="POST">
                         <div class="mb-3 bg-white">
                             <label for="blogTopic" class="form-label bg-white">Blog Topic</label>
                             <input type="text" class="form-control bg-white" id="blogTopic" name="blogTopic" required>
+=======
+                <div class="modal-body">
+                    <!-- Form for creating a blog -->
+                    <form action="blog.php" method="POST">
+                        <div class="mb-3">
+                            <label for="blogTopic" class="form-label">Blog Topic</label>
+                            <input type="text" class="form-control" id="blogTopic" name="blogTopic" required>
+>>>>>>> 752ae1838a7a418dc41675b7899877814b475533
                         </div>
                         <div class="mb-3 bg-white">
                             <label for="blogDescription" class="form-label bg-white">Blog Description</label>
