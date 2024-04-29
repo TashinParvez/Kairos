@@ -24,7 +24,7 @@
 
 <body>
 
-    <header class="header shadow ">
+    <header class="header shadow z-2">
         <div class="container-fluid" style="background-color: transparent;">
 
             <div class="d-flex justify-content-between align-items-center gap-1 p-2"
@@ -47,7 +47,7 @@
             </div>
         </div>
     </header>
-    <header class="upContainer shadow ">
+    <header class="upContainer shadow z-2">
         <div class="upContainerProfile">
             <div class="profile">
                 <a href="#">
