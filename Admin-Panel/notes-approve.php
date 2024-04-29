@@ -2,85 +2,41 @@
 
 include('../Dashboard/connect_db.php'); // database connection
 
+//----------------- Notes approve sql  ---------------  (Approve Button) 
+$username = $tile = $created_at = '';
 
-$errors = array('bookName' => '', 'authorName' => '', 'descreption' => '', 'image' => '');
+if (isset($_POST['approve']) || isset($_POST['delete'])) {
 
-if (isset($_POST['submit'])) {
+    $username = mysqli_real_escape_string($conn, $_POST['username']);
+    $tile = mysqli_real_escape_string($conn, $_POST['tile']);
+    $created_at = mysqli_real_escape_string($conn, $_POST['created_at']);
 
-    if ($_FILES['image']['error'] === 0) {
-
-        $tempname = $_FILES['image']['tmp_name'];
-
-        // target = path to store the image
-        $file_name = $_FILES['image']['name'];
-        $folder = '../../Images/Books/' . $file_name;
-
-        $new_file_name = uniqid('', true) . '_' . $file_name;
-        $folder = '../../Images/Books/' . $new_file_name;
-
-        //................ Retrieve all data  from input field ...............
-
-        // $firstName = $_POST['firstName'];
-        // $lastName = $_POST['lastName'];
-
-
-
-        //................... escape sql chars .....................
-
-        $bookName = mysqli_real_escape_string($conn, $_POST['bookName']);
-        $authorName = mysqli_real_escape_string($conn, $_POST['authorName']);
-        $details = mysqli_real_escape_string($conn, $_POST['descreption']);
-
-
-        //.............. All input field validation checking ...................
-
-        if (empty($bookName)) {
-            $errors['bookName'] = 'This field cannot be empty!';
-        }
-        if (empty($authorName)) {
-            $errors['authorName'] = 'This field cannot be empty!';
-        }
-
-        if (empty($details)) {
-            $errors['details'] = 'This field cannot be empty!';
-        }
-
-
-        if (!array_filter($errors)) {
-            $sql = "INSERT INTO life_library(bookName,authorName,details,clicked,fileName) 
-                    VALUES ('$bookName','$authorName','$details' ,0,'$new_file_name')";
-
-
-            $result = mysqli_query($conn, $sql); // store file name to the database
-
-            if (move_uploaded_file($tempname, $folder)) {
-                echo "File Uploaded Successfully!";
-            } else {
-                echo "Failed to upload file.";
-            }
-        }
-    } else {
-        // echo "Error uploading file: " . $_FILES['image']['error'];
-        $errors['image'] = 'This field cannot be empty!';
+    $approve_status;
+    if (isset($_POST['approve'])) {
+        $approve_status = 1;
     }
+    if (isset($_POST['delete'])) {
+        $approve_status = -1;
+    }
+
+    $sql = "UPDATE notes as n 
+            SET admin_approved = '$approve_status'
+            WHERE n.userHandle = '$username' && title = '$tile' && created_at = '$created_at'";
+
+    // save to db and check
+    if (mysqli_query($conn, $sql)) {
+        // success
+        header('Location: notes-approve.php');
+    } else {
+        echo 'query error: ' . mysqli_error($conn);
+    }
+
+    // close connection
+    mysqli_close($conn);
 }
 
 
-
-//----------------- Notes approve sql  ---------------  (Approve Button) 
-
-$username = 'aarifeen'; // have to change
-$tile = 'The Great Gatsby'; // have to change
-$created = 'created_at'; // have to change
-
-$sql1 = "UPDATE notes as n 
-         SET admin_approved = 1
-         WHERE n.userHandle = '$username' && title = '$tile' && created_at = '$created'";
-
-
-
-
-//----------------- New Notes  --------------- ( SORT )
+//----------------- New Notes for approval  --------------- ( SORT )
 
 $noteCountsCTE = "WITH NoteCounts AS (
                         SELECT COUNT(*) AS cnt
@@ -89,45 +45,66 @@ $noteCountsCTE = "WITH NoteCounts AS (
                         WHERE n.public = 1 AND n.admin_approved = 0 AND l.bookName IS NOT NULL
                     )";
 
-// default = order by CREATED_AT DESC  -> newest first
-$sql1 = $noteCountsCTE . "
-        SELECT n.userHandle, n.title, n.created_at, n.details, CONCAT(LEFT(n.details, 112), '...') AS shortDesc, nc.cnt
-        FROM notes AS n
-        JOIN NoteCounts AS nc 
-        LEFT JOIN life_library AS l ON n.title = l.bookName
-        WHERE n.public = 1 AND n.admin_approved = 0 AND l.bookName IS NOT NULL
-        ORDER BY n.created_at DESC;";
+// Set default value for order if not provided
+$order = isset($_POST['order']) ? $_POST['order'] : 'newest';
 
-// Order by books popularity --> most popular book
-$sql2 = $noteCountsCTE . "
-        SELECT n.userHandle, n.title, n.created_at, n.details, CONCAT(LEFT(n.details, 112), '...') AS shortDesc, nc.cnt
-        FROM notes AS n
-        JOIN NoteCounts AS nc 
-        LEFT JOIN life_library AS l ON n.title = l.bookName
-        WHERE n.public = 1 AND n.admin_approved = 0 AND l.bookName IS NOT NULL
-        ORDER BY l.clicked DESC;";
+// Determine which item was clicked based on the value of $order
+switch ($order) {
+    case 'newest':
 
-// order by alphabetically DESC  --> alphabetically
-$sql3 = $noteCountsCTE . "
-        SELECT n.userHandle, n.title, n.created_at, n.details, CONCAT(LEFT(n.details, 112), '...') AS shortDesc, nc.cnt
-        FROM notes AS n
-        JOIN NoteCounts AS nc 
-        LEFT JOIN life_library AS l ON n.title = l.bookName
-        WHERE n.public = 1 AND n.admin_approved = 0 AND l.bookName IS NOT NULL
-        ORDER BY n.title;";
+        // default = order by CREATED_AT DESC  -> newest first
+        $sql = $noteCountsCTE . "
+                SELECT n.userHandle, n.title, n.created_at, n.details, CONCAT(LEFT(n.details, 112), '...') AS shortDesc, nc.cnt
+                FROM notes AS n
+                JOIN NoteCounts AS nc 
+                LEFT JOIN life_library AS l ON n.title = l.bookName
+                WHERE n.public = 1 AND n.admin_approved = 0 AND l.bookName IS NOT NULL
+                ORDER BY n.created_at DESC;";
+        break;
+    case 'popular':
 
+        // Order by books popularity --> most popular book
+        $sql = $noteCountsCTE . "
+                SELECT n.userHandle, n.title, n.created_at, n.details, CONCAT(LEFT(n.details, 112), '...') AS shortDesc, nc.cnt
+                FROM notes AS n
+                JOIN NoteCounts AS nc 
+                LEFT JOIN life_library AS l ON n.title = l.bookName
+                WHERE n.public = 1 AND n.admin_approved = 0 AND l.bookName IS NOT NULL
+                ORDER BY l.clicked DESC;";
+        break;
+    case 'alphabetical':
 
-$result =  mysqli_query($conn, $sql3);
+        // order by alphabetically DESC  --> alphabetically
+        $sql = $noteCountsCTE . "
+                SELECT n.userHandle, n.title, n.created_at, n.details, CONCAT(LEFT(n.details, 112), '...') AS shortDesc, nc.cnt
+                FROM notes AS n
+                JOIN NoteCounts AS nc 
+                LEFT JOIN life_library AS l ON n.title = l.bookName
+                WHERE n.public = 1 AND n.admin_approved = 0 AND l.bookName IS NOT NULL
+                ORDER BY n.title;";
+        break;
+    default:
+        // Handle other cases if needed
+        break;
+}
+
+$result =  mysqli_query($conn, $sql);
 
 $newNotes = mysqli_fetch_all($result);
+
+// for memory free
+mysqli_free_result($result);
+// close connection
+mysqli_close($conn);
 
 
 // foreach ($newNotes as $note) {
 //     print_r($note);
 // }
 
-$bookName = '';
-$authorName = '';
+// maybe its unnecessary
+// $bookName = '';
+// $authorName = '';
 
 ?>
 
@@ -190,11 +167,25 @@ $authorName = '';
                         <button class="btn btn-secondary dropdown-toggle" type="button" data-bs-toggle="dropdown" aria-expanded="false">
                             Filter
                         </button>
+
+                        <!-- Filtered by -->
+                        <script>
+                            function submitForm(order) {
+                                document.getElementById('orderInput').value = order;
+                                document.getElementById('orderForm').submit();
+                            }
+                        </script>
+
+                        <form id="orderForm" action="notes-approve.php" method="post">
+                            <input type="hidden" name="order" id="orderInput">
+                        </form>
                         <ul class="dropdown-menu dropdown-menu-dark">
-                            <li><a class="dropdown-item" href="#"> newest first</a></li>
-                            <li><a class="dropdown-item" href="#"> most popular book</a></li>
-                            <li><a class="dropdown-item" href="#"> alphabetically</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="submitForm('newest')"> newest first</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="submitForm('popular')"> most popular book</a></li>
+                            <li><a class="dropdown-item" href="#" onclick="submitForm('alphabetical')"> alphabetically</a></li>
                         </ul>
+
+                        <!-- ............... -->
                     </div>
                 </div>
 
@@ -206,6 +197,7 @@ $authorName = '';
                         <div class="row row-cols-1 row-cols-md-5 g-4">
 
                             <?php foreach ($newNotes as $index => $note) { ?>
+
                                 <!-- Card and INFO -->
                                 <div class="col-lg-4">
                                     <div class="card h-100">
@@ -229,23 +221,33 @@ $authorName = '';
                                             <div class="modal fade" id="exampleModal<?php echo $index; ?>" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
                                                 <div class="modal-dialog modal-dialog-scrollable">
                                                     <div class="modal-content">
-                                                        <div class="modal-header">
-                                                            <h1 class="modal-title fs-5" id="exampleModalLabel"><?php echo htmlspecialchars($note[1]); ?></h1>
-                                                            <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                                        </div>
-                                                        <div class="modal-body">
+                                                        <form action="notes-approve.php" method="POST">
 
-                                                            <?php echo htmlspecialchars($note[3]); ?>
+                                                            <!-- Taking note info for approving / disapproving -->
+                                                            <input type="text" style="display: none;" name="username" value="<?php echo htmlspecialchars($note[0]) ?>">
+                                                            <input type="text" style="display: none;" name="tile" value="<?php echo htmlspecialchars($note[1]) ?>">
+                                                            <input type="text" style="display: none;" name="created_at" value="<?php echo htmlspecialchars($note[2]) ?>">
+                                                            <!-- ............. -->
 
-                                                            <h6>
-                                                                Written by
-                                                                <?php echo htmlspecialchars($note[0]); ?>
-                                                            </h6>
-                                                        </div>
-                                                        <div class="modal-footer">
-                                                            <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                                            <button type="button" class="btn btn-primary">Approve</button>
-                                                        </div>
+                                                            <div class="modal-header">
+                                                                <h1 class="modal-title fs-5" id="exampleModalLabel"><?php echo htmlspecialchars($note[1]); ?></h1>
+                                                                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                                            </div>
+                                                            <div class="modal-body">
+
+                                                                <?php echo htmlspecialchars($note[3]); ?>
+
+                                                                <h6>
+                                                                    Written by
+                                                                    <?php echo htmlspecialchars($note[0]); ?>
+                                                                </h6>
+                                                            </div>
+                                                            <div class="modal-footer">
+                                                                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                                                <button type="submit" class="btn btn-danger" name="delete">Delete</button>
+                                                                <button type="submit" class="btn btn-primary" name="approve">Approve</button>
+                                                            </div>
+                                                        </form>
                                                     </div>
                                                 </div>
                                             </div>
