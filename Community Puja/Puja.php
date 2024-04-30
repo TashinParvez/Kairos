@@ -1,37 +1,37 @@
 <!--Insert Your PHP Here-->
 <?php
-    $servername = "localhost";
-    $username = "root";
-    $password = "";
-    $dbname = "kairos";
-    $conn = new mysqli($servername, $username, $password, $dbname);
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
-    // $userHandle = $_SESSION['userHandle'];
-    $userHandle = 'antarsah';
-    if(isset($_POST['update'])) {
-        $morningPrayer = isset($_POST['morningPrayer']) ? 1 : 0;
-        $eveningPrayer = isset($_POST['eveningPrayer']) ? 1 : 0;
-        
-        $sql = "INSERT INTO puja_c (userHandle, categoryID, morningPrayer, eveningPrayer) 
+    $servername = 'localhost';
+$username = 'root';
+$password = '';
+$dbname = 'kairos';
+$conn = new mysqli($servername, $username, $password, $dbname);
+if ($conn->connect_error) {
+    exit('Connection failed: '.$conn->connect_error);
+}
+// $userHandle = $_SESSION['userHandle'];
+$userHandle = 'antarsah';
+if (isset($_POST['update'])) {
+    $morningPrayer = isset($_POST['morningPrayer']) ? 1 : 0;
+    $eveningPrayer = isset($_POST['eveningPrayer']) ? 1 : 0;
+
+    $sql = "INSERT INTO puja_c (userHandle, categoryID, morningPrayer, eveningPrayer) 
         VALUES ('$userHandle', (SELECT id FROM category WHERE name=(SELECT religion FROM user_info WHERE userHandle='$userHandle')), $morningPrayer, $eveningPrayer)";
-        if ($conn->query($sql) === TRUE) {
-        } else {
-            echo json_encode(array("status" => "error", "message" => $conn->error));
-        }
+    if ($conn->query($sql) === true) {
+    } else {
+        echo json_encode(['status' => 'error', 'message' => $conn->error]);
     }
-    
-    $dataPoints = array( 
-        array("y" => 3373.64, "label" => "Germany" ),
-        array("y" => 2435.94, "label" => "France" ),
-        array("y" => 1842.55, "label" => "China" ),
-        array("y" => 1828.55, "label" => "Russia" ),
-        array("y" => 1039.99, "label" => "Switzerland" ),
-        array("y" => 765.215, "label" => "Japan" ),
-        array("y" => 612.453, "label" => "Netherlands" )
-    );
-    $conn->close();
+}
+
+$dataPoints = [
+    ['y' => 3373.64, 'label' => 'Germany'],
+    ['y' => 2435.94, 'label' => 'France'],
+    ['y' => 1842.55, 'label' => 'China'],
+    ['y' => 1828.55, 'label' => 'Russia'],
+    ['y' => 1039.99, 'label' => 'Switzerland'],
+    ['y' => 765.215, 'label' => 'Japan'],
+    ['y' => 612.453, 'label' => 'Netherlands'],
+];
+$conn->close();
 ?>
 
 <!DOCTYPE html>
@@ -77,13 +77,13 @@
 
 <body>
     <?php
-        include('../Includes/NavBar.php');
-        include('../Includes/Sidebar.php');
-    ?>
+        include '../Includes/NavThird.php';
+include '../Includes/Sidebar.php';
+?>
 
     <!-- ------------------------ Main Segment ------------------------------- -->
 
-    <main class="main shadow">
+    <main class="main shadow bg-white">
         <h1>Puja</h1>
         <!--You Start Writing Content Here-->
         <div class="container bg-white p-3">
