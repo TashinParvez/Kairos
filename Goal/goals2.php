@@ -1,7 +1,6 @@
 <?php
 
-include('../Dashboard/connect_db.php'); // Daatabase connection
-
+include '../Dashboard/connect_db.php'; // Daatabase connection
 
 ?>
 
@@ -76,9 +75,9 @@ include('../Dashboard/connect_db.php'); // Daatabase connection
 
 <body>
     <?php
-    include('../Includes/NavBar.php'); // uncomment
-    include('../Includes/Sidebar.php'); // uncomment
-    ?>
+    include '../Includes/NavBar.php'; // uncomment
+include '../Includes/Sidebar.php'; // uncomment
+?>
 
 
     <!-- ------------------------ Main Segment ------------------------------- -->
@@ -108,8 +107,8 @@ include('../Dashboard/connect_db.php'); // Daatabase connection
                 <div class="row align-items-end">
                     <!-- time exceded goals -->
                     <?php
-                    // loop starts here
-                    foreach ($goals as $goal) {
+                // loop starts here
+                foreach ($goals as $goal) {
                     ?>
                         <div class="card mb-1" style="background: snow;">
                             <div class="card-body">
@@ -130,7 +129,7 @@ include('../Dashboard/connect_db.php'); // Daatabase connection
                         <?php
                         // loop starts here
                         foreach ($goals as $goal) {
-                        ?>
+                            ?>
                             <div class="card mb-1" style="background: snow;">
                                 <div class="card-body">
                                     <!-- each goal -->
