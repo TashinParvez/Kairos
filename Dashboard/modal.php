@@ -7,10 +7,28 @@ $username = null;
 // ------------------------------------------------------------------------------------
 // Submit or Skip
 
-// Skip
-$sql = "UPDATE user_info
+if (isset($_POST['skip'])) {
+    // Skip
+    $sql = "UPDATE user_info
         SET interestSet = 0
         WHERE userHandle = '$username'";
+
+    // save to db and check
+    if (mysqli_query($conn, $sql)) {
+        // success
+        header('Location: DashboardMain.php');
+    } else {
+        echo 'query error: ' . mysqli_error($conn);
+    }
+
+    // close connection
+    mysqli_close($conn);
+}
+
+if (isset($_POST['save'])) {
+    // Save
+}
+
 
 // Submit --> to submit user have to choose atleat 1 interest
 $sql = "UPDATE user_info
@@ -123,57 +141,54 @@ mysqli_close($conn);
                 <div class="modal-body" style="justify-content:center; align-items:center;">
                     <!-- main-Body -->
                     <!-- Checkboxes -->
+                    <form action="modal.php" method="POST">
 
-                    <?php
-                    foreach ($interests as $key => $interest) { // Use $key as a unique identifier
+                        <?php
+                        foreach ($interests as $key => $interest) { // Use $key as a unique identifier
                         ?>
-                        <div class="form-check form-check-inline" style="justify-content:center; align-items:center;">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox<?php echo $key; ?>" value="option1">
-                            <!-- Use unique ID for each checkbox -->
-                            <label class="form-check-label" for="inlineCheckbox<?php echo $key; ?>" style="white-space: nowrap;">
-                                <div class="card mb-3">
-                                    <div class="row g-0" style="height:50px;">
-                                        <div class="col-md-4" style="width: 50px; height:10px;">
-                                            <img src="<?php echo htmlspecialchars($interest[2]); ?>" class="img-fluid rounded-start" alt="...">
-                                        </div>
-                                        <div class="col-md-8" style="width:fit-content;">
-                                            <div class="card-body" style="width:fit-content;">
-                                                <h5 class="card-title" style="width:fit-content;"> <?php echo htmlspecialchars($interest[1]); ?> </h5>
+                            <div class="form-check form-check-inline" style="justify-content:center; align-items:center;">
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox<?php echo $key; ?>" value="option1">
+                                <!-- Use unique ID for each checkbox -->
+                                <label class="form-check-label" for="inlineCheckbox<?php echo $key; ?>" style="white-space: nowrap;">
+                                    <div class="card mb-3">
+                                        <div class="row g-0" style="height:50px;">
+                                            <div class="col-md-4" style="width: 50px; height:10px;">
+                                                <img src="<?php echo htmlspecialchars($interest[2]); ?>" class="img-fluid rounded-start" alt="...">
+                                            </div>
+                                            <div class="col-md-8" style="width:fit-content;">
+                                                <div class="card-body" style="width:fit-content;">
+                                                    <h5 class="card-title" style="width:fit-content;"> <?php echo htmlspecialchars($interest[1]); ?> </h5>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </label>
-                        </div>
-                    <?php } ?>
+                                </label>
+                            </div>
+                        <?php } ?>
 
 
-                    <!-- Others interest -->
-                    <br>
+                        <!-- Others interest -->
+                        <br>
 
-                    <label for="exampleDataList" class="form-label">Others</label>
-                    <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Example: Riding, Cycling,...">
-                    <datalist id="datalistOptions">
-                        <?php
+                        <label for="exampleDataList" class="form-label">Others</label>
+                        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Example: Riding, Cycling,...">
+                        <datalist id="datalistOptions">
+                            <?php
                             foreach ($otherinterests as $key => $interest) { // Use $key as a unique identifier
-                                ?>
-                            <option value="<?php echo htmlspecialchars($interest[1]); ?>">
-                            <?php } ?>
-                    </datalist>
-
-                    <div class="container d-flex justify-content-end">
-                        <button type="button" class="btn btn-outline-secondary">Skip</button>
-                        <button type="button" class="btn btn-outline-secondary">Save</button>
-                    </div>
-
-
+                            ?>
+                                <option value="<?php echo htmlspecialchars($interest[1]); ?>">
+                                <?php } ?>
+                        </datalist>
+                        <div class="container d-flex justify-content-end">
+                            <button type="submit" name="skip" class="btn btn-outline-secondary">Skip</button>
+                            <button type="submit" name="save" class="btn btn-outline-secondary">Save</button>
+                        </div>
+                    </form>
 
                 </div>
             </div>
         </div>
     </div>
-
-
 
 </body>
 
