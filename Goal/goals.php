@@ -41,9 +41,6 @@ if (isset($_POST['createGoal'])) {
         } else {
             echo 'query error: ' . mysqli_error($conn);
         }
-
-        // close connection
-        mysqli_close($conn);
     }
 }
 
@@ -67,9 +64,6 @@ if (isset($_POST['completed'])) {
     } else {
         echo 'query error: ' . mysqli_error($conn);
     }
-
-    // close connection
-    mysqli_close($conn);
 }
 
 
@@ -89,9 +83,6 @@ if (isset($_POST['counterPlus'])) {
     } else {
         echo 'query error: ' . mysqli_error($conn);
     }
-
-    // close connection
-    mysqli_close($conn);
 }
 
 if (isset($_POST['counterMinus'])) {
@@ -109,9 +100,6 @@ if (isset($_POST['counterMinus'])) {
     } else {
         echo 'query error: ' . mysqli_error($conn);
     }
-
-    // close connection
-    mysqli_close($conn);
 }
 
 
@@ -144,9 +132,6 @@ if (isset($_GET['userHandle'])) {
             } else {
                 echo 'query error: ' . mysqli_error($conn);
             }
-
-            // close connection
-            mysqli_close($conn);
         }
     }
 
@@ -198,7 +183,6 @@ if (isset($_GET['userHandle'])) {
 
 
     mysqli_free_result($result);
-    mysqli_close($conn);
 } else {
 
     $userHandle = 'tashin19';
@@ -250,8 +234,45 @@ if (isset($_GET['userHandle'])) {
     $goalsThatTimeRemains = mysqli_fetch_all($result); // conver to array
 
 
+
+    //--------------------------------     FOR Life progress bar     --------------------------------
+
+    // year
+    $currentDayOfYear = date('z') + 1;
+    $totalDaysOfYear = date('L') ? 366 : 365;
+    $percentagePassed = floor(($currentDayOfYear / $totalDaysOfYear) * 100);
+    // echo "Percentage of year passed: " . $percentagePassed . "% <br>";
+
+    // month
+    $currentDayOfMonth = date('j');
+    $totalDaysOfMonth = date('t');
+    $percentagePassedMonth = floor(($currentDayOfMonth / $totalDaysOfMonth) * 100);
+    // echo "Percentage of month passed: " . $percentagePassedMonth . "% <br>";
+
+    // week
+    $currentDayOfWeek = date('w');
+    $totalDaysOfWeek = 7;
+    $percentagePassedWeek = floor(($currentDayOfWeek / $totalDaysOfWeek) * 100);
+    // echo "Percentage of week passed: " . $percentagePassedWeek . "%<br>";
+
+    // day 
+    $currentHourOfDay = date('G');
+    $totalHoursOfDay = 24;
+    $percentagePassedDay = floor(($currentHourOfDay / $totalHoursOfDay) * 100);
+    // echo "Percentage of day passed: " . $percentagePassedDay . "%<br>";
+
+    // change code dob in place of join date [Tashin]
+    $sql = "SELECT joinDate,
+            TIMESTAMPDIFF(YEAR, joinDate, CURDATE()) AS age,
+            FLOOR((TIMESTAMPDIFF(YEAR, joinDate, CURDATE()) / 73) * 100) AS percentage_lived
+            FROM  user_info
+            WHERE userHandle = '$userHandle';";
+
+    $result =  mysqli_query($conn, $sql);
+    $life = mysqli_fetch_all($result);
+
+
     mysqli_free_result($result);
-    mysqli_close($conn);
 }
 
 ?>
@@ -541,12 +562,55 @@ if (isset($_GET['userHandle'])) {
             </div>
             <div class="col-3 bg-success">
 
+
+                <!---------------- Life Progress bars ---------------->
+                <div>
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-label="Basic example" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
+                        <!--  YEAR -->
+                    </div>
+
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 25%" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                        <!--  Month -->
+                    </div>
+
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 50%" aria-valuenow="50" aria-valuemin="0" aria-valuemax="100"></div>
+                        <!-- Week -->
+                    </div>
+
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 75%" aria-valuenow="75" aria-valuemin="0" aria-valuemax="100"></div>
+                        <!-- Day -->
+                    </div>
+
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-label="Basic example" style="width: 100%" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"></div>
+                        <!-- Life -->
+                    </div>
+
+                    <!-- example of life progress Bar -->
+                    <iframe src="https://indify.co/widgets/live/progressBar/1k2RuBJJRsOo3Lo02len" width="100%" height="300px" frameborder="0"></iframe>
+
+                </div>
+
+
+
+
+                <!-- Book Page read counter -->
+                <div>
+                    <!-- example of life progress Bar -->
+                    <iframe src="https://indify.co/widgets/live/counter/y2ZzVIgNb0qDCpQyOYDl" width="100%" height="300px" frameborder="0"></iframe>
+                </div>
+
+
             </div>
         </div>
 
         <!-- Upto this Tashin -->
 
-         
+
 
     </main>
 
@@ -556,8 +620,6 @@ if (isset($_GET['userHandle'])) {
             <i class="fas fa-plus"></i>
         </button>
     </div>
-
-
 </body>
 
 </html>
