@@ -36,6 +36,11 @@ if (isset($_GET['userHandle'])) {
 } else {  // full else remove after adding login 
 
     $userHandle = mysqli_real_escape_string($conn, 'tashin19');
+
+    //----------------- For Todays all Slices ---------------
+
+    // sql query
+
     $sql = "SELECT p.title, p.details,
                 CASE
                     WHEN TIMESTAMPDIFF(HOUR, p.lastUpdate, NOW()) >= 1  THEN CONCAT(TIMESTAMPDIFF(HOUR, created_at, NOW()), ' hour(s) ago')
@@ -87,32 +92,33 @@ if (isset($_POST['save']) || isset($_POST['newSlice'])) {
     }
 }
 
+
 //  ...........for save data without pressing any button...........
 // Check if the request is an AJAX request
 if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
     // Check if the request method is POST
     if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         // Retrieve data sent via POST request
-        $title = mysqli_real_escape_string($conn, $_POST['title']);
-        $details = mysqli_real_escape_string($conn, $_POST['details']);
+        $title = $_POST['title'];
+        $details = $_POST['details'];
+
+        include('../Dashboard/connect_db.php');
 
         // Prepare and bind the SQL statement
-        if (empty($title) && empty($details)) {
-            $errors['title&details'] = 'At least Have to fill one'; // can't save
+        $stmt = $conn->prepare("INSERT INTO personal_journal(userHandle, title, details, saved)
+                                VALUES('tashin19','$title', '$details', 0)");
+        $stmt->bind_param("ss", $title, $details);
+
+        // Execute the SQL statement
+        if ($stmt->execute()) {
+            echo "Slice saved successfully";
+        } else {
+            echo "Error: " . $stmt->error;
         }
 
-        if (!array_filter($errors)) {
-
-            $sql = "INSERT INTO personal_journal(userHandle, title, details, saved)
-                    VALUES('tashin19','$title', '$details', 0)";
-
-            // save to db and check
-            if (mysqli_query($conn, $sql)) {
-                header('Location: Personal-Journal.php');
-            } else {
-                echo 'query error: ' . mysqli_error($conn);
-            }
-        }
+        // Close statement and database connection
+        $stmt->close();
+        mysqli_close($conn);
     } else {
         // Request method is not POST
         http_response_code(400);
@@ -123,7 +129,8 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
     http_response_code(403);
     echo "Forbidden";
 }
-// .........................................
+// ......................
+
 
 
 $today = date("F j, Y", strtotime("today"));  // today's date
@@ -139,7 +146,8 @@ mysqli_close($conn);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-    <link rel="icon" type="image/x-icon" href="/Images/Picture1.png">
+
+
     <!-- Bootstrap links -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
@@ -154,25 +162,23 @@ mysqli_close($conn);
 
 <body>
     <?php
-        include('../Includes/NavBar.php'); // uncomment
-        include('../Includes/Sidebar.php'); // uncomment
+    // include('../Includes/NavBar.php'); // uncomment
+    // include('../Includes/Sidebar.php'); // uncomment
     ?>
-
 
     <!-- for save data without pressing any button -->
     <script>
         $(document).ready(function() {
-
             // Function to save slice data
             function saveSliceData() {
                 // Get the form data
-                // var formData = $('#sliceForm').serialize();
+                var formData = $('#sliceForm').serialize();
 
                 // Send an AJAX request to save data
                 $.ajax({
-                    url: 'Personal-Journal.php', // Replace with your server-side script URL
+                    url: 'temp-personalJournal.php', // Replace with your server-side script URL
                     type: 'POST',
-                    // data: formData,
+                    data: formData,
                     success: function(response) {
                         console.log('Data saved successfully');
                     },
@@ -186,59 +192,66 @@ mysqli_close($conn);
             $(window).on('beforeunload', function() {
                 saveSliceData();
             });
+
+            // Capture form submission events
+            $('#sliceForm').submit(function(event) {
+                // Prevent the default form submission
+                event.preventDefault();
+
+                // Save the slice data
+                saveSliceData();
+            });
         });
     </script>
-    <!-- ................................. -->
+    <!-- .............................. -->
 
     <!-- ------------------------ Main Segment ------------------------------- -->
 
     <main class="main shadow">
 
-    
-
         <div class="bg-white">
 
-            <div class="container bg-white">
-                <div class="row bg-white">
+            <div class="container">
+                <div class="row">
                     <h4 class="bg-white text-center">Daily Reflection</h4>
                 </div>
                 <hr class="m-0">
 
-                <div class="row bg-white">
+                <div class="row">
                     <!-- Left Column: Item Comparison -->
-                    <div class="col-md-6 border-end bg-white">
-                        <h3 class="text-center bg-white">Positives Recap</h3>
-                        <div class="row align-items-center bg-white">
-                            <label for="goodthing1" class="col-sm-2 col-form-label bg-white">1.</label>
-                            <div class="col-sm-10 bg-white">
-                                <input type="text" class="form-control bg-white" id="goodthing1">
+                    <div class="col-md-6 border-end">
+                        <h3 class="text-center">Positives Recap</h3>
+                        <div class="row align-items-center">
+                            <label for="goodthing1" class="col-sm-2 col-form-label">1.</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="goodthing1">
                             </div>
                         </div>
-                        <div class="row align-items-center bg-white">
-                            <label for="goodthing2" class="col-sm-2 col-form-label bg-white">2.</label>
-                            <div class="col-sm-10 bg-white">
-                                <input type="text" class="form-control bg-white" id="goodthing2">
+                        <div class="row align-items-center">
+                            <label for="goodthing2" class="col-sm-2 col-form-label">2.</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="goodthing2">
                             </div>
                         </div>
-                        <hr class="d-md-none bg-white">
+                        <hr class="d-md-none">
                     </div>
 
                     <!-- Right Column: Item Comparison -->
-                    <div class="col-md-6 border-end bg-white">
-                        <h3 class="text-center bg-white">Regrettable Moments</h3>
-                        <div class="row align-items-center bg-white">
-                            <label for="badthing1" class="col-sm-2 col-form-label bg-white">1.</label>
-                            <div class="col-sm-10 bg-white">
-                                <input type="text" class="form-control bg-white" id="badthing1">
+                    <div class="col-md-6 border-end">
+                        <h3 class="text-center">Regrettable Moments</h3>
+                        <div class="row align-items-center">
+                            <label for="badthing1" class="col-sm-2 col-form-label">1.</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="badthing1">
                             </div>
                         </div>
-                        <div class="row align-items-center bg-white">
-                            <label for="badthing2" class="col-sm-2 col-form-label bg-white">2.</label>
-                            <div class="col-sm-10 bg-white">
-                                <input type="text" class="form-control bg-white" id="badthing2">
+                        <div class="row align-items-center">
+                            <label for="badthing2" class="col-sm-2 col-form-label">2.</label>
+                            <div class="col-sm-10">
+                                <input type="text" class="form-control" id="badthing2">
                             </div>
                         </div>
-                        <hr class="d-md-none bg-white">
+                        <hr class="d-md-none">
                     </div>
                 </div>
 
@@ -246,37 +259,37 @@ mysqli_close($conn);
 
             <!------------------ New Note Segment ------------------>
 
-            <div class="container pt-3 bg-white">
+            <div class="container pt-3">
                 <form action="Personal-Journal.php" method="POST">
 
-                    <div class="row justify-content-around bg-white">
-                        <div class="col bg-white">
-                            <h4 class="bg-white">Today's Slice — <span class="bg-white" style="color: gray;"><?php echo '@' . $today; ?></span></h4>
+                    <div class="row justify-content-around">
+                        <div class="col">
+                            <h4 class="bg-white">Today's Slice — <span class="" style="color: gray;"><?php echo '@' . $today; ?></span></h4>
                         </div>
-                        <div class="col bg-white">
-                            <button type="button" class="btn btn-outline-secondary"><a class="bg-white" href="#todaysSlices" style="text-decoration: none; color: inherit;">Today's All Slice</a> </button>
+                        <div class="col">
+                            <button type="button" class="btn btn-outline-secondary"><a href="#todaysSlices" style="text-decoration: none; color: inherit;">Today's All Slice</a> </button>
                             <button type="button" class="btn btn-outline-secondary" type="submit" name="newSlice">New Slice</button>
                             <button type="button" class="btn btn-outline-secondary" type="submit" name="save">Save</button>
                         </div>
                     </div>
                     <hr class="m-0">
-
                     <!-- now123 -->
                     <div class="container">
-                        <div class="row">
-                            <div class="form-floating">
-                                <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" name="title"></textarea>
+                        <form id="sliceForm">
+                            <div class="row">
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" name="title"></textarea>
+                                    <label for="floatingTextarea">Title</label>
+                                </div>
+                            </div>
+                            <div class="row">
+                                <div class="form-floating">
+                                    <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea2" name="details" style="height: 40vh"></textarea>
+                                    <label for="floatingTextarea2">Details</label>
+                                </div>
+                            </div>
+                        </form>
 
-                    
-                                <label for="floatingTextarea">Title</label>
-                            </div>
-                        </div>
-                        <div class="row bg-white">
-                            <div class="form-floating bg-white">
-                                <textarea class="form-control bg-white" placeholder="Leave a comment here" id="floatingTextarea2" name="details" style="height: 40vh"></textarea>
-                                <label for="floatingTextarea2">Details</label>
-                            </div>
-                        </div>
                     </div>
                 </form>
             </div>
@@ -284,14 +297,15 @@ mysqli_close($conn);
 
             <!------------------ Todays All Note Segment ------------------>
 
-            <div class="container pt-3 bg-white">
-                <div class="row justify-content-around bg-white">
-                    <div class="col bg-white">
+            <div class="container pt-3">
+                <div class="row justify-content-around">
+                    <div class="col">
                         <h4 class="bg-white" id="todaysSlices"><?php echo $today; ?> Slices</h4>
                     </div>
                 </div>
                 <hr class="m-0">
-                <div class="container bg-white">
+
+                <div class="container">
                     <!-- FOReach Loop -->
 
                     <?php

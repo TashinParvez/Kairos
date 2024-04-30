@@ -45,39 +45,6 @@ body {
   margin-top: 10px;
   position: relative;
 }
-.search {
-  /* Adjust the value as needed to be higher than the main class */
-  position: relative; /* This ensures that z-index is applied correctly */
-  max-width: 200px;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-.search form {
-  display: flex;
-  align-items: center;
-  background-color: #eff2f9;
-  border-radius: 10px;
-  padding: 2px;
-}
-
-.search input[type="search"] {
-  border: none;
-  padding: 8px;
-  flex: 1;
-  max-width: 150px;
-}
-
-.icon-button {
-  background-color: transparent;
-  padding: 5px;
-}
-
-.icon {
-  width: 20px;
-  height: 20px;
-}
-
 .sidebar {
   background-color: white;
   grid-area: side;
@@ -135,7 +102,6 @@ body {
   grid-area: temp9;
 }
 .main {
-  background-color: white;
   grid-area: main;
   gap: 20px;
   padding: 20px;

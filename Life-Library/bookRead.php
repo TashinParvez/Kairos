@@ -1,17 +1,14 @@
 <?php
 
-include('../Dashboard/connect_db.php'); // database connection
+include '../Dashboard/connect_db.php'; // database connection
 
+$notes = null;
 
-$notes  =  null;
-
-// check get request userHandle 
+// check get request userHandle
 if (isset($_GET['bookName'])) {
-
     $bName = mysqli_real_escape_string($conn, $_GET['bookName']);
 
-
-    //----------------- For Book Notes ---------------
+    // ----------------- For Book Notes ---------------
 
     $sql = "SELECT lib.bookName, lib.authorName, lib.details, ntb.userhandle, title, ntb.details, created_at
             FROM life_library as lib 
@@ -24,29 +21,24 @@ if (isset($_GET['bookName'])) {
             ON ntb.title = lib.bookName
             WHERE lib.bookName =  '$bName'";
 
-    $result =  mysqli_query($conn, $sql);
+    $result = mysqli_query($conn, $sql);
 
     $notes = mysqli_fetch_all($result);
 
     // print_r($notes);
-
 
     // foreach ($notes as $note) {
     //     print_r($note);
     //     echo '<br>';
     //     echo '<br>';
     // }
-
-
-
-} else {  //------------------  full else remove after liked with lifelibrary 
-
+} else {  // ------------------  full else remove after liked with lifelibrary
     $bn = 'Atomic Habits';
     $bName = mysqli_real_escape_string($conn, $bn);
 
     // echo 'Tashin';
 
-    //----------------- For Book Notes ---------------
+    // ----------------- For Book Notes ---------------
 
     $sql = "SELECT lib.bookName, lib.authorName, lib.details, ntb.userhandle, title, ntb.details, DATE(created_at),
             CASE
@@ -67,7 +59,7 @@ if (isset($_GET['bookName'])) {
             WHERE lib.bookName =  '$bName'
             ORDER BY created_at DESC;";
 
-    $result =  mysqli_query($conn, $sql);
+    $result = mysqli_query($conn, $sql);
 
     $notes = mysqli_fetch_all($result);
 
@@ -82,12 +74,12 @@ if (isset($_GET['bookName'])) {
     // ------------------------------ For Most Read ----------------------------
     // sql query
 
-    $sql = "SELECT bookName, authorName, details
+    $sql = 'SELECT bookName, authorName, details
             FROM life_library
             ORDER BY clicked DESC
-            Limit 3";
+            Limit 3';
 
-    $resultantLabel =  mysqli_query($conn, $sql);  // get query result
+    $resultantLabel = mysqli_query($conn, $sql);  // get query result
 
     $mostRead = mysqli_fetch_all($resultantLabel); // conver to array
 
@@ -101,16 +93,11 @@ if (isset($_GET['bookName'])) {
     //     echo htmlspecialchars($label[2]);
     //     echo '<br>';
     // }
-
-
 }
-
 
 // for memory free
 mysqli_free_result($result);
 mysqli_close($conn);
-
-
 
 ?>
 
@@ -121,8 +108,9 @@ mysqli_close($conn);
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
+    <title>Books</title>
     <link rel="stylesheet" href="editProfile.php">
+    <link rel="icon" type="image/x-icon" href="/Images/Picture1.png"></link>
     <link rel="stylesheet" href="../Dashboard/style.css">
     <link rel="stylesheet" href="library.css">
 
@@ -135,11 +123,14 @@ mysqli_close($conn);
 
 <body>
     <!--------------------------------- Navbar --------------------------------->
-    <?php include('/Kairos/Dashboard/navbar.php'); ?>
+    <?php
+        include '../Includes/NavBarSecond.php'; // uncomment
+include '../Includes/Sidebar.php'; // uncomment
+?>
 
     <!--------------------------------- Header --------------------------------->
 
-
+    <main class="main bg-white shadow">
     <div class="container">
         <!-- <div class="row align-items-center"> -->
         <div class="row card mb-3">
@@ -172,7 +163,7 @@ mysqli_close($conn);
             <!-------------------------    Users Notes   ------------------------->
             <div class="col-9">
                 <?php
-                foreach ($notes as $note) { ?>
+            foreach ($notes as $note) { ?>
 
                     <!--  -->
                     <div class="row card mb-3 ps-3 pt-3 pb-3">
@@ -270,7 +261,7 @@ mysqli_close($conn);
                 <!-------------------------- Most read -------------------------->
                 <div class="row  bg-white rounded pb-3 mt-3">
                     <?php
-                    foreach ($mostRead as $read) { ?>
+                foreach ($mostRead as $read) { ?>
 
                         <div class="col mt-3">
                             <div class="card" style="width: 18rem;">
@@ -298,7 +289,7 @@ mysqli_close($conn);
             </div>
         </div>
     </div>
-
+    </main>
 
 
 </body>
