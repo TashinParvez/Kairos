@@ -1,16 +1,33 @@
 <?php
 
-include('connect_db.php'); // database connection
+include 'connect_db.php'; // database connection
 
 $username = null;
 
 // ------------------------------------------------------------------------------------
 // Submit or Skip
 
-// Skip
-$sql = "UPDATE user_info
+if (isset($_POST['skip'])) {
+    // Skip
+    $sql = "UPDATE user_info
         SET interestSet = 0
         WHERE userHandle = '$username'";
+
+    // save to db and check
+    if (mysqli_query($conn, $sql)) {
+        // success
+        header('Location: DashboardMain.php');
+    } else {
+        echo 'query error: ' . mysqli_error($conn);
+    }
+
+    // close connection
+    mysqli_close($conn);
+}
+
+if (isset($_POST['save'])) {
+    // Save
+}
 
 
 // Submit --> to submit user have to choose atleat 1 interest
@@ -24,23 +41,22 @@ $sql = "INSERT INTO `user_interest` (`userHandle`, `interestNO`)
 
 // for others
 
-$otherdata=""; // other box data
+$otherdata = ''; // other box data
 
-$dataArray = explode(",", $otherdata);
+$dataArray = explode(',', $otherdata);
 
 $resultArray = [];
 
 foreach ($dataArray as $value) {
-    $parts = explode(" ", $value);
+    $parts = explode(' ', $value);
     $parts = array_filter($parts);
-    $trimmedValue = implode(" ", array_map('trim', $parts));
+    $trimmedValue = implode(' ', array_map('trim', $parts));
     $resultArray[] = $trimmedValue;
 }
 
 // print_r($resultArray);
 
 foreach ($resultArray as $value) {
-
     // check for already present or not
     $sql = "SELECT *
             FROM interest
@@ -54,7 +70,6 @@ foreach ($resultArray as $value) {
                 VALUES (NULL, '$value', '');";
         $result = mysqli_query($conn, $sql);
 
-        
         // creating user and interest table connection
         $sql = "INSERT INTO user_interest (userHandle, interestNO)
                 SELECT '$username', NO
@@ -65,31 +80,27 @@ foreach ($resultArray as $value) {
     }
 }
 
-
-
-
 // ------------------------------------------------------------------------------------
 // sql query  for interest
-$sql = "SELECT *
+$sql = 'SELECT *
         FROM interest
-        LIMIT 10";
+        LIMIT 10';
 
-$result =  mysqli_query($conn, $sql);
+$result = mysqli_query($conn, $sql);
 
 $interests = mysqli_fetch_all($result);
 
 // print_r($interests);
 
 // sql query  for other interest datalist option
-$sql = "SELECT *
+$sql = 'SELECT *
         FROM interest
         LIMIT 5
-        OFFSET 10;";
+        OFFSET 10;';
 
-$result =  mysqli_query($conn, $sql);
+$result = mysqli_query($conn, $sql);
 
 $otherinterests = mysqli_fetch_all($result);
-
 
 mysqli_free_result($result);
 mysqli_close($conn);
@@ -127,59 +138,57 @@ mysqli_close($conn);
                     <h5 class="modal-title h4" id="exampleModalXlLabel">Your Interest</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <div class="modal-body" style="justify-content:center; align-items:center;">
                     <!-- main-Body -->
                     <!-- Checkboxes -->
+                    <form action="modal.php" method="POST">
 
-                    <?php
-                    foreach ($interests as $key => $interest) { // Use $key as a unique identifier
-                    ?>
-                        <div class="form-check form-check-inline">
-                            <input class="form-check-input" type="checkbox" id="inlineCheckbox<?php echo $key; ?>" value="option1">
-                            <!-- Use unique ID for each checkbox -->
-                            <label class="form-check-label" for="inlineCheckbox<?php echo $key; ?>">
-                                <div class="card mb-3">
-                                    <div class="row g-0">
-                                        <div class="col-md-4">
-                                            <img src="<?php echo htmlspecialchars($interest[2]); ?>" class="img-fluid rounded-start" alt="...">
-                                        </div>
-                                        <div class="col-md-8">
-                                            <div class="card-body">
-                                                <h5 class="card-title"> <?php echo htmlspecialchars($interest[1]); ?> </h5>
+                        <?php
+                        foreach ($interests as $key => $interest) { // Use $key as a unique identifier
+                        ?>
+                            <div class="form-check form-check-inline" style="justify-content:center; align-items:center;">
+                                <input class="form-check-input" type="checkbox" id="inlineCheckbox<?php echo $key; ?>" value="option1">
+                                <!-- Use unique ID for each checkbox -->
+                                <label class="form-check-label" for="inlineCheckbox<?php echo $key; ?>" style="white-space: nowrap;">
+                                    <div class="card mb-3">
+                                        <div class="row g-0" style="height:50px;">
+                                            <div class="col-md-4" style="width: 50px; height:10px;">
+                                                <img src="<?php echo htmlspecialchars($interest[2]); ?>" class="img-fluid rounded-start" alt="...">
+                                            </div>
+                                            <div class="col-md-8" style="width:fit-content;">
+                                                <div class="card-body" style="width:fit-content;">
+                                                    <h5 class="card-title" style="width:fit-content;"> <?php echo htmlspecialchars($interest[1]); ?> </h5>
+                                                </div>
                                             </div>
                                         </div>
                                     </div>
-                                </div>
-                            </label>
+                                </label>
+                            </div>
+                        <?php } ?>
+
+
+                        <!-- Others interest -->
+                        <br>
+
+                        <label for="exampleDataList" class="form-label">Others</label>
+                        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Example: Riding, Cycling,...">
+                        <datalist id="datalistOptions">
+                            <?php
+                            foreach ($otherinterests as $key => $interest) { // Use $key as a unique identifier
+                            ?>
+                                <option value="<?php echo htmlspecialchars($interest[1]); ?>">
+                                <?php } ?>
+                        </datalist>
+                        <div class="container d-flex justify-content-end">
+                            <button type="submit" name="skip" class="btn btn-outline-secondary">Skip</button>
+                            <button type="submit" name="save" class="btn btn-outline-secondary">Save</button>
                         </div>
-                    <?php } ?>
-
-                    <!-- Others interest -->
-                    <br>
-
-                    <label for="exampleDataList" class="form-label">Others</label>
-                    <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Example: Riding, Cycling,...">
-                    <datalist id="datalistOptions">
-                        <?php
-                        foreach ($otherinterests as $key => $interest) { // Use $key as a unique identifier
-                        ?>
-                            <option value="<?php echo htmlspecialchars($interest[1]); ?>">
-                            <?php } ?>
-                    </datalist>
-
-                    <div class="container d-flex justify-content-end">
-                        <button type="button" class="btn btn-outline-secondary">Skip</button>
-                        <button type="button" class="btn btn-outline-secondary">Save</button>
-                    </div>
-
-
+                    </form>
 
                 </div>
             </div>
         </div>
     </div>
-
-
 
 </body>
 

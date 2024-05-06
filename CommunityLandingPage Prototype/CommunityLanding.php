@@ -5,9 +5,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Kairos</title>
+<<<<<<< HEAD
+    <link rel="icon" type="image/x-icon" href="/Images/Picture1.png"></link>
+=======
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="/Images/Picture1.png">
     </link>
+>>>>>>> 9a6582bef5016461f6648ae6faeead2bc9134797
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -17,24 +21,17 @@
 
 <body>
     <?php
+<<<<<<< HEAD
+        include '../Includes/NavThird.php'; // uncomment
+=======
     include '../Includes/NavBarSecond.php'; // uncomment
+>>>>>>> 9a6582bef5016461f6648ae6faeead2bc9134797
     include '../Includes/Sidebar.php'; // uncomment
     ?>
-    <main class="main shadow">
+    <main class="main shadow bg-white">
         <div class="row bg-white">
             <div class="col-sm-6 bg-white">
                 <h1>Communities</h1>
-            </div>
-            <div class="col-sm-4 bg-transparent"></div>
-            <div class="col-sm-auto bg-white">
-                <div class="container-fluid bg-white p-2 align-items-right">
-                    <form action="">
-                        <input type="search" required>
-                        <i class="fa fa-search"></i>
-                        <span id="search-txt">Search</span>
-                        <a-main href="javascript:void(0)" id="clear-btn"></a-main>
-                    </form>
-                </div>
             </div>
         </div>
         <div class="bg-white">
