@@ -13,20 +13,44 @@ $searchData = ""; // catch search bar data
 //----------------- retrive data ---------------
 
 //-------------------  from blog   ----------------------
+$sql = "SELECT DISTINCT*
+        FROM blog
+        WHERE topicName LIKE '%$searchData%' OR description LIKE '%$searchData%';";
 
-$sql = "SELECT title, details, created_at
-        FROM user_info AS uinfo
-        INNER JOIN
-        notes as n
-        ON uinfo.userHandle = n.userHandle
-        WHERE uinfo.userHandle = '$userHandle';";
+$result =  mysqli_query($conn, $sql);
+$blogs = mysqli_fetch_all($result);
 
-$resultantNotes =  mysqli_query($conn, $sql);  // get query result
+//-------------------  from life_library   ----------------------
+$sql = "SELECT DISTINCT *
+        FROM life_library
+        WHERE bookName LIKE '%$searchData%' OR authorName LIKE '%$searchData%'  OR details LIKE '%$searchData%';";
 
-// $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
-$Notes = mysqli_fetch_all($resultantNotes); // conver to array
+$result =  mysqli_query($conn, $sql);
+$books = mysqli_fetch_all($result);
 
-mysqli_free_result($resultantNotes);
+//-------------------  from  Notes   ----------------------
+$sql = "SELECT DISTINCT *
+        FROM notes
+        WHERE title LIKE '%$searchData%' OR details LIKE '%$searchData%'";
+
+$result =  mysqli_query($conn, $sql);
+$notes = mysqli_fetch_all($result);
+
+//-------------------  from  personal journal   ----------------------
+$sql = "SELECT DISTINCT *
+        FROM personal_journal
+        WHERE title LIKE '%$searchData%' OR details LIKE '%$searchData%';";
+
+$result =  mysqli_query($conn, $sql);
+$notes = mysqli_fetch_all($result);
+
+
+
+
+
+
+
+mysqli_free_result($result);
 mysqli_close($conn);
 
 ?>
