@@ -142,7 +142,6 @@ mysqli_close($conn);
                     <!-- main-Body -->
                     <!-- Checkboxes -->
                     <form action="modal.php" method="POST">
-
                         <?php
                         foreach ($interests as $key => $interest) { // Use $key as a unique identifier
                         ?>
@@ -185,7 +184,6 @@ mysqli_close($conn);
                             <button type="submit" name="save" class="btn btn-outline-secondary">Save</button>
                         </div>
                     </form>
-
                 </div>
             </div>
         </div>

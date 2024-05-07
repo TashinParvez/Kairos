@@ -57,7 +57,7 @@
             </a>
         </div>
         <div class="temp">
-            <a href="\Goal\Goals3.php" type="button" class="btn btn-primary">
+            <a href="\Goal\goals.php" type="button" class="btn btn-primary">
                 <span><?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                     <svg class="bg-white" width="25" height="25" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                     <path d="M16 22V13C16 11.5858 16 10.8787 15.5607 10.4393C15.1213 10 14.4142 10 13 10H11C9.58579 10 8.87868 10 8.43934 10.4393C8 10.8787 8 11.5858 8 13V22" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round"/>

@@ -96,17 +96,27 @@ mysqli_close($conn);
 <body>
 
     <?php
-    include('../Includes/NavThird.php'); // uncomment
-    include('../Includes/Sidebar.php'); // uncomment
+        include('../Includes/NavBarSecond.php'); // uncomment
+        include('../Includes/Sidebar.php'); // uncomment
+        include('../Includes/HappyJar.php'); // uncomment
     ?>
     <main class="main bg-white shadow">
+        <div class="container">
+            <div class="row bg-white">
+                <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
+                    <button type="submit" class="btn btn-secondary " style="text-color:black" name="add">Home</button>
+                </div>
+                <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
+                    <button type="submit" class="btn btn-secondary" name="add">Label 1</button>
+                </div>
+                <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
+                    <button type="submit" class="btn btn-secondary " name="add">Label 2</button>
+                </div>
+                    <div class="col-lg-9 bg-white" style="      position: sticky;      z-index: 1000;">
+                </div>
+                
+        </div>
         <div class="container bg-white">
-
-            <!-- -------------------------------- First Block ---------------------------------------- -->
-
-            <!-- ------------------------------------ Second Block ------------------------------------- -->
-
-
             <div class="row bg-white">
                 <!-- Write Your Note Field (70% width) -->
                 <div class="col-lg-9 bg-white" style=" position: sticky;    z-index: 1000; ">
@@ -119,14 +129,14 @@ mysqli_close($conn);
                     <div class="input-group mt-3">
                         <input class="form-control form-control-lg pt-3 pb-3 bg-white" type="text" placeholder="Search notes" aria-label=".form-control-lg example">
                         <button class="btn btn-outline-secondary" type="button">
-                            <img src="../images/Search-icon.png" alt="Search" style="height: 50%;">
+                            <img src="../images/Search-icon.png" class="bg-transparent" alt="Search" style="height: 50%;">
                         </button>
                     </div>
                 </div>
+                
             </div>
-
         </div>
-
+        <br>
         <div class="block bg-white">
             <!-- Notes Block -->
             <div class="">
@@ -140,8 +150,13 @@ mysqli_close($conn);
                     foreach ($Notes as $note) { ?>
 
                         <div class="col bg-white">
-                            <div class="card h-100 bg-white">
-                                <img src="/Images/logo.png" class="card-img-top" alt="...">
+                            <div class="card h-100 bg-white" style="transition: transform 0.3s;">
+                                <style>
+                                    .card:hover {
+                                        transform: translateY(-5px);
+                                    }
+                                </style>
+                                <!-- <img src="/Images/logo.png" class="card-img-top" alt="..."> -->
                                 <div class="card-body bg-white">
                                     <h5 class="card-title bg-white">
                                         <?php
@@ -154,8 +169,8 @@ mysqli_close($conn);
                                         ?>
                                     </p>
                                 </div>
-                                <div class="card-footer">
-                                    <small class="text-muted">Created
+                                <div class="card-footer bg-white">
+                                    <small class="text-muted bg-white">Created
                                         <?php
                                         echo htmlspecialchars($note[2]);
                                         ?>

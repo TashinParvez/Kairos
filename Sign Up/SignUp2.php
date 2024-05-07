@@ -279,7 +279,6 @@ if (isset($_POST['signUp'])) {
             </div>
             <div class="red_text"><?php echo $errors['religion']; ?></div>
           </div>
-
           <div class="input-group mb-2 box">
             <div class="input-group mb">
               <span class="input-group-text">Email</span>
@@ -344,7 +343,7 @@ if (isset($_POST['signUp'])) {
         </div>
 
         <div style="display: grid; place-items: center" class="but2">
-          <span>Already have an account? <a href="login.php">Login</a></span>
+          <span>Already have an account? <a href="\login Main\login.php">Login</a></span>
         </div>
         </div>
       </form>

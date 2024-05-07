@@ -122,7 +122,7 @@ session_start();
 				</div><br>
 				<input class="btn btn-primary" type="submit" value="Login">
 			<div style="display: grid; place-items: center" class="but2">
-			<span>Don't have a account? <a href="login.php">Create</a></span>
+			<span>Don't have a account? <a href="\Sign Up\SignUp2.php">Create</a></span>
 			</div>
 			</div>
 		</form>

@@ -167,13 +167,19 @@ body {
   background-color: transparent;
 }
 .temp .btn-primary {
-  background-color: transparent !important;
+  background-color: white !important;
   border-color: transparent;
   color: black; /* Set text color to black */
 }
 
+
+.temp .btn-primary:hover {
+  color:black;
+  border-color: white;
+}
+
 .temp .btn-primary span img {
-  margin-right: 5px; /* Adjust the margin between the image and the text */
+  margin-right: 7px; /* Adjust the margin between the image and the text */
 }
 @media (max-width: 925px) {
   .main {

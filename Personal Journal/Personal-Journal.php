@@ -9,46 +9,14 @@ $userHandle = mysqli_real_escape_string($conn, 'tashin19'); // after linked all 
 $today = date("F j, Y", strtotime("today"));  // today's date
 // echo "Today's date is: " . $today;
 
+$goodthing1 = null;
+$goodthing2 = $goodthing1;
+$badthing1 = $goodthing1;
+$badthing2 = $goodthing1;
+
 //--------------- add new Slice --------------------
 $errors = array('title&details' => '');
 
-//  ...........for save data without pressing any button...........
-// Check if the request is an AJAX request
-if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQUESTED_WITH']) === 'xmlhttprequest') {
-    // Check if the request method is POST
-    if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-        // Retrieve data sent via POST request
-        $title = mysqli_real_escape_string($conn, $_POST['title']);
-        $details = mysqli_real_escape_string($conn, $_POST['details']);
-
-        // Prepare and bind the SQL statement
-        if (empty($title) && empty($details)) {
-            $errors['title&details'] = 'At least Have to fill one'; // can't save
-        }
-
-        if (!array_filter($errors)) {
-
-            $sql = "INSERT INTO personal_journal(userHandle, title, details, saved)
-                    VALUES('tashin19','$title', '$details', 0)";
-
-            // save to db and check
-            if (mysqli_query($conn, $sql)) {
-                header('Location: Personal-Journal.php');
-            } else {
-                echo 'query error: ' . mysqli_error($conn);
-            }
-        }
-    } else {
-        // Request method is not POST
-        http_response_code(400);
-        echo "Bad Request";
-    }
-} else {
-    // Not an AJAX request
-    http_response_code(403);
-    echo "Forbidden";
-}
-// .........................................
 
 //--------------- add new Slice by save or newslice button--------------------
 if (isset($_POST['save']) || isset($_POST['newSlice'])) {
@@ -76,7 +44,7 @@ if (isset($_POST['save']) || isset($_POST['newSlice'])) {
 }
 
 //--------------- add good and bad things --------------------
-$errors = array('goodthing' => '', 'badthing' => '');
+$error = '';
 $goodthing1 = $goodthing2 = $badthing1 = $badthing2 = '';
 if (isset($_POST['add'])) {
 
@@ -85,18 +53,77 @@ if (isset($_POST['add'])) {
     $badthing1 = mysqli_real_escape_string($conn, $_POST['badthing1']);
     $badthing2 = mysqli_real_escape_string($conn, $_POST['badthing2']);
 
-    if (empty($goodthing1) && empty($goodthing2)) {
-        $errors['goodthing'] = 'One good thing must be filled';
+    if (empty($goodthing1) && empty($goodthing2) && empty($badthing1) && empty($badthing2)) {
+        $error = 'Atleast one good or bad thing must be filled';
     }
-    if (empty($badthing1) && empty($badthing2)) {
-        $errors['goodthing'] = 'One bad thing must be filled';
-    }
+
+
+    // echo $badthing1;
 
     if (!array_filter($errors)) {
 
-        // create sql
-        $sql = "INSERT INTO good_and_bad_things(userHandle, )
-                VALUES()";
+        // ---------------------------------------    try 1   ------------------------------------
+        // $stringArray = array();
+        // array_push($stringArray, $goodthing1, $goodthing2, $badthing1, $badthing2);
+        // $cnt = 1;
+
+        // foreach ($stringArray as $value) {  // check already in it or not
+        //     $sql = "SELECT *
+        //             FROM good_and_bad_things
+        //             WHERE details ='$value' && userHandle = '$userHandle' && date = CURDATE();";
+
+        //     $result =  mysqli_query($conn, $sql);  // get query result
+
+        //     if (mysqli_num_rows($result) > 0) {  // dont need to push
+        //     } else { // Result is empty  -> PUSH
+        //         if ($cnt <= 2) {
+        //             $sql =  "INSERT INTO `good_and_bad_things` (`title`, `type`, `date`, `details`, `userHandle`) 
+        //                      VALUES (NULL, b'1', current_timestamp(), '$value', '$userHandle');";
+        //         } else { // FOR BAD THING
+        //             $sql =  "INSERT INTO `good_and_bad_things` (`title`, `type`, `date`, `details`, `userHandle`) 
+        //                      VALUES (NULL, b'0', current_timestamp(), '$value', '$userHandle');";
+        //         }
+        //         mysqli_query($conn, $sql);
+        //     }
+        //     $cnt += 1;
+        // }
+
+        //--------------------------------------- SECOND try ---------------------------------------
+        // echo $badthing1;
+        $sql = "INSERT INTO `good_and_bad_things` (`title`, `type`, `date`, `details`, `userHandle`)
+                SELECT NULL, b'1', CURRENT_TIMESTAMP(), details, '$userHandle' 
+                FROM (
+                    SELECT '$goodthing1' AS details 
+                    UNION ALL
+                    SELECT '$goodthing2' AS details
+                ) AS goodthings
+                WHERE 
+                    COALESCE(details, '') != '' AND
+                    NOT EXISTS (
+                        SELECT 1
+                        FROM `good_and_bad_things`
+                        WHERE `details` = goodthings.details AND `userHandle` = '$userHandle' AND `date` = CURRENT_DATE()
+                    )
+
+                UNION ALL
+
+                SELECT NULL, b'0', CURRENT_TIMESTAMP(), details, '$userHandle'
+                FROM (
+                    SELECT '$badthing1' AS details 
+                    UNION ALL
+                    SELECT '$badthing2' AS details
+                ) AS badthings
+                WHERE 
+                    COALESCE(details, '') != '' AND
+                    NOT EXISTS (
+                        SELECT 1
+                        FROM `good_and_bad_things`
+                        WHERE `details` = badthings.details AND `userHandle` = '$userHandle' AND `date` = CURRENT_DATE()
+                    );
+                ";
+
+
+        // -------- SECOND END -----
 
         // save to db and check
         if (mysqli_query($conn, $sql)) {
@@ -105,11 +132,48 @@ if (isset($_POST['add'])) {
         } else {
             echo 'query error: ' . mysqli_error($conn);
         }
-
-        // close connection
-        mysqli_close($conn);
     }
 }
+
+//----------------- Fetch old gandb things --------------- tashin
+
+$sql = "SELECT * 
+        FROM `good_and_bad_things`
+        WHERE userHandle = '$userHandle' && date = CURRENT_DATE();";
+
+$resultantLabel =  mysqli_query($conn, $sql);
+$result = mysqli_fetch_all($resultantLabel);
+
+// print_r($result);
+
+$strArray = array("", "", "", "");
+$cntidx = 0;
+$idx = 0;
+
+foreach ($strArray as $ptr) {
+    if ($cntidx >= count($result)) {
+        // nothing
+    } else 
+    if ($result[$cntidx][1] == '0' && $idx <= 1) {
+        // nothing
+    } else if ($result[$cntidx][1] == '1' && $idx <= 1) {
+        $strArray[$idx] = $result[$cntidx][3];
+        $cntidx++;
+    } else if ($result[$cntidx][1] == '0' && $idx >= 2) {
+        $strArray[$idx] = $result[$cntidx][3];
+        $cntidx++;
+    }
+    $idx++;
+}
+
+// print_r($strArray);
+
+$goodthing1 =  $strArray[0];
+$goodthing2 = $strArray[1];
+$badthing1 = $strArray[2];
+$badthing2 = $strArray[3];
+
+// fetch data done
 
 //----------------- For label of users ---------------
 
@@ -169,41 +233,12 @@ mysqli_close($conn);
 
 <body>
     <?php
-    include('../Includes/NavBar.php'); // uncomment
+    include('../Includes/NavSecond.php'); // uncomment
     include('../Includes/Sidebar.php'); // uncomment
     ?>
 
 
-    <!-- for save data without pressing any button -->
-    <script>
-        $(document).ready(function() {
-
-            // Function to save slice data
-            function saveSliceData() {
-                // Get the form data
-                // var formData = $('#sliceForm').serialize();
-
-                // Send an AJAX request to save data
-                $.ajax({
-                    url: 'Personal-Journal.php', // Replace with your server-side script URL
-                    type: 'POST',
-                    // data: formData,
-                    success: function(response) {
-                        console.log('Data saved successfully');
-                    },
-                    error: function(xhr, status, error) {
-                        console.error('Error saving data: ' + error);
-                    }
-                });
-            }
-
-            // Capture page unload events (including page refresh)
-            $(window).on('beforeunload', function() {
-                saveSliceData();
-            });
-        });
-    </script>
-    <!-- ................................. -->
+   
 
     <!-- ------------------------ Main Segment ------------------------------- -->
 
@@ -227,13 +262,13 @@ mysqli_close($conn);
                             <div class="row align-items-center bg-white">
                                 <label for="goodthing1" class="col-sm-2 col-form-label bg-white">1.</label>
                                 <div class="col-sm-10 bg-white">
-                                    <input type="text" class="form-control bg-white" id="goodthing1" name="goodthing1">
+                                    <input type="text" class="form-control bg-white" id="goodthing1" name="goodthing1" value="<?php echo htmlspecialchars($goodthing1); ?>" <?php if ($goodthing1 != null || strlen($goodthing1) != 0) { ?> readonly <?php } ?>>
                                 </div>
                             </div>
                             <div class="row align-items-center bg-white">
                                 <label for="goodthing2" class="col-sm-2 col-form-label bg-white">2.</label>
                                 <div class="col-sm-10 bg-white">
-                                    <input type="text" class="form-control bg-white" id="goodthing2" name="goodthing2">
+                                    <input type="text" class="form-control bg-white" id="goodthing2" name="goodthing2" value="<?php echo htmlspecialchars($goodthing2); ?>" <?php if ($goodthing2 != null || strlen($goodthing2) != 0) { ?> readonly <?php } ?>>
                                 </div>
                             </div>
                             <hr class="d-md-none bg-white">
@@ -245,13 +280,13 @@ mysqli_close($conn);
                             <div class="row align-items-center bg-white">
                                 <label for="badthing1" class="col-sm-2 col-form-label bg-white">1.</label>
                                 <div class="col-sm-10 bg-white">
-                                    <input type="text" class="form-control bg-white" id="badthing1" name="badthing1">
+                                    <input type="text" class="form-control bg-white" id="badthing1" name="badthing1" value="<?php echo htmlspecialchars($badthing1); ?>" <?php if ($badthing1 != null || strlen($badthing1) != 0) { ?> readonly <?php } ?>>
                                 </div>
                             </div>
                             <div class="row align-items-center bg-white">
                                 <label for="badthing2" class="col-sm-2 col-form-label bg-white">2.</label>
                                 <div class="col-sm-10 bg-white">
-                                    <input type="text" class="form-control bg-white" id="badthing2" name="badthing2">
+                                    <input type="text" class="form-control bg-white" id="badthing2" name="badthing2" value="<?php echo htmlspecialchars($badthing2); ?>" <?php if ($badthing2 != null || strlen($badthing2) != 0) { ?> readonly <?php } ?>>
                                 </div>
                             </div>
                             <hr class="d-md-none bg-white">
@@ -259,7 +294,7 @@ mysqli_close($conn);
                     </div>
                     <!-- button for saving good and bad things -->
                     <div class="bg-white">
-                        <button type="submit" class="btn btn-primary bg-white" name="add">ADD</button>
+                        <button type="submit" class="btn btn-secondary bg-white" name="add">ADD</button>
                         <!-- <button type="submit" class="btn btn-primary bg-white" name="add" style="height: 30px; width: 100px; color:darkgrey; text-align: center;">ADD</button> -->
                     </div>
                 </form>
