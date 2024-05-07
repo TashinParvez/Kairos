@@ -96,7 +96,7 @@ mysqli_close($conn);
 <body>
 
     <?php
-    include('../Includes/NavBarSecond.php'); // uncomment
+    include('../Includes/NavThird.php'); // uncomment
     include('../Includes/Sidebar.php'); // uncomment
     ?>
     <main class="main bg-white shadow">
@@ -127,12 +127,12 @@ mysqli_close($conn);
 
         </div>
 
-        <div class="block " style="height: 83.5vh; overflow-y: auto;">
+        <div class="block bg-white">
             <!-- Notes Block -->
             <div class="">
                 <!---------------------- Note Cards ---------------------->
 
-                <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="row row-cols-1 row-cols-md-3 g-4 bg-white">
 
                     <!-- cards creat -->
 
