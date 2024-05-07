@@ -207,7 +207,7 @@ mysqli_close($conn);
 
     <!-- ------------------------ Main Segment ------------------------------- -->
 
-    <main class="main shadow">
+    <main class="main shadow bg-white">
 
 
 

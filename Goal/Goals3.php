@@ -308,7 +308,7 @@ if (isset($_GET['userHandle'])) {
 
 <body>
     <?php
-    include '../Includes/NavBar.php'; // uncomment
+    include '../Includes/NavBarSecond.php'; // uncomment
 include '../Includes/Sidebar.php'; // uncomment
 ?>
 
