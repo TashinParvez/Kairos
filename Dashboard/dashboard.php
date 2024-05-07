@@ -263,7 +263,7 @@ if (isset($_GET['userHandle'])) {
                             foreach ($Notes as $note) { ?>
 
                                 <div class="col">
-                                    <div class="card h-100">
+                                    <div class="card h-100" >
                                         <img src="/Images/logo.png" class="card-img-top" alt="...">
                                         <div class="card-body">
                                             <h5 class="card-title">
