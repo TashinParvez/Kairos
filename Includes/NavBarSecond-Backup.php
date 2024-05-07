@@ -1,84 +1,3 @@
-<?php
-include('\../Kairos/Dashboard/connect_db.php'); // database connection
-
-$data = array();
-// --------------------------------------------- fetch data For search ------------------------
-// fetch data ( FROM Notes )
-
-$sql = "SELECT title
-        FROM notes
-        WHERE userHandle = 'tashin19'
-        UNION ALL
-        SELECT details
-        FROM notes
-        WHERE userHandle = 'tashin19';";
-
-$result  =  mysqli_query($conn, $sql);  // get query result 
-
-foreach ($result as $row) {
-    $data[] = $row['title'];
-}
-
-// fetch data ( FROM Blogs )
-
-$sql = "SELECT topicName
-        FROM blog
-        UNION
-        SELECT description
-        FROM blog;";
-
-$result  =  mysqli_query($conn, $sql);  // get query result 
-
-foreach ($result as $row) {
-  $data[] = $row['topicName'];
-}
-
-// fetch data ( FROM Category )
-
-$sql = "SELECT name
-        FROM `category`;";
-
-$result  =  mysqli_query($conn, $sql);  // get query result 
-
-foreach ($result as $row) {
-  $data[] = $row['name'];
-}
-
-// fetch data ( FROM Life_library)
-
-$sql = "SELECT bookname
-        FROM `life_library` 
-        UNION ALL
-        SELECT details
-        FROM `life_library`";
-
-$result  =  mysqli_query($conn, $sql);  // get query result 
-
-foreach ($result as $row) {
-  $data[] = $row['bookname'];
-}
-
-// fetch data ( FROM personal journal)
-
-$sql = "SELECT title
-        FROM `personal_journal`
-        WHERE userHandle = 'tashin19'
-        UNION ALL
-        SELECT details
-        FROM `personal_journal`
-        WHERE userHandle = 'tashin19';";
-
-$result  =  mysqli_query($conn, $sql);  // get query result 
-
-foreach ($result as $row) {
-  $data[] = $row['title'];
-}
-
-// print_r($data);
-//--------------------------------------------- DATA fetch done ---------------------
-
-?>
-
 <!DOCTYPE html>
 <html lang="en">
 
@@ -98,25 +17,6 @@ foreach ($result as $row) {
         href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
         rel="stylesheet">
       <link rel="stylesheet" href="style.css">
-
-       <!-- Required meta tags -->
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-
-    <!-- Bootstrap CSS -->
-    <link href="library/bootstrap-5/bootstrap.min.css" rel="stylesheet" />
-    <script src="library/bootstrap-5/bootstrap.bundle.min.js"></script>
-
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Bootstrap CSS -->
-    <link href="library/bootstrap-5/bootstrap.min.css" rel="stylesheet" />
-
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-
-    <!-- Typeahead.js -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
 
 
 </head>
@@ -299,8 +199,7 @@ foreach ($result as $row) {
             <div class="container-fluid bg-white align-items-right">
             <form class="searchBar" action="">
                 <span id="search-txt">Search</span>
-                <!-- <input type="search" required> -->
-                <input type="search" name="country_name" id="country_name" class="form-control form-control-lg" placeholder="Country Name" autocomplete="off" required/>
+                <input type="search" required>
                 <i class="fa fa-search"></i>
             </form>
             </div>
@@ -349,26 +248,3 @@ foreach ($result as $row) {
 </body>
 
 </html>
-
-<script>
-    $(document).ready(function() {
-        var countries = <?php echo json_encode($data); ?>;
-
-        // Instantiate the Bloodhound suggestion engine
-        var countriesBloodhound = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.whitespace,
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            local: countries
-        });
-
-        // Initialize the Typeahead plugin
-        $('#country_name').typeahead({
-            hint: true,
-            highlight: true,
-            minLength: 1
-        }, {
-            name: 'countries',
-            source: countriesBloodhound
-        });
-    });
-</script>
