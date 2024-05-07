@@ -1,37 +1,35 @@
 <?php
-
-include 'connect_db.php'; // database connection
+include 'connect_db.php';
 
 $username = null;
 
-if (isset($_POST['amaze-me-more'])) {
-    
+function fetchRandomGoodThing()
+{
+    global $conn;
+    $sql = "SELECT *
+            FROM ( SELECT FLOOR(RAND() * 
+                                ((SELECT COUNT(*)
+                                  FROM good_and_bad_things
+                                  WHERE userHandle = 'munna' AND type = 1 ))) AS idx) AS random_idx
+            LEFT JOIN
+            (   SELECT ROW_NUMBER() OVER () -1 AS index_number, gbt.*
+                FROM good_and_bad_things AS gbt
+                WHERE userHandle = 'munna' AND type = 1) as ntb
+            ON random_idx.idx = ntb.index_number;";
+
+    $result = mysqli_query($conn, $sql);
+    $oneGdThing = mysqli_fetch_assoc($result);
+    mysqli_free_result($result);
+    return $oneGdThing;
 }
 
-// ------------------------------------------------------------------------------------
-// type 1 = gd
-// type 0 = bad
+$oneGdThing = fetchRandomGoodThing();
 
-// sql
-$sql = "SELECT *
-        FROM ( SELECT FLOOR(RAND() * 
-                            ((SELECT COUNT(*)
-                              FROM good_and_bad_things
-                              WHERE userHandle = 'munna' AND type = 1 ))) AS idx) AS random_idx
-        LEFT JOIN
-        (   SELECT ROW_NUMBER() OVER () -1 AS index_number, gbt.*
-            FROM good_and_bad_things AS gbt
-            WHERE userHandle = 'munna' AND type = 1) as ntb
-        ON random_idx.idx = ntb.index_number;";
+// print_r($oneGdThing);
+// echo "\n";
 
-$result = mysqli_query($conn, $sql);
-
-$oneGdThing = mysqli_fetch_all($result);
-
-mysqli_free_result($result);
 mysqli_close($conn);
 ?>
-
 
 <!DOCTYPE html>
 <html lang="en">
@@ -40,12 +38,12 @@ mysqli_close($conn);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Title and Description Input</title>
+    <!-- Bootstrap CSS -->
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
-    <!-- Bootstrap links -->
+    <!-- Bootstrap 5 CSS and JS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-
 </head>
 
 <body>
@@ -58,13 +56,10 @@ mysqli_close($conn);
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <?php echo htmlspecialchars($oneGdThing[0][5]); ?>
+                    <?php echo htmlspecialchars($oneGdThing['details']); ?>
                 </div>
                 <div class="modal-footer">
-                    <form action="jar-of-happiness.php" method="post">
-
-                        <button class="btn btn-primary" id="amazeMeMore" type="submit" name="amaze-me-more">Amaze Me More</button>
-                    </form>
+                    <button class="btn btn-primary" id="amazeMeMore">Amaze Me More</button>
                 </div>
             </div>
         </div>
@@ -74,7 +69,13 @@ mysqli_close($conn);
 
     <script>
         document.getElementById('amazeMeMore').addEventListener('click', function() {
-            $('#exampleModalToggle').modal('show'); // Reopen the modal
+
+            fetch('fetch_random_good_thing.php')
+                .then(response => response.text())
+                .then(data => {
+                    document.querySelector('.modal-body').innerHTML = data;
+                })
+                .catch(error => console.error('Error:', error));
         });
     </script>
 
