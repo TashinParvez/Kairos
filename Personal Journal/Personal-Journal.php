@@ -233,7 +233,7 @@ mysqli_close($conn);
 
 <body>
     <?php
-    include('../Includes/NavBar.php'); // uncomment
+    include('../Includes/NavSecond.php'); // uncomment
     include('../Includes/Sidebar.php'); // uncomment
     ?>
 
@@ -294,7 +294,7 @@ mysqli_close($conn);
                     </div>
                     <!-- button for saving good and bad things -->
                     <div class="bg-white">
-                        <button type="submit" class="btn btn-primary bg-white" name="add">ADD</button>
+                        <button type="submit" class="btn btn-secondary bg-white" name="add">ADD</button>
                         <!-- <button type="submit" class="btn btn-primary bg-white" name="add" style="height: 30px; width: 100px; color:darkgrey; text-align: center;">ADD</button> -->
                     </div>
                 </form>

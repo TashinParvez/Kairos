@@ -17,7 +17,7 @@
   width: 0%;
   height: 2px;
   display: block;
-  background: #f44336;
+  background: gray;
   margin: auto;
   transition: 0.5s;
 }
