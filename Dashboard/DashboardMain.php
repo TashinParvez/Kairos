@@ -96,8 +96,9 @@ mysqli_close($conn);
 <body>
 
     <?php
-    include('../Includes/NavThird.php'); // uncomment
+    include('../Includes/NavBarSecond.php'); // uncomment
     include('../Includes/Sidebar.php'); // uncomment
+    include('../Includes/HappyJar.php'); // uncomment
     ?>
     <main class="main bg-white shadow">
         <div class="container bg-white">
@@ -124,9 +125,8 @@ mysqli_close($conn);
                     </div>
                 </div>
             </div>
-
         </div>
-
+        <br>
         <div class="block bg-white">
             <!-- Notes Block -->
             <div class="">
@@ -141,7 +141,7 @@ mysqli_close($conn);
 
                         <div class="col bg-white">
                             <div class="card h-100 bg-white">
-                                <img src="/Images/logo.png" class="card-img-top" alt="...">
+                                <!-- <img src="/Images/logo.png" class="card-img-top" alt="..."> -->
                                 <div class="card-body bg-white">
                                     <h5 class="card-title bg-white">
                                         <?php
@@ -154,8 +154,8 @@ mysqli_close($conn);
                                         ?>
                                     </p>
                                 </div>
-                                <div class="card-footer">
-                                    <small class="text-muted">Created
+                                <div class="card-footer bg-white">
+                                    <small class="text-muted bg-white">Created
                                         <?php
                                         echo htmlspecialchars($note[2]);
                                         ?>
