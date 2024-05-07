@@ -58,6 +58,7 @@ if (isset($_POST['post'])) {
     }
 }
 
+// for memory free
 mysqli_free_result($result);
 // close connection
 mysqli_close($conn);
