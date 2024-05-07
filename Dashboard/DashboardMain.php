@@ -140,7 +140,12 @@ mysqli_close($conn);
                     foreach ($Notes as $note) { ?>
 
                         <div class="col bg-white">
-                            <div class="card h-100 bg-white">
+                            <div class="card h-100 bg-white" style="transition: transform 0.3s;">
+                                <style>
+                                    .card:hover {
+                                        transform: translateY(-5px);
+                                    }
+                                </style>
                                 <!-- <img src="/Images/logo.png" class="card-img-top" alt="..."> -->
                                 <div class="card-body bg-white">
                                     <h5 class="card-title bg-white">
