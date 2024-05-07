@@ -2,90 +2,15 @@
 
 include('../Dashboard/connect_db.php'); // database connection
 
-$labels  =  null;
-$userHandle = null;
-$errors = array('title&details' => '');
+session_start(); // Start the session
+// $userHandle = mysqli_real_escape_string($conn, $_SESSION['userHandle']); // after linked all page. it will be uncommented
+$userHandle = mysqli_real_escape_string($conn, 'tashin19'); // after linked all page. it will be deleted
 
-// check get request userHandle 
-if (isset($_GET['userHandle'])) {
-
-    $userHandle = mysqli_real_escape_string($conn, $_GET['userHandle']);
-
-    //----------------- For label of users ---------------
-
-    // sql query
-
-    $sql = "SELECT l.labelName
-        FROM user_info AS uinfo
-        INNER JOIN
-        label as l
-        ON uinfo.userHandle = l.userHandle
-        WHERE uinfo.userHandle = '$userHandle'; ";
-
-    $resultantLabel =  mysqli_query($conn, $sql);  // get query result
-
-    $labels = mysqli_fetch_all($resultantLabel); // conver to array
-
-    // print_r($labels);
-
-
-
-    // for memory free
-    mysqli_free_result($resultantLabel);
-    mysqli_close($conn);
-} else {  // full else remove after adding login 
-
-    $userHandle = mysqli_real_escape_string($conn, 'tashin19');
-    $sql = "SELECT p.title, p.details,
-                CASE
-                    WHEN TIMESTAMPDIFF(HOUR, p.lastUpdate, NOW()) >= 1  THEN CONCAT(TIMESTAMPDIFF(HOUR, created_at, NOW()), ' hour(s) ago')
-                    ELSE CONCAT(TIMESTAMPDIFF(MINUTE, p.lastUpdate, NOW()), ' minute(s) ago')
-                END AS time_ago 
-            FROM personal_journal as p 
-            WHERE saved = 1 AND DATE(created_at) = DATE(now()) AND
-            userHandle = '$userHandle'
-            ORDER BY created_at DESC;";
-
-    $resultantLabel =  mysqli_query($conn, $sql);  // get query result
-
-    $todaysSlices = mysqli_fetch_all($resultantLabel); // conver to array
-
-    // print_r($todaysSlices);
-
-
-    // foreach ($todaysSlices as $slice) {
-    //     print_r($slice);
-    //     echo '<br>';
-    // }
-
-
-    // for memory free
-    mysqli_free_result($resultantLabel);
-}
+$today = date("F j, Y", strtotime("today"));  // today's date
+// echo "Today's date is: " . $today;
 
 //--------------- add new Slice --------------------
-
-if (isset($_POST['save']) || isset($_POST['newSlice'])) {
-    $title = mysqli_real_escape_string($conn, $_POST['title']);
-    $details = mysqli_real_escape_string($conn, $_POST['details']);
-
-    if (empty($title) && empty($details)) {
-        $errors['title&details'] = 'At least Have to fill one'; // can't save
-    }
-
-    if (!array_filter($errors)) {
-
-        $sql = "INSERT INTO personal_journal(userHandle, title, details, saved)
-                VALUES('tashin19','$title', '$details', 1)";
-
-        // save to db and check
-        if (mysqli_query($conn, $sql)) {
-            header('Location: Personal-Journal.php');
-        } else {
-            echo 'query error: ' . mysqli_error($conn);
-        }
-    }
-}
+$errors = array('title&details' => '');
 
 //  ...........for save data without pressing any button...........
 // Check if the request is an AJAX request
@@ -125,11 +50,101 @@ if (isset($_SERVER['HTTP_X_REQUESTED_WITH']) && strtolower($_SERVER['HTTP_X_REQU
 }
 // .........................................
 
+//--------------- add new Slice by save or newslice button--------------------
+if (isset($_POST['save']) || isset($_POST['newSlice'])) {
+    $title = mysqli_real_escape_string($conn, $_POST['title']);
+    $details = mysqli_real_escape_string($conn, $_POST['details']);
 
-$today = date("F j, Y", strtotime("today"));  // today's date
-// echo "Today's date is: " . $today;
+    if (empty($title) && empty($details)) {
+        $errors['title&details'] = 'At least Have to fill one'; // can't save
+    }
 
+    if (!array_filter($errors)) {
+
+        $sql = "INSERT INTO personal_journal(userHandle, title, details, saved)
+                VALUES('tashin19','$title', '$details', 1)";
+
+        // save to db and check
+        if (mysqli_query($conn, $sql)) {
+            header('Location: Personal-Journal.php');
+        } else {
+            echo 'query error: ' . mysqli_error($conn);
+        }
+    }
+    // close connection
+    mysqli_close($conn);
+}
+
+//--------------- add good and bad things --------------------
+$errors = array('goodthing' => '', 'badthing' => '');
+$goodthing1 = $goodthing2 = $badthing1 = $badthing2 = '';
+if (isset($_POST['add'])) {
+
+    $goodthing1 = mysqli_real_escape_string($conn, $_POST['goodthing1']);
+    $goodthing2 = mysqli_real_escape_string($conn, $_POST['goodthing2']);
+    $badthing1 = mysqli_real_escape_string($conn, $_POST['badthing1']);
+    $badthing2 = mysqli_real_escape_string($conn, $_POST['badthing2']);
+
+    if (empty($goodthing1) && empty($goodthing2)) {
+        $errors['goodthing'] = 'One good thing must be filled';
+    }
+    if (empty($badthing1) && empty($badthing2)) {
+        $errors['goodthing'] = 'One bad thing must be filled';
+    }
+
+    if (!array_filter($errors)) {
+
+        // create sql
+        $sql = "INSERT INTO good_and_bad_things(userHandle, )
+                VALUES()";
+
+        // save to db and check
+        if (mysqli_query($conn, $sql)) {
+            // success
+            header('Location: #');
+        } else {
+            echo 'query error: '.mysqli_error($conn);
+        }
+
+        // close connection
+        mysqli_close($conn);
+    }
+}
+
+//----------------- For label of users ---------------
+
+// sql query
+$sql = "SELECT l.labelName
+        FROM user_info AS uinfo
+        INNER JOIN
+        label as l
+        ON uinfo.userHandle = l.userHandle
+        WHERE uinfo.userHandle = '$userHandle'; ";
+
+$resultantLabel =  mysqli_query($conn, $sql);  // get query result
+$labels = mysqli_fetch_all($resultantLabel); // conver to array
+// print_r($labels);
+
+// sql query
+$sql = "SELECT p.title, p.details,
+                CASE
+                    WHEN TIMESTAMPDIFF(HOUR, p.lastUpdate, NOW()) >= 1  THEN CONCAT(TIMESTAMPDIFF(HOUR, created_at, NOW()), ' hour(s) ago')
+                    ELSE CONCAT(TIMESTAMPDIFF(MINUTE, p.lastUpdate, NOW()), ' minute(s) ago')
+                END AS time_ago 
+            FROM personal_journal as p 
+            WHERE saved = 1 AND DATE(created_at) = DATE(now()) AND
+            userHandle = '$userHandle'
+            ORDER BY created_at DESC;";
+
+$resultantLabel =  mysqli_query($conn, $sql);  // get query result
+$todaysSlices = mysqli_fetch_all($resultantLabel); // conver to array
+// print_r($todaysSlices);
+
+// for memory free
+mysqli_free_result($resultantLabel);
+// close connection
 mysqli_close($conn);
+
 ?>
 
 <!DOCTYPE html>
@@ -154,8 +169,8 @@ mysqli_close($conn);
 
 <body>
     <?php
-        include('../Includes/NavBar.php'); // uncomment
-        include('../Includes/Sidebar.php'); // uncomment
+    include('../Includes/NavBar.php'); // uncomment
+    include('../Includes/Sidebar.php'); // uncomment
     ?>
 
 
@@ -194,7 +209,7 @@ mysqli_close($conn);
 
     <main class="main shadow">
 
-    
+
 
         <div class="bg-white">
 
@@ -204,45 +219,52 @@ mysqli_close($conn);
                 </div>
                 <hr class="m-0">
 
-                <div class="row bg-white">
-                    <!-- Left Column: Item Comparison -->
-                    <div class="col-md-6 border-end bg-white">
-                        <h3 class="text-center bg-white">Positives Recap</h3>
-                        <div class="row align-items-center bg-white">
-                            <label for="goodthing1" class="col-sm-2 col-form-label bg-white">1.</label>
-                            <div class="col-sm-10 bg-white">
-                                <input type="text" class="form-control bg-white" id="goodthing1">
+                <form action="Personal-Journal.php" method="POST">
+                    <div class="row bg-white">
+                        <!-- Left Column: Item Comparison -->
+                        <div class="col-md-6 border-end bg-white">
+                            <h3 class="text-center bg-white">Positives Recap</h3>
+                            <div class="row align-items-center bg-white">
+                                <label for="goodthing1" class="col-sm-2 col-form-label bg-white">1.</label>
+                                <div class="col-sm-10 bg-white">
+                                    <input type="text" class="form-control bg-white" id="goodthing1" name="goodthing1">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row align-items-center bg-white">
-                            <label for="goodthing2" class="col-sm-2 col-form-label bg-white">2.</label>
-                            <div class="col-sm-10 bg-white">
-                                <input type="text" class="form-control bg-white" id="goodthing2">
+                            <div class="row align-items-center bg-white">
+                                <label for="goodthing2" class="col-sm-2 col-form-label bg-white">2.</label>
+                                <div class="col-sm-10 bg-white">
+                                    <input type="text" class="form-control bg-white" id="goodthing2" name="goodthing2">
+                                </div>
                             </div>
+                            <hr class="d-md-none bg-white">
                         </div>
-                        <hr class="d-md-none bg-white">
-                    </div>
 
-                    <!-- Right Column: Item Comparison -->
-                    <div class="col-md-6 border-end bg-white">
-                        <h3 class="text-center bg-white">Regrettable Moments</h3>
-                        <div class="row align-items-center bg-white">
-                            <label for="badthing1" class="col-sm-2 col-form-label bg-white">1.</label>
-                            <div class="col-sm-10 bg-white">
-                                <input type="text" class="form-control bg-white" id="badthing1">
+                        <!-- Right Column: Item Comparison -->
+                        <div class="col-md-6 border-end bg-white">
+                            <h3 class="text-center bg-white">Regrettable Moments</h3>
+                            <div class="row align-items-center bg-white">
+                                <label for="badthing1" class="col-sm-2 col-form-label bg-white">1.</label>
+                                <div class="col-sm-10 bg-white">
+                                    <input type="text" class="form-control bg-white" id="badthing1" name="badthing1">
+                                </div>
                             </div>
-                        </div>
-                        <div class="row align-items-center bg-white">
-                            <label for="badthing2" class="col-sm-2 col-form-label bg-white">2.</label>
-                            <div class="col-sm-10 bg-white">
-                                <input type="text" class="form-control bg-white" id="badthing2">
+                            <div class="row align-items-center bg-white">
+                                <label for="badthing2" class="col-sm-2 col-form-label bg-white">2.</label>
+                                <div class="col-sm-10 bg-white">
+                                    <input type="text" class="form-control bg-white" id="badthing2" name="badthing2">
+                                </div>
                             </div>
+                            <hr class="d-md-none bg-white">
                         </div>
-                        <hr class="d-md-none bg-white">
                     </div>
-                </div>
-
+                    <!-- button for saving good and bad things -->
+                    <div class="bg-white">
+                        <button type="submit" class="btn btn-primary bg-white" name="add">ADD</button>
+                        <!-- <button type="submit" class="btn btn-primary bg-white" name="add" style="height: 30px; width: 100px; color:darkgrey; text-align: center;">ADD</button> -->
+                    </div>
+                </form>
             </div>
+
 
             <!------------------ New Note Segment ------------------>
 
@@ -267,7 +289,7 @@ mysqli_close($conn);
                             <div class="form-floating">
                                 <textarea class="form-control" placeholder="Leave a comment here" id="floatingTextarea" name="title"></textarea>
 
-                    
+
                                 <label for="floatingTextarea">Title</label>
                             </div>
                         </div>
