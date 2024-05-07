@@ -122,7 +122,6 @@ foreach ($result as $row) {
 </head>
 
 <body>
-
     <style>
 #navSearch {
   --background: #ffffff;

@@ -1,8 +1,5 @@
 <?php
-
-include('../Dashboard/connect_db.php'); // database connection
-
-// Generate dynamic chart data using PHP (if needed)
+// Generate dynamic chart data using PHP
 $labels = generateLabels();
 $data = generateData();
 
@@ -30,9 +27,8 @@ function generateData()
         return rand($min, $max);
     }, range(0, $count - 1));
 }
-
-
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -41,7 +37,6 @@ function generateData()
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-
 
     <!-- Bootstrap links -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
@@ -56,14 +51,17 @@ function generateData()
 <body>
     <?php include('sidebar.php'); ?>
 
-    <!-- CSS and JS -->
+    <!-- Main part -->
+    <canvas id="myChart" width="400" height="200"></canvas>
+
+    <!-- JavaScript -->
     <script>
         // Data generation and configuration
         const data = {
-            labels: generateLabels(),
+            labels: [],
             datasets: [{
                 label: 'Dataset',
-                data: generateData(),
+                data: [],
                 borderColor: 'red',
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 fill: false
@@ -113,10 +111,17 @@ function generateData()
                 length: inputs.count
             }, () => Math.floor(Math.random() * (inputs.max - inputs.min + 1)) + inputs.min);
         }
-    </script>
 
-    <!-- Main part -->
-    <canvas id="myChart" width="400" height="200"></canvas>
+        // Fetch data asynchronously
+        fetch('chart_data.php')
+            .then(response => response.json())
+            .then(data => {
+                myChart.data.labels = data.labels;
+                myChart.data.datasets[0].data = data.data;
+                myChart.update();
+            })
+            .catch(error => console.error('Error fetching data:', error));
+    </script>
 
 </body>
 

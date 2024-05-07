@@ -1,3 +1,30 @@
+<!-- <script>
+        // Wait for the DOM to be fully loaded
+        document.addEventListener('DOMContentLoaded', function() {
+            // Select all checkboxes with the class 'goal-checkbox'
+            var checkboxes = document.querySelectorAll('.goal-checkbox');
+
+            // Loop through each checkbox
+            checkboxes.forEach(function(checkbox) {
+                // Add a click event listener to each checkbox
+                checkbox.addEventListener('click', function() {
+                    // Check if the checkbox is checked
+                    if (this.checked) {
+                        // Retrieve the data attributes associated with this checkbox
+                        var goalName = this.getAttribute('goalName');
+                        var startDate = this.getAttribute('startDate');
+                        var endDate = this.getAttribute('endDate');
+                        // You can now use these values to update the database or perform any other action
+                        console.log('Goal checked:', goalName);
+                        console.log('Start date:', startDate);
+                        console.log('End date:', endDate);
+                        // You can also make an AJAX request to update the database
+                    }
+                });
+            });
+        });
+    </script> -->
+
 <?php
 
 include '../Dashboard/connect_db.php'; // Daatabase connection
