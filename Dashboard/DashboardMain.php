@@ -108,14 +108,15 @@ mysqli_close($conn);
     </style>
 
     <?php
-        include('../Includes/NavBarSecond.php'); // uncomment
-        include('../Includes/Sidebar.php'); // uncomment
-        include('../Includes/HappyJar.php'); // uncomment
+    include('../Includes/NavBarSecond.php'); // uncomment
+    include('../Includes/Sidebar.php'); // uncomment
+    include('../Includes/HappyJar.php'); // uncomment
     ?>
     <main class="main bg-white shadow">
         <div class="container bg-white">
             <div class="row bg-white">
                 <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
+<<<<<<< HEAD
                     <button id="labelbtn" type="submit" class="btn btn-secondary bg-white " name="add">Home</button>
                 </div>
                 <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
@@ -133,68 +134,97 @@ mysqli_close($conn);
                 <div class="col-lg-9 bg-white" style=" position: sticky;    z-index: 1000; ">
                     <input id="openModalInput" class="form-control form-control-lg mr-0 mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example">
                     <!-- <input class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example"> -->
+=======
+                    <button type="submit" class="btn btn-secondary " style="text-color:black" name="add">All</button>
+>>>>>>> d5183c0c28aa29dd1065abbdc4ebb79714ad56d7
                 </div>
 
-                <!-- Search Field (30% width) -->
-                <div class="col-lg-3 bg-white" style="      position: sticky;      z-index: 1000;">
-                    <div class="input-group mt-3">
-                        <input class="form-control form-control-lg pt-3 pb-3 bg-white" type="text" placeholder="Search notes" aria-label=".form-control-lg example">
-                        <button class="btn btn-outline-secondary" type="button">
-                            <img src="../images/Search-icon.png" class="bg-transparent" alt="Search" style="height: 50%;">
+                <?php
+                foreach ($labels as $label) { ?>
+                    <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
+                        <button type="submit" class="btn btn-secondary" name="add">
+                            <?php echo htmlspecialchars($label[0]); ?>
                         </button>
                     </div>
-                </div>
-                
+                <?php } ?>
             </div>
+<<<<<<< HEAD
         </div>
         <br>
                 <!---------------------- Note Cards ---------------------->
+=======
+            <div class="container bg-white">
+                <div class="row bg-white">
+                    <!-- Write Your Note Field (70% width) -->
+                    <div class="col-lg-9 bg-white" style=" position: sticky;    z-index: 1000; ">
+                        <input id="openModalInput" class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example">
+                        <!-- <input class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example"> -->
+                    </div>
+>>>>>>> d5183c0c28aa29dd1065abbdc4ebb79714ad56d7
 
-                <div class="row row-cols-1 row-cols-md-3 g-4 bg-white">
+                    <!-- Search Field (30% width) -->
+                    <div class="col-lg-3 bg-white" style="      position: sticky;      z-index: 1000;">
+                        <div class="input-group mt-3">
+                            <input class="form-control form-control-lg pt-3 pb-3 bg-white" type="text" placeholder="Search notes" aria-label=".form-control-lg example">
+                            <button class="btn btn-outline-secondary" type="button">
+                                <img src="../images/Search-icon.png" class="bg-transparent" alt="Search" style="height: 50%;">
+                            </button>
+                        </div>
+                    </div>
 
-                    <!-- cards creat -->
+                </div>
+            </div>
+            <br>
+            <div class="block bg-white">
+                <!-- Notes Block -->
+                <div class="">
+                    <!---------------------- Note Cards ---------------------->
 
-                    <?php
-                    foreach ($Notes as $note) { ?>
+                    <div class="row row-cols-1 row-cols-md-3 g-4 bg-white">
 
-                        <div class="col bg-white">
-                            <div class="card h-100 bg-white" style="transition: transform 0.3s;">
-                                <style>
-                                    .card:hover {
-                                        transform: translateY(-5px);
-                                    }
-                                </style>
-                                <!-- <img src="/Images/logo.png" class="card-img-top" alt="..."> -->
-                                <div class="card-body bg-white">
-                                    <h5 class="card-title bg-white">
-                                        <?php
-                                        echo htmlspecialchars($note[0]);
-                                        ?>
-                                    </h5>
-                                    <p class="card-text">
-                                        <?php
-                                        echo htmlspecialchars($note[1]);
-                                        ?>
-                                    </p>
-                                </div>
-                                <div class="card-footer bg-white">
-                                    <small class="text-muted bg-white">Created
-                                        <?php
-                                        echo htmlspecialchars($note[2]);
-                                        ?>
-                                    </small>
+                        <!-- cards creat -->
+
+                        <?php
+                        foreach ($Notes as $note) { ?>
+
+                            <div class="col bg-white">
+                                <div class="card h-100 bg-white" style="transition: transform 0.3s;">
+                                    <style>
+                                        .card:hover {
+                                            transform: translateY(-5px);
+                                        }
+                                    </style>
+                                    <!-- <img src="/Images/logo.png" class="card-img-top" alt="..."> -->
+                                    <div class="card-body bg-white">
+                                        <h5 class="card-title bg-white">
+                                            <?php
+                                            echo htmlspecialchars($note[0]);
+                                            ?>
+                                        </h5>
+                                        <p class="card-text">
+                                            <?php
+                                            echo htmlspecialchars($note[1]);
+                                            ?>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer bg-white">
+                                        <small class="text-muted bg-white">Created
+                                            <?php
+                                            echo htmlspecialchars($note[2]);
+                                            ?>
+                                        </small>
+                                    </div>
                                 </div>
                             </div>
-                        </div>
-                    <?php } ?>
+                        <?php } ?>
+
+                    </div>
+
+                    <!-- ----------------------------------- -->
 
                 </div>
 
-                <!-- ----------------------------------- -->
-
             </div>
-
-        </div>
         </div>
 
     </main>
