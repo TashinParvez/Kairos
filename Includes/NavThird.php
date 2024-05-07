@@ -27,10 +27,10 @@
   --text-color: #414856;
   --primary-color: #111111;
   --border-radius: 10px;
-  --width: 190px;    
+  --width: 500px;    
   --height: 55px;      
   background: var(--background);
-  width: auto;
+  width: 500px;
   height: var(--height);
   position: relative;
   overflow: hidden;

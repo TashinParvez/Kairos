@@ -243,12 +243,13 @@ p {
   position: absolute;
   left: 33px;
   width: 50px;
-  height: 50px;
+  height: 45px;
   background: white;
   box-sizing: border-box;
   border-radius: 25px;
   border: 4px solid white;
   padding: 5px;
+  justify-content: center
 
   /* New transition properties */
   transition-property: width, border-radius; /* Only transition width and border-radius */
@@ -257,21 +258,22 @@ p {
 }
 .searchBar:hover,
 .searchBar:focus {
-  width: 200px; /* Change width on hover or focus */
+  width: 600px; /* Change width on hover or focus */
   cursor: pointer;
 }
 .searchBar input {
   position: absolute;
   top: 0;
   left: 0;
-  width: 100%;
+  //This is what tashin need
+  width: 60px;
   height: 42.5px;
   line-height: 30px;
   outline: 0;
   border: 0;
   display: none;
   font-size: 1em;
-  border-radius: 20px;
+  border-radius: 50px;
   padding: 0 20px;
 }
 .searchBar:hover input,
@@ -296,7 +298,7 @@ p {
 
 .searchBar:hover,
 .searchBar:valid {
-  width: 200px;
+  width: 650px;
   cursor: pointer;
 }
 .searchBar:hover .fa,
@@ -349,8 +351,8 @@ p {
 }
 .search {
   position: absolute;
-  max-width: 200px;
-  left: 50%;
+  max-width: 400px;
+  left: 100%;
   transform: translateX(-50%);
   transition: all 1s;
   z-index: 2;
