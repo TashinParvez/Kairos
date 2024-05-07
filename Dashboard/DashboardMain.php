@@ -2,99 +2,76 @@
 
 include('connect_db.php'); // database connection
 
+session_start(); // Start the session
+// $userHandle = mysqli_real_escape_string($conn, $_SESSION['userHandle']); // after linked all page. it will be uncommented
+$userHandle = mysqli_real_escape_string($conn, 'bijoy123'); // after linked all page. it will be deleted
 
+$noteTitle = $noteDetails = '';
+$public = 0;
 
-$labels  =  null;
+// Save Notes
+if (isset($_POST['saveNote'])) {
 
-// check get request userHandle 
-if (isset($_GET['userHandle'])) {
+    $noteTitle = mysqli_real_escape_string($conn, $_POST['noteTitle']);
+    $noteDetails = mysqli_real_escape_string($conn, $_POST['noteDetails']);
 
-    $userHandle = mysqli_real_escape_string($conn, $_GET['userHandle']);
+    if (isset($_POST['public'])) {
+        $public = 1;
+    }
 
-    //----------------- For label of users ---------------
+    // create sql
+    $sql = "INSERT INTO notes(userHandle, title, details, public)
+                    VALUES('$userHandle', '$noteTitle', '$noteDetails', '$public')";
 
-    // sql query
+    // save to db and check
+    if (mysqli_query($conn, $sql)) {
+        // success
+        header('Location: DashboardMain.php');
+    } else {
+        echo 'query error: ' . mysqli_error($conn);
+    }
 
-    $sql = "SELECT l.labelName
-        FROM user_info AS uinfo
-        INNER JOIN
-        label as l
-        ON uinfo.userHandle = l.userHandle
-        WHERE uinfo.userHandle = '$userHandle'; ";
-
-    $resultantLabel =  mysqli_query($conn, $sql);  // get query result
-
-    $labels = mysqli_fetch_all($resultantLabel); // conver to array
-
-    // print_r($labels);
-
-
-    //----------------- For Notes of users ---------------
-
-    // sql query 
-    $sql = "SELECT title, details, created_at
-        FROM user_info AS uinfo
-        INNER JOIN
-        notes as n
-        ON uinfo.userHandle = n.userHandle
-        WHERE uinfo.userHandle = '$userHandle'; ";
-
-    $resultantNotes =  mysqli_query($conn, $sql);  // get query result
-
-    // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
-    $Notes = mysqli_fetch_all($resultantNotes); // conver to array
-
-    // for memory free
-    mysqli_free_result($resultantLabel);
-    mysqli_free_result($resultantNotes);
-    mysqli_close($conn);
-} else {  // full else remove after adding login 
-
-
-    $userHandle = mysqli_real_escape_string($conn, 'bijoy123');
-
-    //----------------- For label of users ---------------
-
-
-
-    // sql query
-
-    $sql = "SELECT l.labelName
-        FROM user_info AS uinfo
-        INNER JOIN
-        label as l
-        ON uinfo.userHandle = l.userHandle
-        WHERE uinfo.userHandle = '$userHandle'; ";
-
-    $resultantLabel =  mysqli_query($conn, $sql);  // get query result
-
-    $labels = mysqli_fetch_all($resultantLabel); // conver to array
-
-    // print_r($labels);
-
-
-    //----------------- For Notes of users ---------------
-
-    // sql query 
-    $sql = "SELECT title, details, created_at
-        FROM user_info AS uinfo
-        INNER JOIN
-        notes as n
-        ON uinfo.userHandle = n.userHandle
-        WHERE uinfo.userHandle = '$userHandle'; ";
-
-    $resultantNotes =  mysqli_query($conn, $sql);  // get query result
-
-    // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array 
-    $Notes = mysqli_fetch_all($resultantNotes); // conver to array
-
-    // print_r($Notes);
-
-    // for memory free
-    mysqli_free_result($resultantLabel);
-    mysqli_free_result($resultantNotes);
+    // close connection
     mysqli_close($conn);
 }
+
+//----------------- For label of users ---------------
+
+// sql query
+
+$sql = "SELECT l.labelName
+        FROM user_info AS uinfo
+        INNER JOIN
+        label as l
+        ON uinfo.userHandle = l.userHandle
+        WHERE uinfo.userHandle = '$userHandle'; ";
+
+$resultantLabel =  mysqli_query($conn, $sql);  // get query result
+
+$labels = mysqli_fetch_all($resultantLabel); // conver to array
+
+// print_r($labels);
+
+
+//----------------- For Notes of users ---------------
+
+// sql query 
+$sql = "SELECT title, details, created_at
+        FROM user_info AS uinfo
+        INNER JOIN
+        notes as n
+        ON uinfo.userHandle = n.userHandle
+        WHERE uinfo.userHandle = '$userHandle'; ";
+
+$resultantNotes =  mysqli_query($conn, $sql);  // get query result
+
+// $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
+$Notes = mysqli_fetch_all($resultantNotes); // conver to array
+
+// for memory free
+mysqli_free_result($resultantLabel);
+mysqli_free_result($resultantNotes);
+mysqli_close($conn);
 
 ?>
 
@@ -117,8 +94,9 @@ if (isset($_GET['userHandle'])) {
 </head>
 
 <body>
+
     <?php
-    include('../Includes/NavBarSecond.php'); // uncomment
+    include('../Includes/NavThird.php'); // uncomment
     include('../Includes/Sidebar.php'); // uncomment
     ?>
     <main class="main bg-white shadow">
@@ -132,7 +110,8 @@ if (isset($_GET['userHandle'])) {
             <div class="row bg-white">
                 <!-- Write Your Note Field (70% width) -->
                 <div class="col-lg-9 bg-white" style=" position: sticky;    z-index: 1000; ">
-                    <input class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example">
+                    <input id="openModalInput" class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example">
+                    <!-- <input class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example"> -->
                 </div>
 
                 <!-- Search Field (30% width) -->
@@ -148,12 +127,12 @@ if (isset($_GET['userHandle'])) {
 
         </div>
 
-        <div class="block " style="height: 83.5vh; overflow-y: auto;">
+        <div class="block bg-white">
             <!-- Notes Block -->
             <div class="">
                 <!---------------------- Note Cards ---------------------->
 
-                <div class="row row-cols-1 row-cols-md-3 g-4">
+                <div class="row row-cols-1 row-cols-md-3 g-4 bg-white">
 
                     <!-- cards creat -->
 
@@ -196,6 +175,59 @@ if (isset($_GET['userHandle'])) {
         </div>
 
     </main>
+
+    <!-- Modal for creating note -->
+    <script>
+        // Get the input field element
+        var inputField = document.getElementById('openModalInput');
+
+        // Add click event listener to the input field
+        inputField.addEventListener('click', function() {
+            // Trigger the modal to show
+            var myModal = new bootstrap.Modal(document.getElementById('exampleModal'));
+            myModal.show();
+        });
+    </script>
+    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog-scrollable">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLabel">Write Your Note</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form action="DashboardMain.php" method="POST">
+                    <div class="modal-body">
+
+                        <div class="mb-3">
+                            <label for="noteTitle" class="form-label">Note Title</label>
+                            <input type="text" class="form-control" id="noteTitle" name="noteTitle" required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="noteDetails" class="form-label">Note Details</label>
+                            <textarea class="form-control bg-white" id="noteDetails" name="noteDetails" rows="3" required></textarea>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="container">
+                            <div class="row align-items-start">
+                                <div class="col-7">
+                                    <div class="form-check form-switch">
+                                        <label class="form-check-label" for="public">Make it public</label>
+                                        <input class="form-check-input" type="checkbox" role="switch" id="public" name="public">
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" name="saveNote">Save Note</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
 </body>
 
 </html>

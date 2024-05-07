@@ -305,7 +305,7 @@ label {
         </div>
         <div class="upContainerSignOut">
             <div class="signOut">
-                <a href="#">
+                <a href="\login Main\logout.php">
                     <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                     <svg class="bg-white" width="40" height="40" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -323,7 +323,7 @@ label {
     </header>
     <script>
         document.getElementById('searchInput').addEventListener('focus', function () {
-            document.querySelector('.container-fluid.bg-white.align-items-right').classList.add('hidden');
+          document.querySelector('.container-fluid.bg-white.align-items-right').classList.add('hidden');
         });
     </script>
 </body>

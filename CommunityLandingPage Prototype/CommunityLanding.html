@@ -406,7 +406,21 @@
         .card-button {
             margin-top: auto;
         }
-        
+        #goalButton .btn {
+    width: 50px; /* Set the width and height to the same value to make it perfectly round */
+    height: 50px;
+    padding: 0; /* Remove any default padding */
+    border-radius: 50%; /* Make it round */
+    display: flex; /* Use flexbox */
+    justify-content: center; /* Align content horizontally */
+    align-items: center; /* Align content vertically */
+}
+
+#goalButton .btn i {
+    font-size: 1.5rem; /* Adjust the font size of the icon */
+}
+
+
     </style>
      <header class="header shadow ">
         <div class="container-fluid" style="background-color: transparent;">
@@ -651,6 +665,11 @@
                 </div>
             </div>
         </div>
+        <div id="goalButton" class="position-fixed bottom-0 end-0 mb-4 me-4 bg-transparent">
+            <button class="btn btn-primary rounded-circle shadow" type="button">
+                <i class="fas fa-grin-alt bg-transparent"></i>
+            </button>
+        </div>        
     </main>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
     <script>
