@@ -16,7 +16,7 @@
     <link
         href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
         rel="stylesheet">
-
+        <link rel="stylesheet" href="../Includes/style.css">
 
 </head>
 
@@ -223,7 +223,7 @@
         </div>
         <div class="upContainerSignOut">
             <div class="signOut">
-                <a href="#">
+                <a href="\login Main\logout.php">
                     <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                     <svg class="bg-white" width="40" height="40" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
@@ -242,6 +242,16 @@
     <script>
         document.getElementById('searchInput').addEventListener('focus', function () {
             document.querySelector('.container-fluid.bg-white.align-items-right').classList.add('hidden');
+        });
+    </script>
+    <script>
+        // Get the search input element
+        var searchInput = document.getElementById('searchInput');
+
+        // Add event listener for input events
+        searchInput.addEventListener('input', function() {
+            // Hide the main content area by setting its display property to none
+            document.querySelector('.main').style.display = 'none';
         });
     </script>
 </body>

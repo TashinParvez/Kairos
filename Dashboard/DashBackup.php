@@ -105,6 +105,33 @@ mysqli_close($conn);
         #labelbtn:selected{
             text-decoration: underline;
         }
+        .mynav ul {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  list-style-type: none;
+  padding: 0;
+}
+.mynav li:not(:last-child) {
+  margin-right: 20px;
+}
+.mynav a {
+  display: block;
+  font-size: 20px;
+  color: black;
+  text-decoration: none;
+  padding: 7px 15px;
+}
+.target {
+  position: absolute;
+  border-bottom: 4px solid transparent;
+  z-index: -1;
+  transform: translateX(-60px);
+}
+.mynav a,
+.target {
+  transition: all .35s ease-in-out;
+}
     </style>
 
     <?php
@@ -113,21 +140,32 @@ mysqli_close($conn);
         include('../Includes/HappyJar.php'); // uncomment
     ?>
     <main class="main bg-white shadow">
-        <div class="container bg-white">
-            <div class="row bg-white">
-                <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
-                    <button id="labelbtn" type="submit" class="btn btn-secondary bg-white " name="add">Home</button>
-                </div>
-                <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
-                    <button id="labelbtn" type="submit" class="btn btn-secondary bg-white" name="add">Label 1</button>
-                </div>
-                <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
-                    <button id="labelbtn" type="submit" class="btn btn-secondary bg-white" name="add">Label 2</button>
-                </div>
-                    <div class="col-lg-9 bg-white" style="      position: sticky;      z-index: 1000;">
-                </div>
+        <div class="container bg-white m-3">
+        <nav class="mynav">
+  <ul>
+    <li>
+      <a href="">Home</a>
+    </li>
+    <li>
+      <a href="">About</a>
+    </li>
+    <li>
+      <a href="">Company</a>
+    </li>
+    <li>
+      <a href="">Work</a>
+    </li>
+    <li>
+      <a href="">Clients</a>
+    </li>
+    <li>
+      <a href="">Contact</a>
+    </li>
+  </ul>
+</nav>
+<span class="target"></span>
         </div>
-        <div class="container bg-white">
+        <div class="container bg-white m-3">
             <div class="row bg-white">
                 <!-- Write Your Note Field (70% width) -->
                 <div class="col-lg-9 bg-white" style=" position: sticky;    z-index: 1000; ">
@@ -144,13 +182,11 @@ mysqli_close($conn);
                         </button>
                     </div>
                 </div>
-                
-            </div>
         </div>
         <br>
                 <!---------------------- Note Cards ---------------------->
 
-                <div class="row row-cols-1 row-cols-md-3 g-4 bg-white">
+                <div class="row row-cols-1 row-cols-md-3 g-4 bg-white m-3">
 
                     <!-- cards creat -->
 
@@ -250,6 +286,9 @@ mysqli_close($conn);
             </div>
         </div>
     </div>
+    <script>const target = document.querySelector(".target");
+const links = document.querySelectorAll(".mynav a");
+const colors = ["deepskyblue", "orange", "firebrick", "gold", "magenta", "black", "darkblue"];</script>
 </body>
 
 </html>

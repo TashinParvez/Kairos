@@ -124,10 +124,14 @@ mysqli_close($conn);
 </head>
 
 <body>
-
+    <script>
+        window.onload = function() {
+            document.querySelector(".autoButton").click();
+        };
+    </script>
     <!-- extra Large Modal For Interest Page -->
 
-    <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalXl">
+    <button type="button" class="autoButton btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalXl">
         Extra large modal
     </button>
 
