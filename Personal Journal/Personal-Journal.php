@@ -103,7 +103,7 @@ if (isset($_POST['add'])) {
             // success
             header('Location: #');
         } else {
-            echo 'query error: '.mysqli_error($conn);
+            echo 'query error: ' . mysqli_error($conn);
         }
 
         // close connection
