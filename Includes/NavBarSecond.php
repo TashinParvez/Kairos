@@ -144,7 +144,7 @@ foreach ($result as $row) {
   --background: #ffffff;
   --text-color: #414856;
   --primary-color: #111111;
-  --border-radius: 10px;
+  --border-radius: 20px;
   --width: 190px;    
   --height: 55px;      
   background: var(--background);
@@ -282,12 +282,12 @@ foreach ($result as $row) {
     </style>
 
     <header class="header shadow z-2">
-        <div class="container-fluid" style="background-color: transparent;">
+        <div class="container-fluid bg-white" style="background-color: transparent;">
             <div class="container-fluid bg-white align-items-right">
-            <form class="searchBar" action="">
-                <span id="search-txt">Search</span>
+            <form class="searchBar bg-white" action="">
+                <span id="search-txt" class="z-10000">Search</span>
                 <!-- <input type="search" required> -->
-                <input type="search" name="country_name" id="country_name" placeholder="Search Keyword" autocomplete="off" required style="width: 800px;"/>
+                <input type="search" class="bg-white align-items-center border-secondary" name="country_name" id="country_name" placeholder="Search Keyword" autocomplete="off" required style="width: 800px;"/>
                 <i class="fa fa-search"></i>
             </form>
             </div>

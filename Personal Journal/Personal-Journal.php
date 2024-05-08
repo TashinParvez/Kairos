@@ -248,11 +248,7 @@ mysqli_close($conn);
     <!-- ------------------------ Main Segment ------------------------------- -->
 
     <main class="main shadow bg-white">
-
-
-
         <div class="bg-white">
-
             <div class="container bg-white">
                 <div class="row bg-white">
                     <h4 class="bg-white text-center">Daily Reflection</h4>
