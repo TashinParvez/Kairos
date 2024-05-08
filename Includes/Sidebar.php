@@ -25,15 +25,6 @@
         </div>
         <hr>
         <div class="temp">
-            <div class="container-fluid bg-white align-items-right">
-            <form class="searchBar" action="">
-                <span id="search-txt">Search</span>
-                <input type="search" required>
-                <i class="fa fa-search"></i>
-            </form>
-            </div>
-        </div>
-        <div class="temp">
             <div class="temp">
                 <a href="/Dashboard/DashboardMain.php" type="button" class="btn btn-primary">
                     <span class="bg-white"><?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->

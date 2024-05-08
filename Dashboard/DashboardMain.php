@@ -68,6 +68,25 @@ $resultantNotes =  mysqli_query($conn, $sql);  // get query result
 // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
 $Notes = mysqli_fetch_all($resultantNotes); // conver to array
 
+
+//----------------- For Notes of #label 1 clicked (From brooks) ---------------
+
+// sql query 
+$sql = "SELECT title, details, created_at, l.labelName
+        FROM user_info AS uinfo
+        INNER JOIN
+        notes as n
+        ON uinfo.userHandle = n.userHandle
+        INNER JOIN
+        label as l
+        ON l.userHandle = uinfo.userHandle
+        WHERE uinfo.userHandle = 'bijoy123' AND l.labelName = 'Books'; ";
+
+$resultantNotes =  mysqli_query($conn, $sql);  // get query result
+
+// $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
+$Notes = mysqli_fetch_all($resultantNotes); // conver to array
+
 // for memory free
 mysqli_free_result($resultantLabel);
 mysqli_free_result($resultantNotes);
