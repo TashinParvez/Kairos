@@ -1,6 +1,19 @@
 <?php
 
-include('connect_db.php'); // database connection
+// connect database
+$servername = 'localhost';
+$username = 'root';
+$password = '';
+$databasename = 'Kairos';
+
+
+// connection obj
+$conn = mysqli_connect($servername, $username, $password, $databasename);
+
+// check connection
+if (!$conn) {
+    die("Sorry failed to connect: " . mysqli_connect_error());
+}
 
 session_start(); // Start the session
 // $userHandle = mysqli_real_escape_string($conn, $_SESSION['userHandle']); // after linked all page. it will be uncommented
@@ -118,6 +131,7 @@ mysqli_close($conn);
     include('../Includes/Sidebar.php'); // uncomment
     include('../Includes/HappyJar.php'); // uncomment
     ?>
+
     <style>
         .second{
             background-color: white;
@@ -125,8 +139,9 @@ mysqli_close($conn);
             border-color: transparent;
         }
     </style>
-    <main class="main bg-white shadow">
+    <main class="main bg-white shadow z-0">
         <div class="container bg-white">
+          
             <div class="row bg-white">
                 <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
                     <button type="submit" class="second btn btn-secondary " style="text-color:black" name="add">All</button>
