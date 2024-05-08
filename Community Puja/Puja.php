@@ -40,7 +40,7 @@ $conn->close();
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kairos</title>
+    <title>Puja</title>
     <link rel="stylesheet" href="style.css">
     <link rel="icon" type="image/x-icon" href="/Images/Picture1.png"></link>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
@@ -77,7 +77,7 @@ $conn->close();
 
 <body>
     <?php
-        include '../Includes/NavThird.php';
+        include '../Includes/NavBarSecond.php';
 include '../Includes/Sidebar.php';
 ?>
 
