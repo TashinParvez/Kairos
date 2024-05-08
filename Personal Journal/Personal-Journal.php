@@ -237,7 +237,12 @@ mysqli_close($conn);
     include('../Includes/Sidebar.php'); // uncomment
     ?>
 
-
+<style>
+    .second{
+            background-color: white;
+            color:black;
+        }
+</style>
    
 
     <!-- ------------------------ Main Segment ------------------------------- -->
@@ -293,7 +298,7 @@ mysqli_close($conn);
                         </div>
                     </div>
                     <!-- button for saving good and bad things -->
-                    <div class="bg-white">
+                    <div class="second bg-white">
                         <button type="submit" class="btn btn-secondary bg-white" name="add">ADD</button>
                         <!-- <button type="submit" class="btn btn-primary bg-white" name="add" style="height: 30px; width: 100px; color:darkgrey; text-align: center;">ADD</button> -->
                     </div>
