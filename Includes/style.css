@@ -265,7 +265,6 @@ p {
   position: absolute;
   top: 0;
   left: 0;
-  //This is what tashin need
   width: 60px;
   height: 42.5px;
   line-height: 30px;
@@ -273,7 +272,7 @@ p {
   border: 0;
   display: none;
   font-size: 1em;
-  border-radius: 50px;
+  border-radius: 15;
   padding: 0 20px;
 }
 .searchBar:hover input,
@@ -298,7 +297,7 @@ p {
 
 .searchBar:hover,
 .searchBar:valid {
-  width: 650px;
+  width: 820px;
   cursor: pointer;
 }
 .searchBar:hover .fa,

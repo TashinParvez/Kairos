@@ -25,7 +25,7 @@
 <body>
 
     <?php
-    include('../Includes/NavBar.php');
+    include('../Includes/NavBarSecond.php');
     include('../Includes/Sidebar.php');
     ?>
 

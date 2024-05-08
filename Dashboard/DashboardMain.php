@@ -135,7 +135,7 @@ mysqli_close($conn);
                     </div>
                 <?php } ?>
             </div>
-            <div class="container bg-white">
+            <div class="container bg-transparent">
                 <div class="row bg-white">
                     <!-- Write Your Note Field (70% width) -->
                     <div class="col-lg-9 bg-white" style=" position: sticky;    z-index: 1000; ">
