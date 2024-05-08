@@ -1,22 +1,32 @@
 <?php
-// Generate dynamic chart data using PHP
-$labels = generateLabels();
-$data = generateData();
 
-// Output data as JSON
-echo json_encode([
-    'labels' => $labels,
-    'data' => $data
-]);
+include '../Dashboard/connect_db.php'; // Daatabase connection
+$currentDateTimeObject = new DateTime();
+$todaysDate = $currentDateTimeObject->format('d/m/Y'); // today's date
 
-// Data generation functions
-function generateLabels()
-{
-    $count = 8; // Set the desired count
-    return array_map(function ($i) {
-        return strval($i + 1);
-    }, range(0, $count - 1));
+
+$labels = '';
+if (isset($_POST['weakly'])) {
+
+    $labels = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
+
+    $sql = "SELECT COUNT(*) AS weaklyCount
+            FROM user_info
+            WHERE DATE_FORMAT(joinDate, '%d/%m/%Y') >= DATE_SUB('todaysDate', INTERVAL 7 DAY)";
 }
+if (isset($_POST['monthly'])) {
+}
+if (isset($_POST['yearly'])) {
+}
+
+// // Data generation functions
+// function generateLabels()
+// {
+//     $count = 7; // Set the desired count
+//     return array_map(function ($i) {
+//         return strval($i + 1);
+//     }, range(0, $count - 1));
+// }
 
 function generateData()
 {
@@ -27,8 +37,11 @@ function generateData()
         return rand($min, $max);
     }, range(0, $count - 1));
 }
-?>
 
+
+// print_r($labels);
+$data = generateData();
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -45,23 +58,34 @@ function generateData()
 
     <!-- CSS -->
     <link rel="stylesheet" href="/Admin-Panel/">
+    <link rel="stylesheet" href="\Includes\style.css">
 
 </head>
 
 <body>
-    <?php include('sidebar.php'); ?>
+    <?php include('../Admin-Panel/sidebar.php'); ?>
 
     <!-- Main part -->
-    <canvas id="myChart" width="400" height="200"></canvas>
+    <main>
+        <div class="container d-flex p-3 ">
+            <form action="lineChartBoundaries.php" method="POST">
+                <button class="btn btn-primary" type="submit" id="weakly" name="weakly">Weakly</button>
+                <button class="btn btn-primary" type="submit">Monthly</button>
+                <button class="btn btn-primary" type="submit">Yearly</button>
+            </form>
+        </div>
+        <canvas id="myChart" width="200" height="100"></canvas>
+    </main>
+
 
     <!-- JavaScript -->
     <script>
         // Data generation and configuration
         const data = {
-            labels: [],
+            labels: <?php echo json_encode($labels); ?>,
             datasets: [{
                 label: 'Dataset',
-                data: [],
+                data: <?php echo json_encode($data); ?>,
                 borderColor: 'red',
                 backgroundColor: 'rgba(255, 99, 132, 0.2)',
                 fill: false
@@ -90,37 +114,6 @@ function generateData()
         // Chart initialization
         var ctx = document.getElementById('myChart').getContext('2d');
         var myChart = new Chart(ctx, config);
-
-        // Data generation functions
-        const inputs = {
-            min: -100,
-            max: 100,
-            count: 8,
-            decimals: 2,
-            continuity: 1
-        };
-
-        function generateLabels() {
-            return Array.from({
-                length: inputs.count
-            }, (_, i) => i + 1).map(String);
-        }
-
-        function generateData() {
-            return Array.from({
-                length: inputs.count
-            }, () => Math.floor(Math.random() * (inputs.max - inputs.min + 1)) + inputs.min);
-        }
-
-        // Fetch data asynchronously
-        fetch('chart_data.php')
-            .then(response => response.json())
-            .then(data => {
-                myChart.data.labels = data.labels;
-                myChart.data.datasets[0].data = data.data;
-                myChart.update();
-            })
-            .catch(error => console.error('Error fetching data:', error));
     </script>
 
 </body>
