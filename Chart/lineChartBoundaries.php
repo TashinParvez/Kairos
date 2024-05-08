@@ -5,14 +5,39 @@ $currentDateTimeObject = new DateTime();
 $todaysDate = $currentDateTimeObject->format('d/m/Y'); // today's date
 
 
-$labels = '';
+$labels = $data = '';
 if (isset($_POST['weakly'])) {
 
     $labels = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
 
-    $sql = "SELECT COUNT(*) AS weaklyCount
-            FROM user_info
-            WHERE DATE_FORMAT(joinDate, '%d/%m/%Y') >= DATE_SUB('todaysDate', INTERVAL 7 DAY)";
+    $sql = "SELECT week_range , COUNT(*), week_ll,weel__rr
+    FROM(
+        SELECT DISTINCT  *,  
+        STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(week_range, ' to ', 1), ' ', -1), '%m/%d/%y')  AS week_ll,
+        STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(week_range, ' to ', -1), ' ', -1), '%m/%d/%y')  AS weel__rr
+    FROM
+    (	SELECT 
+        CONCAT(
+            DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL (week_num - 1) * 7 DAY), '%m/%d/%y'), 
+            ' to ', 
+            DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL week_num * 7 - 1 DAY), '%m/%d/%y')
+                ) AS week_range
+        FROM 
+        (SELECT 1 AS week_num UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 
+         UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10) AS weeks
+        ORDER BY  week_num
+    ) as ntb
+    LEFT JOIN
+    user_info as uf
+    ON 
+     STR_TO_DATE(DATE_FORMAT(joinDate,'%m/%d/%y'), '%m/%d/%y')
+     
+     BETWEEN STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(week_range, ' to ', -1), ' ', -1), '%m/%d/%y') 
+        AND STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(week_range, ' to ', 1), ' ', -1), '%m/%d/%y')
+    
+    ORDER BY joinDate DESC) as cnt_ntb
+    GROUP BY cnt_ntb.week_range
+    ORDER BY cnt_ntb.week_ll DESC;";
 }
 if (isset($_POST['monthly'])) {
 }
