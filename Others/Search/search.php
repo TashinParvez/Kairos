@@ -35,10 +35,8 @@ $sql = "SELECT details
         ON uinfo.userHandle = n.userHandle
         WHERE uinfo.userHandle = '$userHandle'; ";
 
-$resultantNotes =  mysqli_query($conn, $sql);  // get query result
-
-// $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
-$NotesDetails = mysqli_fetch_all($resultantNotes); // conver to array
+$result =  mysqli_query($conn, $sql);  
+$userlabels = mysqli_fetch_all($result); 
 
 // print_r($NotesDetails);
 
