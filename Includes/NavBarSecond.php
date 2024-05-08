@@ -284,7 +284,7 @@ foreach ($result as $row) {
             <form class="searchBar" action="">
                 <span id="search-txt">Search</span>
                 <!-- <input type="search" required> -->
-                <input type="search" name="country_name" id="country_name" placeholder="Country Name" autocomplete="off" required style="width: 800px;"/>
+                <input type="search" name="country_name" id="country_name" placeholder="Search Keyword" autocomplete="off" required style="width: 800px;"/>
                 <i class="fa fa-search"></i>
             </form>
             </div>
@@ -354,5 +354,15 @@ foreach ($result as $row) {
             name: 'countries',
             source: countriesBloodhound
         });
+    });
+</script>
+<script>
+    document.getElementById("country_name").addEventListener("keypress", function(event) {
+        if (event.key === "Enter") {
+            // Get the value entered in the input field
+            var countryName = document.getElementById("country_name").value;
+            // Redirect to another page passing the search query as a parameter
+            window.location.href = "/Includes/SideNavMain.php";
+        }
     });
 </script>
