@@ -271,7 +271,7 @@ foreach ($result as $row) {
             <form class="searchBar" action="">
                 <span id="search-txt">Search</span>
                 <!-- <input type="search" required> -->
-                <input type="search" name="country_name" id="country_name" placeholder="Country Name" autocomplete="off" required/>
+                <input type="search" name="country_name" id="country_name" placeholder="Country Name" autocomplete="off" required style="width: 800px;"/>
                 <i class="fa fa-search"></i>
             </form>
             </div>
