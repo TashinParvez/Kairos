@@ -137,6 +137,9 @@ foreach ($result as $row) {
 <body>
 
     <style>
+      *{
+        z-index: 5000;
+      }
 #navSearch {
   --background: #ffffff;
   --text-color: #414856;
