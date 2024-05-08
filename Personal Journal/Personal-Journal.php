@@ -233,7 +233,7 @@ mysqli_close($conn);
 
 <body>
     <?php
-    include('../Includes/NavSecond.php'); // uncomment
+    include('../Includes/NavBarSecond.php'); // uncomment
     include('../Includes/Sidebar.php'); // uncomment
     ?>
 
