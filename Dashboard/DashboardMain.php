@@ -126,38 +126,46 @@ mysqli_close($conn);
 </head>
 
 <body>
-
     <?php
     include('../Includes/NavBarSecond.php'); // uncomment
     include('../Includes/Sidebar.php'); // uncomment
     include('../Includes/HappyJar.php'); // uncomment
     ?>
+
+    <style>
+        .second{
+            background-color: white;
+            color:black;
+            border-color: transparent;
+        }
+    </style>
     <main class="main bg-white shadow z-0">
-        <div class="container">
+        <div class="container bg-white">
+          
             <div class="row bg-white">
                 <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
-                    <button type="submit" class="btn btn-secondary " style="text-color:black" name="add">All</button>
+                    <button type="submit" class="second btn btn-secondary " style="text-color:black" name="add">All</button>
                 </div>
 
                 <?php
                 foreach ($labels as $label) { ?>
-                    <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
-                        <button type="submit" class="btn btn-secondary" name="add">
+                    <div class="second col-lg-1" style="      position: sticky;      z-index: 1000;">
+                        <button type="submit" class="second btn btn-secondary" name="add">
                             <?php echo htmlspecialchars($label[0]); ?>
                         </button>
                     </div>
                 <?php } ?>
             </div>
             <div class="container bg-transparent">
-                <div class="row bg-white">
+                <div class="row bg-white m-0">
                     <!-- Write Your Note Field (70% width) -->
-                    <div class="col-lg-9 bg-white" style=" position: sticky;    z-index: 1000; ">
+                    <div class="col-lg-9 bg-white m-0" style=" position: sticky;    z-index: 1000; ">
                         <input id="openModalInput" class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example">
                         <!-- <input class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example"> -->
                     </div>
 
                     <!-- Search Field (30% width) -->
-                    <div class="col-lg-3 bg-white" style="      position: sticky;      z-index: 1000;">
+                    <div class="col-lg-3 bg-white m-0" style="      position: sticky;      z-index: 1000;">
                         <div class="input-group mt-3">
                             <input class="form-control form-control-lg pt-3 pb-3 bg-white" type="text" placeholder="Search notes" aria-label=".form-control-lg example">
                             <button class="btn btn-outline-secondary" type="button">
