@@ -364,6 +364,10 @@ foreach ($result as $row) {
         if (event.key === "Enter") {
             // Get the value entered in the input field
             var countryName = document.getElementById("country_name").value;
+            // <?php
+            // session_start();
+            // $_SESSION['country_name'] = countryName;
+            // ?>
             // Redirect to another page passing the search query as a parameter
             window.location.href = "/Includes/SideNavMain.php";
         }
