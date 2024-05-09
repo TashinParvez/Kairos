@@ -125,22 +125,29 @@ mysqli_close($conn);
     <link rel="stylesheet" href="../Includes/style.css">
 </head>
 
-<body>
+<body class="bg-custom">
     <?php
     include('../Includes/NavBarSecond.php'); // uncomment
     include('../Includes/Sidebar.php'); // uncomment
     include('../Includes/HappyJar.php'); // uncomment
     ?>
-
     <style>
         .second{
             background-color: white;
             color:black;
             border-color: transparent;
         }
+        *{
+            background-color: #f1f4fb;
+            font-family: "Ubuntu", sans-serif;
+        }
+        .bg-custom{
+            background-color: #f1f4fb;
+        }
     </style>
+    
     <main class="main bg-white shadow z-0">
-        <div class="container bg-white">
+        <div class="container bg-white m-0">
           
             <div class="row bg-white">
                 <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
@@ -156,10 +163,10 @@ mysqli_close($conn);
                     </div>
                 <?php } ?>
             </div>
-            <div class="container bg-transparent">
+            <div class="container m-0 bg-transparent p-0">
                 <div class="row bg-white m-0">
                     <!-- Write Your Note Field (70% width) -->
-                    <div class="col-lg-9 bg-white m-0" style=" position: sticky;    z-index: 1000; ">
+                    <div class="col-lg-9 bg-white m-0 p-0" style=" position: sticky;    z-index: 1000; ">
                         <input id="openModalInput" class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example">
                         <!-- <input class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example"> -->
                     </div>
