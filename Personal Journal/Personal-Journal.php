@@ -233,21 +233,22 @@ mysqli_close($conn);
 
 <body>
     <?php
-    include('../Includes/NavSecond.php'); // uncomment
+    include('../Includes/NavBarSecond.php'); // uncomment
     include('../Includes/Sidebar.php'); // uncomment
     ?>
 
-
+<style>
+    .second{
+            background-color: white;
+            color:black;
+        }
+</style>
    
 
     <!-- ------------------------ Main Segment ------------------------------- -->
 
     <main class="main shadow bg-white">
-
-
-
         <div class="bg-white">
-
             <div class="container bg-white">
                 <div class="row bg-white">
                     <h4 class="bg-white text-center">Daily Reflection</h4>
@@ -293,7 +294,7 @@ mysqli_close($conn);
                         </div>
                     </div>
                     <!-- button for saving good and bad things -->
-                    <div class="bg-white">
+                    <div class="second bg-white">
                         <button type="submit" class="btn btn-secondary bg-white" name="add">ADD</button>
                         <!-- <button type="submit" class="btn btn-primary bg-white" name="add" style="height: 30px; width: 100px; color:darkgrey; text-align: center;">ADD</button> -->
                     </div>

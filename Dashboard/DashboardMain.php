@@ -1,6 +1,19 @@
 <?php
 
-include('connect_db.php'); // database connection
+// connect database
+$servername = 'localhost';
+$username = 'root';
+$password = '';
+$databasename = 'Kairos';
+
+
+// connection obj
+$conn = mysqli_connect($servername, $username, $password, $databasename);
+
+// check connection
+if (!$conn) {
+    die("Sorry failed to connect: " . mysqli_connect_error());
+}
 
 session_start(); // Start the session
 // $userHandle = mysqli_real_escape_string($conn, $_SESSION['userHandle']); // after linked all page. it will be uncommented
@@ -68,6 +81,25 @@ $resultantNotes =  mysqli_query($conn, $sql);  // get query result
 // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
 $Notes = mysqli_fetch_all($resultantNotes); // conver to array
 
+
+//----------------- For Notes of #label 1 clicked (From brooks) ---------------
+
+// sql query 
+$sql = "SELECT title, details, created_at, l.labelName
+        FROM user_info AS uinfo
+        INNER JOIN
+        notes as n
+        ON uinfo.userHandle = n.userHandle
+        INNER JOIN
+        label as l
+        ON l.userHandle = uinfo.userHandle
+        WHERE uinfo.userHandle = 'bijoy123' AND l.labelName = 'Books'; ";
+
+$resultantNotes =  mysqli_query($conn, $sql);  // get query result
+
+// $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
+$Notes = mysqli_fetch_all($resultantNotes); // conver to array
+
 // for memory free
 mysqli_free_result($resultantLabel);
 mysqli_free_result($resultantNotes);
@@ -93,39 +125,54 @@ mysqli_close($conn);
     <link rel="stylesheet" href="../Includes/style.css">
 </head>
 
-<body>
-
+<body class="bg-custom">
     <?php
     include('../Includes/NavBarSecond.php'); // uncomment
     include('../Includes/Sidebar.php'); // uncomment
     include('../Includes/HappyJar.php'); // uncomment
     ?>
-    <main class="main bg-white shadow">
-        <div class="container">
+    <style>
+        .second{
+            background-color: white;
+            color:black;
+            border-color: transparent;
+        }
+        *{
+            background-color: #f1f4fb;
+            font-family: "Ubuntu", sans-serif;
+        }
+        .bg-custom{
+            background-color: #f1f4fb;
+        }
+    </style>
+    
+    <main class="main bg-white shadow z-0">
+        <div class="container bg-white m-0">
+          
             <div class="row bg-white">
                 <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
-                    <button type="submit" class="btn btn-secondary " style="text-color:black" name="add">All</button>
+                    <button type="submit" class="second btn btn-secondary " style="text-color:black" name="add">All</button>
                 </div>
 
                 <?php
                 foreach ($labels as $label) { ?>
-                    <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
-                        <button type="submit" class="btn btn-secondary" name="add">
+                    <div class="second col-lg-1" style="      position: sticky;      z-index: 1000;">
+                        <button type="submit" class="second btn btn-secondary" name="add">
                             <?php echo htmlspecialchars($label[0]); ?>
                         </button>
                     </div>
                 <?php } ?>
             </div>
-            <div class="container bg-white">
-                <div class="row bg-white">
+            <div class="container m-0 bg-transparent p-0">
+                <div class="row bg-white m-0">
                     <!-- Write Your Note Field (70% width) -->
-                    <div class="col-lg-9 bg-white" style=" position: sticky;    z-index: 1000; ">
+                    <div class="col-lg-9 bg-white m-0 p-0" style=" position: sticky;    z-index: 1000; ">
                         <input id="openModalInput" class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example">
                         <!-- <input class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example"> -->
                     </div>
 
                     <!-- Search Field (30% width) -->
-                    <div class="col-lg-3 bg-white" style="      position: sticky;      z-index: 1000;">
+                    <div class="col-lg-3 bg-white m-0" style="      position: sticky;      z-index: 1000;">
                         <div class="input-group mt-3">
                             <input class="form-control form-control-lg pt-3 pb-3 bg-white" type="text" placeholder="Search notes" aria-label=".form-control-lg example">
                             <button class="btn btn-outline-secondary" type="button">
