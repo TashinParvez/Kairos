@@ -93,7 +93,7 @@ $sql = "SELECT title, details, created_at, l.labelName
         INNER JOIN
         label as l
         ON l.userHandle = uinfo.userHandle
-        WHERE uinfo.userHandle = 'bijoy123' AND l.labelName = 'Books'; ";
+        WHERE uinfo.userHandle = 'bijoy123' AND l.labelName = 'Books';";
 
 $resultantNotes =  mysqli_query($conn, $sql);  // get query result
 

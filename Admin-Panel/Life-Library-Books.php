@@ -68,7 +68,7 @@ if (isset($_POST['submit'])) {
 
 
 //----------------- New Book  ---------------
-
+// new written book show to the admin to add in life library
 $sql = "SELECT 
         CASE 
             WHEN LENGTH(n.title) > 20 THEN CONCAT(LEFT(n.title, 12), '...')
