@@ -126,7 +126,7 @@
     <div class="background-image"></div>
         <section class="one">
             <img src="\Images\logo2.png" class="navImg" style="position: absolute; top: 20px; left: 50px; width: 150px; height: 150px;">
-            <a href="/Sign Up/signUp.php" class="btn btn-outline-secondary" style="position: absolute; top: 20px; right: 50px;">About us</a>
+            <a href="/Sign Up/SignUp2.php" class="btn btn-outline-secondary" style="position: absolute; top: 20px; right: 50px;">About us</a>
             <a href="/Sign Up/signUp.php" class="btn btn-outline-secondary" style="position: absolute; top: 20px; right: 160px;">Sign up</a>
             <div class="wrapper">
                 <div class="static-txt">We're your</div>
