@@ -46,7 +46,30 @@ $noteCountsCTE = "WITH NoteCounts AS (
                     )";
 
 // Set default value for order if not provided
+
 $order = isset($_POST['order']) ? $_POST['order'] : 'newest';
+
+switch ($order) {
+    case 'newest':
+        $orderByClause = "ORDER BY n.created_at DESC";
+        break;
+    case 'popular':
+        $orderByClause = "ORDER BY l.clicked DESC";
+        break;
+    case 'alphabetical':
+        $orderByClause = "ORDER BY n.title";
+        break;
+}
+
+$sql = $noteCountsCTE . "
+        SELECT n.userHandle, n.title, n.created_at, n.details, CONCAT(LEFT(n.details, 112), '...') AS shortDesc, nc.cnt
+        FROM notes AS n
+        JOIN NoteCounts AS nc 
+        LEFT JOIN life_library AS l ON n.title = l.bookName
+        WHERE n.public = 1 AND n.admin_approved = 0 AND l.bookName IS NOT NULL
+        $orderByClause;";
+
+/*
 
 // Determine which item was clicked based on the value of $order
 switch ($order) {
@@ -87,6 +110,8 @@ switch ($order) {
         // Handle other cases if needed
         break;
 }
+
+*/
 
 $result =  mysqli_query($conn, $sql);
 

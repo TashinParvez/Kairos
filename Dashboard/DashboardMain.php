@@ -93,7 +93,7 @@ $sql = "SELECT title, details, created_at, l.labelName
         INNER JOIN
         label as l
         ON l.userHandle = uinfo.userHandle
-        WHERE uinfo.userHandle = 'bijoy123' AND l.labelName = 'Books'; ";
+        WHERE uinfo.userHandle = 'bijoy123' AND l.labelName = 'Books';";
 
 $resultantNotes =  mysqli_query($conn, $sql);  // get query result
 
@@ -123,6 +123,105 @@ mysqli_close($conn);
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../Includes/style.css">
+
+    <style>
+        .second {
+            background-color: white;
+            color: black;
+            border-color: transparent;
+        }
+
+        * {
+            background-color: #f1f4fb;
+            font-family: "Ubuntu", sans-serif;
+        }
+
+        .bg-custom {
+            background-color: #f1f4fb;
+        }
+
+        .card-hover {
+            transition: transform 0.3s, background-color 0.3s;
+            background-color: white;
+        }
+
+        /* .card-hover:hover {
+            transform: translateY(-5px);
+            background-color: #aed6f1;
+        } */
+
+        /* -------------------------------------- */
+        .card-hover {
+            transition: transform 0.3s, background-color 0.3s;
+        }
+
+        .card-hover-1:hover {
+            transform: translateY(-5px);
+            background-color: #aed6f1;
+            /* Light blue */
+        }
+
+        .card-hover-2:hover {
+            transform: translateY(-5px);
+            background-color: #a9dfbf;
+            /* Soft Green */
+        }
+
+        .card-hover-3:hover {
+            transform: translateY(-5px);
+            background-color: #f5b7b1;
+            /* Soft Pink */
+        }
+
+        .card-hover-4:hover {
+            transform: translateY(-5px);
+            background-color: #f7cac9;
+            /* Soft Orange */
+        }
+
+        .card-hover-5:hover {
+            transform: translateY(-5px);
+            background-color: #d2b4de;
+            /* Soft Purple */
+        }
+
+        .card-hover-6:hover {
+            transform: translateY(-5px);
+            background-color: #f9e79f;
+            /* Soft Yellow */
+        }
+
+        .card-hover-7:hover {
+            transform: translateY(-5px);
+            background-color: #f1948a;
+            /* Soft Red */
+        }
+
+        .card-hover-8:hover {
+            transform: translateY(-5px);
+            background-color: #a2d9ce;
+            /* Soft Teal */
+        }
+
+        .card-hover-9:hover {
+            transform: translateY(-5px);
+            background-color: #d7bde2;
+            /* Soft Brown */
+        }
+
+        .card-hover-10:hover {
+            transform: translateY(-5px);
+            background-color: #d5dbdb;
+            /* Soft Gray */
+        }
+
+        /* -------------------------------------- */
+
+        .card-hover .card-body,
+        .card-hover .card-footer {
+            background-color: inherit;
+        }
+    </style>
 </head>
 
 <body class="bg-custom">
@@ -131,24 +230,11 @@ mysqli_close($conn);
     include('../Includes/Sidebar.php'); // uncomment
     include('../Includes/HappyJar.php'); // uncomment
     ?>
-    <style>
-        .second{
-            background-color: white;
-            color:black;
-            border-color: transparent;
-        }
-        *{
-            background-color: #f1f4fb;
-            font-family: "Ubuntu", sans-serif;
-        }
-        .bg-custom{
-            background-color: #f1f4fb;
-        }
-    </style>
-    
+
+
     <main class="main bg-white shadow z-0">
         <div class="container bg-white m-0">
-          
+
             <div class="row bg-white">
                 <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
                     <button type="submit" class="second btn btn-secondary " style="text-color:black" name="add">All</button>
@@ -187,50 +273,48 @@ mysqli_close($conn);
             <div class="block bg-white">
                 <!-- Notes Block -->
                 <div class="">
-                    <!---------------------- Note Cards ---------------------->
+                    <!---------------------- ALL Note Cards Show ---------------------->
 
-                    <div class="row row-cols-1 row-cols-md-3 g-4 bg-white">
-
-                        <!-- cards creat -->
-
+                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                        <!-- cards create -->
                         <?php
-                        foreach ($Notes as $note) { ?>
+                        $hoverClasses = [
+                            'card-hover-1',
+                            'card-hover-2',
+                            'card-hover-3',
+                            'card-hover-4',
+                            'card-hover-5',
+                            'card-hover-6',
+                            'card-hover-7',
+                            'card-hover-8',
+                            'card-hover-9',
+                            'card-hover-10'
+                        ];
 
-                            <div class="col bg-white">
-                                <div class="card h-100 bg-white" style="transition: transform 0.3s;">
-                                    <style>
-                                        .card:hover {
-                                            transform: translateY(-5px);
-                                        }
-                                    </style>
-                                    <!-- <img src="/Images/logo.png" class="card-img-top" alt="..."> -->
-                                    <div class="card-body bg-white">
-                                        <h5 class="card-title bg-white">
-                                            <?php
-                                            echo htmlspecialchars($note[0]);
-                                            ?>
+                        foreach ($Notes as $note) {
+                            $randomClass = $hoverClasses[array_rand($hoverClasses)];
+                        ?>
+                            <div class="col">
+                                <div class="card h-100 card-hover <?php echo $randomClass; ?>">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <?php echo htmlspecialchars($note[0]); ?>
                                         </h5>
                                         <p class="card-text">
-                                            <?php
-                                            echo htmlspecialchars($note[1]);
-                                            ?>
+                                            <?php echo htmlspecialchars($note[1]); ?>
                                         </p>
                                     </div>
-                                    <div class="card-footer bg-white">
-                                        <small class="text-muted bg-white">Created
-                                            <?php
-                                            echo htmlspecialchars($note[2]);
-                                            ?>
+                                    <div class="card-footer">
+                                        <small class="text-muted">Created
+                                            <?php echo htmlspecialchars($note[2]); ?>
                                         </small>
                                     </div>
                                 </div>
                             </div>
                         <?php } ?>
-
                     </div>
 
                     <!-- ----------------------------------- -->
-
                 </div>
 
             </div>
