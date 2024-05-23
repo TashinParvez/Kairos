@@ -6,8 +6,107 @@ $password = '';
 $databasename = 'Kairos';
 
 
+$conn = mysqli_connect($servername, $username, $password, $databasename);
+
+// check connection
+if (!$conn) {
+    die("Sorry failed to connect: " . mysqli_connect_error());
+}
+
+$userHandle = 'tashin19'; // need to change
+
+// ---------------------------------------- All Loops (fetch) ----------------------------------
+
+$sql = "SELECT ln.loopName, la.do, la.canDo
+        FROM loopname as ln
+        INNER JOIN
+        loop_activities as la
+        ON ln.no = la.loopNo
+        WHERE userHandle = '$userHandle'
+        ORDER BY ln.loopName;";
+
+$result = mysqli_query($conn, $sql);  // insert Done
+$allloops = mysqli_fetch_all($result);
+
+// foreach ($loop as $ptr) {
+//     print_r($ptr);
+//     echo "\r\n";
+// }
+
+
+
+// ---------------------------------------- New Loop Creat ----------------------------------
+
+
+$loopName = 'loop1';
+
+$p1DoThis = null;
+$p1WantToDoThis = null;
+
+$p2DoThis = null;
+$p2WantToDoThis = null;
+
+$p3DoThis = null;
+$p3WantToDoThis = null;
+
+// insert 
+$sql = "INSERT INTO loopname (no, loopName, userHandle) 
+        VALUES (NULL, '$loopName', '$userHandle');";
+
+// mysqli_query($conn, $sql);  // insert Done
+
+// get loopNo
+$sql = "SELECT no
+        FROM loopname
+        WHERE loopName = '$loopName' && userHandle = '$userHandle'";
+
+// $result = mysqli_query($conn, $sql);  // insert Done
+
+// $loop = mysqli_fetch_all($result);
+// print_r($loop);
+
+// $loopNo = $loop[0][0]; // main
+$loopNo = 0;  // remove
+
+// push loop info
+$sql = "INSERT INTO loop_activities (do, canDo, loopNo) 
+        VALUES ('$p1DoThis', '$p1WantToDoThis', '$loopNo'),
+               ('$p2DoThis', '$p2WantToDoThis', '$loopNo'),
+               ('$p3DoThis', '$p3WantToDoThis', '$loopNo');";
+
+// mysqli_query($conn, $sql);  // insert Done
+
+
+
+// ---------------------------------------- DELETE Loops ----------------------------------
+// get loop no
+$sql = "SELECT NO
+        FROM loopname
+        WHERE userHandle ='$userHandle' && loopName ='$loopName';";
+
+// $result = mysqli_query($conn, $sql);  // insert Done
+
+// $loop = mysqli_fetch_all($result);
+// $loopNo = $loop[0][0]; // main
+$loopNo = 4; // delete
+
+$sql = "DELETE FROM loop_activities
+        WHERE loopNo = $loopNo";
+
+// mysqli_query($conn, $sql);  // delete do/canDo
+
+$sql = "DELETE FROM loopname
+        WHERE no = $loopNo && userHandle = '$userHandle'";
+
+// mysqli_query($conn, $sql);  // delete loop name
+
+
+
 ?>
 
+<!--===========================================================-->
+<!--======================= PHP END ===========================-->
+<!--===========================================================-->
 
 <!DOCTYPE html>
 <html lang="en">
@@ -89,7 +188,7 @@ $databasename = 'Kairos';
                 <h2 class="col-4">Loops</h2>
 
                 <button type="button" class="btn col-2 btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal2">
-                    Launch demo modal
+                    Create New loop
                 </button>
 
                 <!-------------- New loop Modal -------------->
@@ -177,7 +276,7 @@ $databasename = 'Kairos';
                             <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
 
                             <div class="row justify-content-center">
-                                <button type="button" class="col-4 me-2 btn btn-primary">Update</button>
+                                <button type="button" class="col-4 me-2 btn btn-primary">View/Update</button>
                                 <button type="button" class="col-4 btn btn-success">Delete</button>
                             </div>
                         </div>
@@ -191,7 +290,7 @@ $databasename = 'Kairos';
                             <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
 
                             <div class="row justify-content-center">
-                                <button type="button" class="col-4 me-2 btn btn-primary">Update</button>
+                                <button type="button" class="col-4 me-2 btn btn-primary">View/Update</button>
                                 <button type="button" class="col-4 btn btn-success">Delete</button>
                             </div>
                         </div>

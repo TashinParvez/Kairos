@@ -5,6 +5,32 @@ $username = 'root';
 $password = '';
 $databasename = 'Kairos';
 
+$conn = mysqli_connect($servername, $username, $password, $databasename);
+
+// check connection
+if (!$conn) {
+    die("Sorry failed to connect: " . mysqli_connect_error());
+}
+
+// -------------------------------------------------
+$userHandle = 'tashin19';
+
+$loopName = 'loop1';
+
+$p1DoThis = null;
+$p1WantToDoThis = null;
+
+$p2DoThis = null;
+$p2WantToDoThis = null;
+
+$p3DoThis = null;
+$p3WantToDoThis = null;
+
+
+// ---------------------------------------- --------- ----------------------------------
+
+
+// -------------------------------------------------------------------------------
 
 ?>
 
