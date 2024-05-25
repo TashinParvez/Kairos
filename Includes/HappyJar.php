@@ -1,7 +1,11 @@
 <?php
-include('\../Kairos/Dashboard/connect_db.php'); // database connection
+include('../Dashboard/connect_db.php'); // database connection
 
-$username = null;
+// session_start(); // Start the session
+// $userHandle = mysqli_real_escape_string($conn, $_SESSION['userHandle']); // after linked all page. it will be uncommented
+// $userHandle = mysqli_real_escape_string($conn, 'munna'); // after linked all page. it will be deleted
+
+$userHandle = null;
 
 function fetchRandomGoodThing()
 {

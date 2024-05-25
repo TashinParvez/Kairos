@@ -19,22 +19,23 @@ session_start(); // Start the session
 // $userHandle = mysqli_real_escape_string($conn, $_SESSION['userHandle']); // after linked all page. it will be uncommented
 $userHandle = mysqli_real_escape_string($conn, 'bijoy123'); // after linked all page. it will be deleted
 
-$noteTitle = $noteDetails = '';
-$public = 0;
+$noteTitle = $noteDetails = $noteCreatedAt = '';
+$public = 0; // public = 0 means private
 
 // Save Notes
 if (isset($_POST['saveNote'])) {
-
-    $noteTitle = mysqli_real_escape_string($conn, $_POST['noteTitle']);
-    $noteDetails = mysqli_real_escape_string($conn, $_POST['noteDetails']);
 
     if (isset($_POST['public'])) {
         $public = 1;
     }
 
+    $noteTitle = mysqli_real_escape_string($conn, $_POST['noteTitle']);
+    $noteDetails = mysqli_real_escape_string($conn, $_POST['noteDetails']);
+    $public = mysqli_real_escape_string($conn, $public);
+
     // create sql
     $sql = "INSERT INTO notes(userHandle, title, details, public)
-                    VALUES('$userHandle', '$noteTitle', '$noteDetails', '$public')";
+            VALUES('$userHandle', '$noteTitle', '$noteDetails', '$public')";
 
     // save to db and check
     if (mysqli_query($conn, $sql)) {
@@ -47,6 +48,53 @@ if (isset($_POST['saveNote'])) {
     // close connection
     mysqli_close($conn);
 }
+
+// Changes Note or Delete Note
+if (isset($_POST['saveChanges']) || isset($_POST['deleteNote'])) {
+
+    $noteCreatedAt = mysqli_real_escape_string($conn, $_POST['noteCreatedAt']);
+    $sql = '';
+
+    if (isset($_POST['saveChanges'])) {
+
+        if (isset($_POST['public'])) {
+            $public = 1;
+        }
+
+        $noteTitle = mysqli_real_escape_string($conn, $_POST['noteTitle']);
+        $noteDetails = mysqli_real_escape_string($conn, $_POST['noteDetails']);
+        $public = mysqli_real_escape_string($conn, $public);
+
+        $sql = "UPDATE notes SET title = '$noteTitle', details = '$noteDetails', public = '$public'
+                WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
+    }
+
+
+    //.....****** If we don't want to store deleted Notes in database, then it will be deleted *******...............
+    if (isset($_POST['deleteNote'])) {
+
+        $sql = "DELETE FROM notes
+        WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
+    }
+
+    //.....****** If we want to store deleted Notes in database, then it will be uncommented *******...............
+    // if (isset($_POST['deleteNote'])) {
+    //     $sql = "UPDATE notes SET deleteStatus = 1
+    //             WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
+    // }
+
+    // save to db and check
+    if (mysqli_query($conn, $sql)) {
+        // success
+        header('Location: DashboardMain.php');
+    } else {
+        echo 'query error: ' . mysqli_error($conn);
+    }
+
+    // close connection
+    mysqli_close($conn);
+}
+
 
 //----------------- For label of users ---------------
 
@@ -69,7 +117,7 @@ $labels = mysqli_fetch_all($resultantLabel); // conver to array
 //----------------- For Notes of users ---------------
 
 // sql query 
-$sql = "SELECT title, details, created_at
+$sql = "SELECT title, details, created_at, public
         FROM user_info AS uinfo
         INNER JOIN
         notes as n
@@ -80,6 +128,7 @@ $resultantNotes =  mysqli_query($conn, $sql);  // get query result
 
 // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
 $Notes = mysqli_fetch_all($resultantNotes); // conver to array
+// print_r($Notes);
 
 
 //----------------- For Notes of #label 1 clicked (From brooks) ---------------
@@ -250,7 +299,7 @@ mysqli_close($conn);
                 <?php } ?>
             </div>
             <div class="container m-0 bg-transparent p-0">
-                <div class="row bg-white m-0">
+                <div class="row bg-white m-0 mb-2">
                     <!-- Write Your Note Field (70% width) -->
                     <div class="col-lg-9 bg-white m-0 p-0" style=" position: sticky;    z-index: 1000; ">
                         <input id="openModalInput" class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example">
@@ -291,24 +340,29 @@ mysqli_close($conn);
                             'card-hover-10'
                         ];
 
-                        foreach ($Notes as $note) {
+                        foreach ($Notes as $index => $note) {
                             $randomClass = $hoverClasses[array_rand($hoverClasses)];
                         ?>
                             <div class="col">
                                 <div class="card h-100 card-hover <?php echo $randomClass; ?>">
-                                    <div class="card-body">
-                                        <h5 class="card-title">
-                                            <?php echo htmlspecialchars($note[0]); ?>
-                                        </h5>
-                                        <p class="card-text">
-                                            <?php echo htmlspecialchars($note[1]); ?>
-                                        </p>
-                                    </div>
-                                    <div class="card-footer">
-                                        <small class="text-muted">Created
-                                            <?php echo htmlspecialchars($note[2]); ?>
-                                        </small>
-                                    </div>
+                                    <!-- <button type="button" class="btn btn-primary p-0 m-0 border-0" data-bs-toggle="modal" data-bs-target="#editNoteModal" style="text-decoration: none; color: inherit;"> -->
+                                    <button type="button" class="card-link btn btn-link p-0 m-0 border-0" data-bs-toggle="modal" data-bs-target="#editNoteModal" data-note-title="<?php echo htmlspecialchars($note[0]); ?>" data-note-details="<?php echo htmlspecialchars($note[1]); ?>" data-note-createdAt="<?php echo htmlspecialchars($note[2]); ?>" data-note-public="<?php echo htmlspecialchars($note[3]); ?>" style="text-decoration: none; color: inherit;">
+
+                                        <div class="card-body">
+                                            <h5 class="card-title">
+                                                <?php echo htmlspecialchars($note[0]); ?>
+                                            </h5>
+                                            <p class="card-text">
+                                                <?php echo htmlspecialchars($note[1]); ?>
+                                            </p>
+                                        </div>
+                                        <div class="card-footer">
+                                            <small class="text-muted">Created
+                                                <?php echo htmlspecialchars($note[2]); ?>
+                                            </small>
+                                        </div>
+
+                                    </button>
                                 </div>
                             </div>
                         <?php } ?>
@@ -365,6 +419,87 @@ mysqli_close($conn);
                                 <div class="col-5">
                                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
                                     <button type="submit" class="btn btn-primary" name="saveNote">Save Note</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal for editing notes -->
+
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-XA6Q33Gr1JIqzDG71JwQ7As5Xsnn2wueE/h/dL0pEFkKU4jPSyA1fn5P3+hpLAU5" crossorigin="anonymous"></script>
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var editNoteModal = document.getElementById('editNoteModal');
+            editNoteModal.addEventListener('show.bs.modal', function(event) {
+                var button = event.relatedTarget;
+                var noteTitle = button.getAttribute('data-note-title');
+                var noteDetails = button.getAttribute('data-note-details');
+                var noteCreatedAt = button.getAttribute('data-note-createdAt');
+                var notepublic = button.getAttribute('data-note-public');
+
+                var modalTitleInput = editNoteModal.querySelector('#noteTitle');
+                var modalDetailsTextarea = editNoteModal.querySelector('#noteDetails');
+                var modalCreatedAtInput = editNoteModal.querySelector('#noteCreatedAt');
+                var modalPublicCheckbox = editNoteModal.querySelector('#public');
+
+                modalTitleInput.value = noteTitle;
+                modalDetailsTextarea.value = noteDetails;
+                modalCreatedAtInput.value = noteCreatedAt;
+                modalPublicCheckbox.checked = (notePublic == 1);
+            });
+
+            document.getElementById('button').addEventListener('click', function() {
+                var newNoteModal = new bootstrap.Modal(document.getElementById('editNoteModal'));
+                newNoteModal.show();
+            });
+        });
+    </script>
+
+    <div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel" aria-hidden="true">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="editNoteModalLabel">Edit Note</h5>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <form id="editNoteForm" action="DashboardMain.php" method="POST">
+                    <div class="modal-body">
+                        <div class="mb-3">
+                            <label for="noteTitle" class="form-label">Title</label>
+                            <input type="text" class="form-control" id="noteTitle" name="noteTitle">
+                        </div>
+                        <div class="mb-3">
+                            <label for="noteDetails" class="form-label">Details</label>
+                            <textarea class="form-control" id="noteDetails" name="noteDetails" rows="3"></textarea>
+                        </div>
+
+                        <div class="mb-3">
+                            <input type="text" class="form-control" id="noteCreatedAt" name="noteCreatedAt" style="color: inherit;" readonly>
+                        </div>
+                    </div>
+                    <div class="modal-footer">
+                        <div class="container">
+                            <div class="row align-items-start">
+                                <div class="col-5">
+                                    <div class="form-check form-switch">
+                                        <div class="row align-items-start">
+                                            <div class="col-">
+                                                <label class="form-check-label" for="public">Public</label>
+                                            </div>
+                                            <div class="col-">
+                                                <input class="form-check-input" type="checkbox" role="switch" id="public" name="public">
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="col-7">
+                                    <button type="submit" class="btn btn-danger" name="deleteNote">Delete Note</button>
+                                    <button type="submit" class="btn btn-primary" name="saveChanges">Save changes</button>
                                 </div>
                             </div>
                         </div>
