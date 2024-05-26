@@ -6,13 +6,12 @@ $username = 'root';
 $password = '';
 $databasename = 'Kairos';
 
-
 // connection obj
 $conn = mysqli_connect($servername, $username, $password, $databasename);
 
 // check connection
 if (!$conn) {
-    die("Sorry failed to connect: " . mysqli_connect_error());
+    exit('Sorry failed to connect: '.mysqli_connect_error());
 }
 
 session_start(); // Start the session
@@ -24,7 +23,6 @@ $public = 0; // public = 0 means private
 
 // Save Notes
 if (isset($_POST['saveNote'])) {
-
     if (isset($_POST['public'])) {
         $public = 1;
     }
@@ -42,7 +40,7 @@ if (isset($_POST['saveNote'])) {
         // success
         header('Location: DashboardMain.php');
     } else {
-        echo 'query error: ' . mysqli_error($conn);
+        echo 'query error: '.mysqli_error($conn);
     }
 
     // close connection
@@ -51,12 +49,10 @@ if (isset($_POST['saveNote'])) {
 
 // Changes Note or Delete Note
 if (isset($_POST['saveChanges']) || isset($_POST['deleteNote'])) {
-
     $noteCreatedAt = mysqli_real_escape_string($conn, $_POST['noteCreatedAt']);
     $sql = '';
 
     if (isset($_POST['saveChanges'])) {
-
         if (isset($_POST['public'])) {
             $public = 1;
         }
@@ -69,15 +65,13 @@ if (isset($_POST['saveChanges']) || isset($_POST['deleteNote'])) {
                 WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
     }
 
-
-    //.....****** If we don't want to store deleted Notes in database, then it will be deleted *******...............
+    // .....****** If we don't want to store deleted Notes in database, then it will be deleted *******...............
     if (isset($_POST['deleteNote'])) {
-
         $sql = "DELETE FROM notes
         WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
     }
 
-    //.....****** If we want to store deleted Notes in database, then it will be uncommented *******...............
+    // .....****** If we want to store deleted Notes in database, then it will be uncommented *******...............
     // if (isset($_POST['deleteNote'])) {
     //     $sql = "UPDATE notes SET deleteStatus = 1
     //             WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
@@ -88,15 +82,14 @@ if (isset($_POST['saveChanges']) || isset($_POST['deleteNote'])) {
         // success
         header('Location: DashboardMain.php');
     } else {
-        echo 'query error: ' . mysqli_error($conn);
+        echo 'query error: '.mysqli_error($conn);
     }
 
     // close connection
     mysqli_close($conn);
 }
 
-
-//----------------- For label of users ---------------
+// ----------------- For label of users ---------------
 
 // sql query
 
@@ -107,16 +100,15 @@ $sql = "SELECT l.labelName
         ON uinfo.userHandle = l.userHandle
         WHERE uinfo.userHandle = '$userHandle'; ";
 
-$resultantLabel =  mysqli_query($conn, $sql);  // get query result
+$resultantLabel = mysqli_query($conn, $sql);  // get query result
 
 $labels = mysqli_fetch_all($resultantLabel); // conver to array
 
 // print_r($labels);
 
+// ----------------- For Notes of users ---------------
 
-//----------------- For Notes of users ---------------
-
-// sql query 
+// sql query
 $sql = "SELECT title, details, created_at, public
         FROM user_info AS uinfo
         INNER JOIN
@@ -124,16 +116,15 @@ $sql = "SELECT title, details, created_at, public
         ON uinfo.userHandle = n.userHandle
         WHERE uinfo.userHandle = '$userHandle'; ";
 
-$resultantNotes =  mysqli_query($conn, $sql);  // get query result
+$resultantNotes = mysqli_query($conn, $sql);  // get query result
 
 // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
 $Notes = mysqli_fetch_all($resultantNotes); // conver to array
 // print_r($Notes);
 
+// ----------------- For Notes of #label 1 clicked (From brooks) ---------------
 
-//----------------- For Notes of #label 1 clicked (From brooks) ---------------
-
-// sql query 
+// sql query
 $sql = "SELECT title, details, created_at, l.labelName
         FROM user_info AS uinfo
         INNER JOIN
@@ -144,7 +135,7 @@ $sql = "SELECT title, details, created_at, l.labelName
         ON l.userHandle = uinfo.userHandle
         WHERE uinfo.userHandle = 'bijoy123' AND l.labelName = 'Books';";
 
-$resultantNotes =  mysqli_query($conn, $sql);  // get query result
+$resultantNotes = mysqli_query($conn, $sql);  // get query result
 
 // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
 $Notes = mysqli_fetch_all($resultantNotes); // conver to array
@@ -201,8 +192,15 @@ mysqli_close($conn);
 
         /* -------------------------------------- */
         .card-hover {
-            transition: transform 0.3s, background-color 0.3s;
-        }
+    transition: transform 0.3s, background-color 0.3s, outline-width 0.3s;
+    outline-style: solid;
+    outline-width: 0px; /* Initial outline width */
+}
+
+.card-hover:hover {
+    outline-width: 2px; /* Width of the outline when hovered */
+}
+
 
         .card-hover-1:hover {
             transform: translateY(-5px);
@@ -275,10 +273,10 @@ mysqli_close($conn);
 
 <body class="bg-custom">
     <?php
-    include('../Includes/NavBarSecond.php'); // uncomment
-    include('../Includes/Sidebar.php'); // uncomment
-    include('../Includes/HappyJar.php'); // uncomment
-    ?>
+    include '../Includes/NavBarSecond.php'; // uncomment
+include '../Includes/Sidebar.php'; // uncomment
+include '../Includes/HappyJar.php'; // uncomment
+?>
 
 
     <main class="main bg-white shadow z-0">
@@ -290,7 +288,7 @@ mysqli_close($conn);
                 </div>
 
                 <?php
-                foreach ($labels as $label) { ?>
+            foreach ($labels as $label) { ?>
                     <div class="second col-lg-1" style="      position: sticky;      z-index: 1000;">
                         <button type="submit" class="second btn btn-secondary" name="add">
                             <?php echo htmlspecialchars($label[0]); ?>
@@ -321,43 +319,43 @@ mysqli_close($conn);
             <br>
             <div class="block bg-white">
                 <!-- Notes Block -->
-                <div class="">
+                <div class="bg-transparent">
                     <!---------------------- ALL Note Cards Show ---------------------->
 
-                    <div class="row row-cols-1 row-cols-md-3 g-4">
+                    <div class="row row-cols-1 row-cols-md-3 g-4 bg-transparent">
                         <!-- cards create -->
                         <?php
-                        $hoverClasses = [
-                            'card-hover-1',
-                            'card-hover-2',
-                            'card-hover-3',
-                            'card-hover-4',
-                            'card-hover-5',
-                            'card-hover-6',
-                            'card-hover-7',
-                            'card-hover-8',
-                            'card-hover-9',
-                            'card-hover-10'
-                        ];
+                    $hoverClasses = [
+                        'card-hover-1',
+                        'card-hover-2',
+                        'card-hover-3',
+                        'card-hover-4',
+                        'card-hover-5',
+                        'card-hover-6',
+                        'card-hover-7',
+                        'card-hover-8',
+                        'card-hover-9',
+                        'card-hover-10',
+                    ];
 
-                        foreach ($Notes as $index => $note) {
-                            $randomClass = $hoverClasses[array_rand($hoverClasses)];
-                        ?>
-                            <div class="col">
-                                <div class="card h-100 card-hover <?php echo $randomClass; ?>">
+foreach ($Notes as $index => $note) {
+    $randomClass = $hoverClasses[array_rand($hoverClasses)];
+    ?>
+                            <div class="col bg-transparent">
+                                <div class="card h-100 card-hover  <?php echo $randomClass; ?>">
                                     <!-- <button type="button" class="btn btn-primary p-0 m-0 border-0" data-bs-toggle="modal" data-bs-target="#editNoteModal" style="text-decoration: none; color: inherit;"> -->
                                     <button type="button" class="card-link btn btn-link p-0 m-0 border-0" data-bs-toggle="modal" data-bs-target="#editNoteModal" data-note-title="<?php echo htmlspecialchars($note[0]); ?>" data-note-details="<?php echo htmlspecialchars($note[1]); ?>" data-note-createdAt="<?php echo htmlspecialchars($note[2]); ?>" data-note-public="<?php echo htmlspecialchars($note[3]); ?>" style="text-decoration: none; color: inherit;">
 
-                                        <div class="card-body">
-                                            <h5 class="card-title">
+                                        <div class="card-body bg-transparent">
+                                            <h5 class="card-title bg-transparent">
                                                 <?php echo htmlspecialchars($note[0]); ?>
                                             </h5>
-                                            <p class="card-text">
+                                            <p class="card-text bg-transparent">
                                                 <?php echo htmlspecialchars($note[1]); ?>
                                             </p>
                                         </div>
-                                        <div class="card-footer">
-                                            <small class="text-muted">Created
+                                        <div class="card-footer bg-transparent">
+                                            <small class="text-muted bg-transparent">Created
                                                 <?php echo htmlspecialchars($note[2]); ?>
                                             </small>
                                         </div>
