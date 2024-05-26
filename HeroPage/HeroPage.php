@@ -1,19 +1,19 @@
 <?php
-    $conn = new mysqli('localhost', 'root', '', 'kairos');
+$conn = new mysqli('localhost', 'root', '', 'kairos');
 
-    if ($conn->connect_error) {
-        die("Connection failed: " . $conn->connect_error);
-    }
+if ($conn->connect_error) {
+    exit('Connection failed: '.$conn->connect_error);
+}
 
-    $sql = "SELECT COUNT(*) AS total_assigned_users FROM user_info";
-    $result = $conn->query($sql);
-    $user = mysqli_fetch_all($result);
+$sql = 'SELECT COUNT(*) AS total_assigned_users FROM user_info';
+$result = $conn->query($sql);
+$user = mysqli_fetch_all($result);
 
-    $sqli = "SELECT COUNT(*) AS total_assigned_users FROM category";
-    $resulti = $conn->query($sqli);
-    $com = mysqli_fetch_all($resulti);
+$sqli = 'SELECT COUNT(*) AS total_assigned_users FROM category';
+$resulti = $conn->query($sqli);
+$com = mysqli_fetch_all($resulti);
 
-    $conn->close();
+$conn->close();
 ?>
 <!DOCTYPE html>
 <html lang="en">
@@ -142,13 +142,13 @@
         <div class="row justify-content-center p-3">
         <div class="card shadow border-0 col mx-3" style="max-width: 14rem;">
             <div class="card-body text-center">
-                <h1><?php echo implode("", $user[0]);?>+</h1>
+                <h1><?php echo implode('', $user[0]); ?>+</h1>
                 <p class="card-text">Number of Active users</p>
             </div>
         </div>
         <div class="card shadow border-0 col mx-3" style="max-width: 14rem;">
             <div class="card-body text-center">
-                <h1><?php echo implode("", $com[0]);?>+</h1>
+                <h1><?php echo implode('', $com[0]); ?>+</h1>
                 <p class="card-text">Number of Active Communities</p>
             </div>
         </div>
