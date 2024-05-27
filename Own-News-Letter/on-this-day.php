@@ -16,7 +16,7 @@ $result = mysqli_query($conn, $sql);
 
 $notes = mysqli_fetch_all($result);
 
-// print_r($notes);
+print_r($notes);
 
 
 // for journal
@@ -32,6 +32,6 @@ $result = mysqli_query($conn, $sql);
 
 $notes = mysqli_fetch_all($result);
 
-// print_r($notes);
+print_r($notes);
 
 
