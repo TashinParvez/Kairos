@@ -10,8 +10,8 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
-
-
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <!-- CSS -->
     <link rel="stylesheet" href="../Includes/style.css">
     
@@ -20,7 +20,7 @@
     
     <section class="sidebar shadow z-2">
         <div class="temp">
-            <img src="\Images\logoWithoutName.png">
+            <img src="\Images\logoWithoutName.png" href="/Dashboard/DashboardMain.php">
             <p class="brand">Kairos</p>
         </div>
         <hr>
@@ -95,11 +95,7 @@
                 <c class="bg-white">Personal Journal</c>
             </a>
         </div>
-    </section>
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
-    </script>
-    
+    </section>    
     <script>
         const clearInput = () => {
             const input = document.getElementsByTagName("input")[0];
@@ -108,5 +104,6 @@
             const clearBtn = document.getElementById("clear-btn");
             clearBtn.addEventListener("click", clearInput);
     </script>
+    
 </body>
 </html>

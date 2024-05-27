@@ -39,11 +39,16 @@ $conn->close();
             align-items: center;
             scroll-snap-align: start;
         }
-        .container {
+        #mainCon {
             scroll-snap-type: y mandatory;
             overflow-y: scroll;
             height: 100vh;
             max-width: 100%;
+        }
+        #secCon {
+            height: 100vh;
+            max-width: 100%;
+            margin: 0;
         }
         .wrapper{
             display: flex;
@@ -122,48 +127,62 @@ $conn->close();
             background-repeat: no-repeat; /* Do not repeat the background image */
         }
     </style>
-    <div class="container">
+    <div class="container" id="mainCon">
     <div class="background-image"></div>
         <section class="one">
             <img src="\Images\logo2.png" class="navImg" style="position: absolute; top: 20px; left: 50px; width: 150px; height: 150px;">
             <a href="/Sign Up/SignUp2.php" class="btn btn-outline-secondary" style="position: absolute; top: 20px; right: 50px;">About us</a>
-            <a href="/Sign Up/signUp.php" class="btn btn-outline-secondary" style="position: absolute; top: 20px; right: 160px;">Sign up</a>
+            <a href="/Sign Up/SignUp2.php" class="btn btn-outline-secondary" style="position: absolute; top: 20px; right: 160px;">Sign up</a>
             <div class="wrapper">
                 <div class="static-txt">We're your</div>
                 <ul class="dynamic-txts">
-                <li><span>Well Wisher</span></li>
-                <li><span>Personal Assisant</span></li>
-                <li><span>Habit Builder</span></li>
-                <li><span>Loop Breaker</span></li>
+                    <li><span>Well Wisher</span></li>
+                    <li><span>Personal Assisant</span></li>
+                    <li><span>Habit Builder</span></li>
+                    <li><span>Loop Breaker</span></li>
                 </ul>
             </div>
         </section>
         <section class="two">
-        <div class="row justify-content-center p-3">
-        <div class="card shadow border-0 col mx-3" style="max-width: 14rem;">
-            <div class="card-body text-center">
-                <h1><?php echo implode('', $user[0]); ?>+</h1>
-                <p class="card-text">Number of Active users</p>
+            <div class="row justify-content-center p-3">
+            <div class="card shadow border-0 col mx-3" style="max-width: 14rem;">
+                <div class="card-body text-center">
+                    <h1><?php echo implode('', $user[0]); ?>+</h1>
+                    <p class="card-text">Number of Active users</p>
+                </div>
             </div>
-        </div>
-        <div class="card shadow border-0 col mx-3" style="max-width: 14rem;">
-            <div class="card-body text-center">
-                <h1><?php echo implode('', $com[0]); ?>+</h1>
-                <p class="card-text">Number of Active Communities</p>
+            <div class="card shadow border-0 col mx-3" style="max-width: 14rem;">
+                <div class="card-body text-center">
+                    <h1><?php echo implode('', $com[0]); ?>+</h1>
+                    <p class="card-text">Number of Active Communities</p>
+                </div>
             </div>
-        </div>
-        <div class="card shadow border-0 col mx-3" style="max-width: 14rem;">
-            <div class="card-body text-center">
-                <h1>70%</h1>
-                <p class="card-text">Improvement of time efficiency</p>
+            <div class="card shadow border-0 col mx-3" style="max-width: 14rem;">
+                    <div class="card-body text-center">
+                        <h1>70%</h1>
+                        <p class="card-text">Improvement of time efficiency</p>
+                    </div>
+                </div>
             </div>
-        </div>
-        
-    </div>
-</section>
-
+        </section>
         <section class="three">
-            <h1>Documentation Page</h1>
+            <div class="row justify-content-center p-3">
+                <div class="card shadow border-0 col mx-3" style="max-width: 14rem;">
+                    
+                </div>
+                <div class="card shadow border-0 col mx-3" style="max-width: 14rem;">
+                    <div class="card-body text-center">
+                        <h1><?php echo implode('', $com[0]); ?>+</h1>
+                        <p class="card-text">Number of Active Communities</p>
+                    </div>
+                </div>
+                <div class="card shadow border-0 col mx-3" style="max-width: 14rem;">
+                        <div class="card-body text-center">
+                            <h1>70%</h1>
+                            <p class="card-text">Improvement of time efficiency</p>
+                        </div>
+                </div>
+            </div>
         </section>
     </div>
 </body>
