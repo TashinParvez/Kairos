@@ -40,7 +40,7 @@ if (isset($_POST['createGoal'])) {
         if (mysqli_query($conn, $sql)) {
             header('Location: goals.php');
         } else {
-            echo 'query error: ' . mysqli_error($conn);
+            echo 'query error: '.mysqli_error($conn);
         }
     }
 
@@ -64,7 +64,7 @@ if (isset($_POST['completed'])) {
         // success
         header('Location: goals.php');
     } else {
-        echo 'query error: ' . mysqli_error($conn);
+        echo 'query error: '.mysqli_error($conn);
     }
 
     // close connection
@@ -73,7 +73,6 @@ if (isset($_POST['completed'])) {
 
 // .......*** Page counter ***...........
 if (isset($_POST['counterPlus'])) {
-
     $sql = "UPDATE page_count
             SET dailyCount = dailyCount+1
             WHERE userHandle = '$userHandle'";
@@ -83,7 +82,7 @@ if (isset($_POST['counterPlus'])) {
         // success
         header('Location: goals.php');
     } else {
-        echo 'query error: ' . mysqli_error($conn);
+        echo 'query error: '.mysqli_error($conn);
     }
 
     // close connection
@@ -91,7 +90,6 @@ if (isset($_POST['counterPlus'])) {
 }
 
 if (isset($_POST['counterMinus'])) {
-
     $sql = "UPDATE page_count
             SET dailyCount = dailyCount-1
             WHERE userHandle = '$userHandle'";
@@ -101,7 +99,7 @@ if (isset($_POST['counterMinus'])) {
         // success
         header('Location: goals.php');
     } else {
-        echo 'query error: ' . mysqli_error($conn);
+        echo 'query error: '.mysqli_error($conn);
     }
 
     // close connection
@@ -109,7 +107,7 @@ if (isset($_POST['counterMinus'])) {
 }
 
 // After checked a goal
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
+if ($_SERVER['REQUEST_METHOD'] == 'POST') {
     if (isset($_POST['goal_checkbox'])) {
         // Retrieve the values sent via POST
         $goalName = $_POST['goalName'];
@@ -125,11 +123,11 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
             header('Location: goals.php');
         } else {
             // Database update failed
-            echo "Error updating goal: " . mysqli_error($conn);
+            echo 'Error updating goal: '.mysqli_error($conn);
         }
     } else {
         // Checkbox not checked
-        echo "Checkbox not checked.";
+        echo 'Checkbox not checked.';
     }
 }
 
@@ -333,12 +331,12 @@ mysqli_close($conn);
 <body>
     <?php
     include '../Includes/NavBarSecond.php'; // uncomment
-    include '../Includes/Sidebar.php'; // uncomment
-    ?>
+include '../Includes/Sidebar.php'; // uncomment
+?>
 
     <!-- ------------------------ Main Segment ------------------------------- -->
 
-    <main class="main bg-white shadow">
+    <main class="main bg-white shadow z-2">
         <div class="stat bg-white">
             <!-- Some Charts here -->
         </div>
@@ -358,9 +356,9 @@ mysqli_close($conn);
                                 <div class="accordion-body" style="margin:0; padding:0">
 
                                     <?php
-                                    if (empty($finishedGoals)) {
-                                        echo "You Haven't finished your any Goal";
-                                    } else { ?>
+                                if (empty($finishedGoals)) {
+                                    echo "You Haven't finished your any Goal";
+                                } else { ?>
 
                                         <table class="table table-striped">
                                             <thead>
@@ -373,8 +371,8 @@ mysqli_close($conn);
                                             </thead>
                                             <tbody class="table-group-divider">
                                                 <?php
-                                                $cnt = 1;
-                                                foreach ($finishedGoals as $goal) { ?>
+                                            $cnt = 1;
+                                    foreach ($finishedGoals as $goal) { ?>
                                                     <tr>
                                                         <th scope="row">
                                                             <?php echo $cnt; ?>
@@ -390,14 +388,14 @@ mysqli_close($conn);
                                                         </td>
                                                     </tr>
                                                 <?php
-                                                    ++$cnt;
-                                                }
-                                                ?>
+                                        ++$cnt;
+                                    }
+                                    ?>
 
                                             </tbody>
                                         </table>
                                     <?php }
-                                    ?>
+                                ?>
                                 </div>
                             </div>
                         </div>
@@ -412,9 +410,9 @@ mysqli_close($conn);
                                 <div class="accordion-body" style="margin:0; padding:0">
 
                                     <?php
-                                    if (empty($goalsThatTimeRemains)) {
-                                        echo "You don't have any Goals remain";
-                                    } else { ?>
+                                if (empty($goalsThatTimeRemains)) {
+                                    echo "You don't have any Goals remain";
+                                } else { ?>
 
                                         <table class="table table-striped">
                                             <thead>
@@ -428,8 +426,8 @@ mysqli_close($conn);
                                             </thead>
                                             <tbody class="table-group-divider">
                                                 <?php
-                                                $cnt = 1;
-                                                foreach ($goalsExceededDeadline as $goal) { ?>
+                                            $cnt = 1;
+                                    foreach ($goalsExceededDeadline as $goal) { ?>
                                                     <tr>
                                                         <th scope="row">
                                                             <?php echo $cnt; ?>
@@ -451,13 +449,13 @@ mysqli_close($conn);
                                                     </tr>
                                                     <?php ++$cnt; ?>
                                                 <?php }
-                                                ?>
+                                    ?>
 
                                             </tbody>
                                         </table>
 
                                     <?php }
-                                    ?>
+                                ?>
 
                                 </div>
                             </div>
@@ -473,9 +471,9 @@ mysqli_close($conn);
                                 <div class="accordion-body" style="margin:0; padding:0">
 
                                     <?php
-                                    if (empty($goalsThatTimeRemains)) {
-                                        echo "You don't have any Goals remain";
-                                    } else { ?>
+                                if (empty($goalsThatTimeRemains)) {
+                                    echo "You don't have any Goals remain";
+                                } else { ?>
 
                                         <table class="table table-striped">
                                             <thead>
@@ -489,8 +487,8 @@ mysqli_close($conn);
                                             </thead>
                                             <tbody class="table-group-divider">
                                                 <?php
-                                                $cnt = 1;
-                                                foreach ($goalsThatTimeRemains as $goal) { ?>
+                                            $cnt = 1;
+                                    foreach ($goalsThatTimeRemains as $goal) { ?>
                                                     <tr>
                                                         <th scope="row">
                                                             <?php echo $cnt; ?>
@@ -514,13 +512,13 @@ mysqli_close($conn);
                                                     </tr>
                                                     <?php ++$cnt; ?>
                                                 <?php }
-                                                ?>
+                                    ?>
 
                                             </tbody>
                                         </table>
 
                                     <?php }
-                                    ?>
+                                ?>
 
                                 </div>
                             </div>
@@ -534,34 +532,7 @@ mysqli_close($conn);
                     </button>
 
                     <!-- Modal -->
-                    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-                        <div class="modal-dialog  modal-dialog-centered">
-                            <div class="modal-content">
-                                <div class="modal-header">
-                                    <h1 class="modal-title fs-5" id="exampleModalLabel">New Task</h1>
-                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                                </div>
-                                <div class="modal-body">
-
-                                    <div class="input-group mb-3">
-                                        <span class="input-group-text" id="inputGroup-sizing-default">Task Info</span>
-                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
-                                    </div>
-
-                                    <input id="datepicker" width="462" placeholder="With in the date you want to finishe" />
-                                    <script>
-                                        $('#datepicker').datepicker({
-                                            uiLibrary: 'bootstrap5'
-                                        });
-                                    </script>
-                                </div>
-                                <div class="modal-footer">
-                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                                    <button type="button" class="btn btn-primary">Add</button>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
+                    
                 </div>
             </div>
             <div class="col-3 bg-white">
@@ -640,7 +611,36 @@ mysqli_close($conn);
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <!-- Bootstrap JavaScript Bundle -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+    
 
+    <div class="modal fade z-10" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+                        <div class="modal-dialog  modal-dialog-centered">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <h1 class="modal-title fs-5" id="exampleModalLabel">New Task</h1>
+                                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                                </div>
+                                <div class="modal-body">
+
+                                    <div class="input-group mb-3">
+                                        <span class="input-group-text" id="inputGroup-sizing-default">Task Info</span>
+                                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                                    </div>
+
+                                    <input id="datepicker" width="462" placeholder="With in the date you want to finishe" />
+                                    <script>
+                                        $('#datepicker').datepicker({
+                                            uiLibrary: 'bootstrap5'
+                                        });
+                                    </script>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="button" class="btn btn-primary">Add</button>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
 </body>
 
 </html>

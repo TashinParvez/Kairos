@@ -15,8 +15,8 @@ if (isset($_POST['search'])) { // Showing searched blogs
     $sql = "SELECT concat(COALESCE(concat(firstName, ' '), ''), COALESCE(lastName, '')) AS name, date(b.created_at) AS created_date, topicName, description, created_at
             FROM blog AS b INNER JOIN user_info AS u
             ON b.userHandle = u.userHandle
-            WHERE concat(COALESCE(concat(firstName, ' '), ''), COALESCE(lastName, '')) LIKE '%" . $search_text . "%'
-            OR topicName LIKE '%" . $search_text . "%'
+            WHERE concat(COALESCE(concat(firstName, ' '), ''), COALESCE(lastName, '')) LIKE '%".$search_text."%'
+            OR topicName LIKE '%".$search_text."%'
             ORDER BY created_at DESC";
 
     $result = mysqli_query($conn, $sql);
@@ -53,7 +53,7 @@ if (isset($_POST['post'])) {
             // success
             header('Location: blog.php');
         } else {
-            echo 'query error: ' . mysqli_error($conn);
+            echo 'query error: '.mysqli_error($conn);
         }
     }
 }
@@ -82,8 +82,8 @@ mysqli_close($conn);
 <body>
     <?php
     include '../Includes/NavBarSecond.php'; // uncomment
-    include '../Includes/Sidebar.php'; // uncomment
-    ?>
+include '../Includes/Sidebar.php'; // uncomment
+?>
     <script>
         import {
             Ripple,
@@ -115,7 +115,7 @@ mysqli_close($conn);
         }
     </style>
 
-    <main class="main bg-white shadow">
+    <main class="main bg-white shadow z-1">
         <div class="container bg-white">
             <div class="row align-items-start bg-white">
                 <div class="col-2 bg-white">
@@ -137,7 +137,7 @@ mysqli_close($conn);
                     </form>
                     <div class="scrollable-container bg-white">
                         <?php if ($blogs === 'Empty result!') {
-                        ?>
+                            ?>
                             <div class="card mb-2 bg-white" style="background: snow;">
                                 <div class="card-body bg-white">
                                     <p class="card-text bg-white"> <?php echo htmlspecialchars($blogs); ?> </p>
@@ -145,8 +145,8 @@ mysqli_close($conn);
                             </div>
                         <?php } else { ?>
                             <?php
-                            foreach ($blogs as $blog) {
-                            ?>
+                                foreach ($blogs as $blog) {
+                                    ?>
                                 <div class="card mb-2 bg-white">
 
                                     <div class="card-header bg-white">
@@ -171,12 +171,12 @@ mysqli_close($conn);
                                         <h5 class="card-title bg-white"><?php echo htmlspecialchars($blog[2]); ?></h5>
                                         <p class="card-text bg-white">
                                             <?php
-                                            if (strlen($blog[3]) < 205) {
-                                                echo htmlspecialchars($blog[3]);
-                                            } else {
-                                                echo htmlspecialchars(substr($blog[3], 0, 200));
-                                            }
-                                            ?>
+                                                    if (strlen($blog[3]) < 205) {
+                                                        echo htmlspecialchars($blog[3]);
+                                                    } else {
+                                                        echo htmlspecialchars(substr($blog[3], 0, 200));
+                                                    }
+                                    ?>
                                         </p>
 
                                         <a class="bg-white" href="#" style="text-decoration: none;">...</a>
@@ -192,7 +192,9 @@ mysqli_close($conn);
                 </div>
             </div>
         </div>
-        <div class="modal fade bg-white" id="createBlogModal" tabindex="-1" aria-labelledby="createBlogModalLabel" aria-hidden="true">
+        
+    </main>
+<div class="modal fade bg-white z-10" id="createBlogModal" tabindex="-1" aria-labelledby="createBlogModalLabel" aria-hidden="true">
             <div class="modal-dialog bg-white" id="customModal">
                 <div class="modal-content bg-white">
                     <div class="modal-header bg-white">
@@ -206,18 +208,16 @@ mysqli_close($conn);
                                 <label for="blogTopic" class="form-label">Blog Topic</label>
                                 <input type="text" class="form-control" id="blogTopic" name="blogTopic" required>
                             </div>
-                            <div class="mb-3 bg-white">
-                                <label for="blogDescription" class="form-label bg-white">Blog Description</label>
+                            <div class="mb-3 bg-transparent">
+                                <label for="blogDescription" class="form-label bg-transparent">Blog Description</label>
                                 <textarea class="form-control bg-white" id="blogDescription" name="blogDescription" rows="3" required></textarea>
                             </div>
-                            <button type="submit" class="btn btn-primary bg-white" name="post">Post</button>
+                            <button type="submit" class="btn btn-secondary" name="post">Post</button>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-    </main>
-
 </body>
 
 </html>

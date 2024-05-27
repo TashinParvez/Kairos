@@ -163,7 +163,8 @@ mysqli_close($conn);
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../Includes/style.css">
-
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous"></script>
     <style>
         .second {
             background-color: white;
@@ -183,8 +184,11 @@ mysqli_close($conn);
         .card-hover {
             transition: transform 0.3s, background-color 0.3s;
             background-color: white;
+            outline: none;
         }
-
+        .card{
+            outline: none;
+        }
         /* .card-hover:hover {
             transform: translateY(-5px);
             background-color: #aed6f1;
@@ -192,15 +196,14 @@ mysqli_close($conn);
 
         /* -------------------------------------- */
         .card-hover {
-    transition: transform 0.3s, background-color 0.3s, outline-width 0.3s;
-    outline-style: solid;
-    outline-width: 0px; /* Initial outline width */
-}
+            transition: transform 0.3s, background-color 0.3s, outline-width 0.3s;
+            outline-style: solid;
+            outline-width: 0px; /* Initial outline width */
+        }
 
-.card-hover:hover {
-    outline-width: 2px; /* Width of the outline when hovered */
-}
-
+        .card-hover:hover {
+            outline-width: none; /* Width of the outline when hovered */
+        }
 
         .card-hover-1:hover {
             transform: translateY(-5px);
@@ -268,6 +271,51 @@ mysqli_close($conn);
         .card-hover .card-footer {
             background-color: inherit;
         }
+        .hover-underline-animation {
+            display: inline-block;
+            position: relative;
+            color: gray;
+            cursor: pointer;
+        }
+
+        .hover-underline-animation::after {
+            content: '';
+            position: absolute;
+            width: 100%;
+            transform: scaleX(0);
+            height: 2px;
+            bottom: 0;
+            left: 0;
+            background-color: gray;
+            transform-origin: bottom right;
+            transition: transform 0.25s ease-out;
+        }
+        .hover-underline-animation:hover {
+            color: gray;
+        }
+
+        .hover-underline-animation:hover::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+
+        .hover-underline-animation.active::after {
+            transform: scaleX(1);
+            transform-origin: bottom left;
+        }
+        .card {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .card-body {
+            flex: 1 1 auto;
+        }
+
+        .card-footer {
+            flex-shrink: 0;
+        }
+
     </style>
 </head>
 
@@ -283,16 +331,13 @@ include '../Includes/HappyJar.php'; // uncomment
         <div class="container bg-white m-0">
 
             <div class="row bg-white">
-                <div class="col-lg-1 bg-white" style="      position: sticky;      z-index: 1000;">
-                    <button type="submit" class="second btn btn-secondary " style="text-color:black" name="add">All</button>
+                <div class="col-lg-auto bg-white" style="      position: sticky;      z-index: 1000;">
+                    <a id="all" style="text-decoration:none;" href="" class="hover-underline-animation active">All</a>
                 </div>
 
-                <?php
-            foreach ($labels as $label) { ?>
-                    <div class="second col-lg-1" style="      position: sticky;      z-index: 1000;">
-                        <button type="submit" class="second btn btn-secondary" name="add">
-                            <?php echo htmlspecialchars($label[0]); ?>
-                        </button>
+                <?php foreach ($labels as $label) { ?>
+                    <div class="second col-sm-auto" style="position: sticky; z-index: 1000;">
+                        <a style="text-decoration:none;" href="" class="hover-underline-animation"><?php echo htmlspecialchars($label[0]); ?></a>
                     </div>
                 <?php } ?>
             </div>
@@ -325,43 +370,41 @@ include '../Includes/HappyJar.php'; // uncomment
                     <div class="row row-cols-1 row-cols-md-3 g-4 bg-transparent">
                         <!-- cards create -->
                         <?php
-                    $hoverClasses = [
-                        'card-hover-1',
-                        'card-hover-2',
-                        'card-hover-3',
-                        'card-hover-4',
-                        'card-hover-5',
-                        'card-hover-6',
-                        'card-hover-7',
-                        'card-hover-8',
-                        'card-hover-9',
-                        'card-hover-10',
-                    ];
+                            $hoverClasses = [
+                                'card-hover-1',
+                                'card-hover-2',
+                                'card-hover-3',
+                                'card-hover-4',
+                                'card-hover-5',
+                                'card-hover-6',
+                                'card-hover-7',
+                                'card-hover-8',
+                                'card-hover-9',
+                                'card-hover-10',
+                            ];
 
 foreach ($Notes as $index => $note) {
     $randomClass = $hoverClasses[array_rand($hoverClasses)];
     ?>
                             <div class="col bg-transparent">
-                                <div class="card h-100 card-hover  <?php echo $randomClass; ?>">
-                                    <!-- <button type="button" class="btn btn-primary p-0 m-0 border-0" data-bs-toggle="modal" data-bs-target="#editNoteModal" style="text-decoration: none; color: inherit;"> -->
-                                    <button type="button" class="card-link btn btn-link p-0 m-0 border-0" data-bs-toggle="modal" data-bs-target="#editNoteModal" data-note-title="<?php echo htmlspecialchars($note[0]); ?>" data-note-details="<?php echo htmlspecialchars($note[1]); ?>" data-note-createdAt="<?php echo htmlspecialchars($note[2]); ?>" data-note-public="<?php echo htmlspecialchars($note[3]); ?>" style="text-decoration: none; color: inherit;">
+                            <div class="card h-100 card-hover shadow <?php echo $randomClass; ?>">
+    <button type="button" class="card-link btn btn-link p-0 m-0 border-0" data-bs-toggle="modal" data-bs-target="#editNoteModal" data-note-title="<?php echo htmlspecialchars($note[0]); ?>" data-note-details="<?php echo htmlspecialchars($note[1]); ?>" data-note-createdAt="<?php echo htmlspecialchars($note[2]); ?>" data-note-public="<?php echo htmlspecialchars($note[3]); ?>" style="text-decoration: none; color: inherit;">
+        <div class="card-body bg-transparent">
+            <h5 class="card-title bg-transparent">
+                <?php echo htmlspecialchars($note[0]); ?>
+            </h5>
+            <p class="card-text bg-transparent">
+                <?php echo htmlspecialchars($note[1]); ?>
+            </p>
+        </div>
+        <div class="card-footer bg-transparent">
+            <small class="text-muted bg-transparent">Created
+                <?php echo htmlspecialchars($note[2]); ?>
+            </small>
+        </div>
+    </button>
+</div>
 
-                                        <div class="card-body bg-transparent">
-                                            <h5 class="card-title bg-transparent">
-                                                <?php echo htmlspecialchars($note[0]); ?>
-                                            </h5>
-                                            <p class="card-text bg-transparent">
-                                                <?php echo htmlspecialchars($note[1]); ?>
-                                            </p>
-                                        </div>
-                                        <div class="card-footer bg-transparent">
-                                            <small class="text-muted bg-transparent">Created
-                                                <?php echo htmlspecialchars($note[2]); ?>
-                                            </small>
-                                        </div>
-
-                                    </button>
-                                </div>
                             </div>
                         <?php } ?>
                     </div>
@@ -387,7 +430,7 @@ foreach ($Notes as $index => $note) {
         });
     </script>
     <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog modal-dialog-scrollable">
+        <div class="modal-dialog modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLabel">Write Your Note</h5>
@@ -410,8 +453,8 @@ foreach ($Notes as $index => $note) {
                             <div class="row align-items-start">
                                 <div class="col-7">
                                     <div class="form-check form-switch">
-                                        <label class="form-check-label" for="public">Make it public</label>
                                         <input class="form-check-input" type="checkbox" role="switch" id="public" name="public">
+                                        <label class="form-check-label" for="public">Make it public</label>
                                     </div>
                                 </div>
                                 <div class="col-5">
@@ -427,9 +470,6 @@ foreach ($Notes as $index => $note) {
     </div>
 
     <!-- Modal for editing notes -->
-
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-XA6Q33Gr1JIqzDG71JwQ7As5Xsnn2wueE/h/dL0pEFkKU4jPSyA1fn5P3+hpLAU5" crossorigin="anonymous"></script>
-
     <script>
         document.addEventListener('DOMContentLoaded', function() {
             var editNoteModal = document.getElementById('editNoteModal');
@@ -506,7 +546,27 @@ foreach ($Notes as $index => $note) {
             </div>
         </div>
     </div>
+    <script>
+        document.addEventListener('DOMContentLoaded', (event) => {
+            const links = document.querySelectorAll('.hover-underline-animation');
 
+            links.forEach(link => {
+                link.addEventListener('click', function(event) {
+                    event.preventDefault();
+
+                    // Remove the active class from all links
+                    links.forEach(l => l.classList.remove('active'));
+
+                    // Add the active class to the clicked link
+                    this.classList.add('active');
+                });
+            });
+
+            // Set the "All" button as active by default
+            document.getElementById('all').classList.add('active');
+        });
+
+    </script>
 </body>
 
 </html>
