@@ -120,11 +120,6 @@ foreach ($result as $row) {
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Bootstrap CSS -->
-    <link href="library/bootstrap-5/bootstrap.min.css" rel="stylesheet" />
-
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- Typeahead.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
@@ -135,16 +130,19 @@ foreach ($result as $row) {
 <body>
 
     <style>
+
     body {
         font-family: "Space Grotesk", sans-serif;
         src: url();
     }
 
     #navSearch {
+
         --background: #ffffff;
         --text-color: #414856;
         --primary-color: #111111;
         --border-radius: 20px;
+
         --width: 190px;
         --height: 55px;
         background: var(--background);
@@ -157,6 +155,7 @@ foreach ($result as $row) {
         display: flex;
         justify-content: center;
         align-items: center;
+
 
         input[type="text"] {
             position: relative;
@@ -306,6 +305,7 @@ foreach ($result as $row) {
     <header class="header shadow z-2">
         <div class="container-fluid bg-white" style="background-color: transparent;">
             <div class="container-fluid bg-white align-items-right">
+
                 <form class="searchBar bg-white" action="">
                     <span id="search-txt" class="z-10000">Search</span>
                     <!-- <input type="search" required> -->
@@ -314,6 +314,7 @@ foreach ($result as $row) {
                         style="width: 800px;" />
                     <i id="iconSrch" class="fa fa-search z-10"></i>
                 </form>
+
             </div>
         </div>
     </header>

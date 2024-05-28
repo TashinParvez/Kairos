@@ -14,7 +14,6 @@ if (!$conn) {
 
 // -------------------------------------------------
 $userHandle = 'tashin19';
-
 $loopName = 'loop1';
 
 $p1DoThis = null;
@@ -26,11 +25,126 @@ $p2WantToDoThis = null;
 $p3DoThis = null;
 $p3WantToDoThis = null;
 
+// ---------------------------------------- USer clicked helped btn ----------------------------------
+$userHandle = 'tashin19';
+$feelings = "happy, sad, excited";
+$doing = "facebook, insta";
 
-// ---------------------------------------- --------- ----------------------------------
+//----------------------------------------->> r1
+
+$feelingsArray = array_map('trim', explode(',', $feelings)); // for__feelings
+$conditions = [];
+foreach ($feelingsArray as $feeling) {
+    $conditions[] = "feelings LIKE '%" . $feeling . "%'";
+}
+
+$doingsArray = array_map('trim', explode(',', $doing));  // for__doings
+$doing_conditions = [];
+foreach ($doingsArray as $ptr) {
+    $doing_conditions[] = "la.do LIKE '%" . $ptr . "%'";
+}
+
+$sql = "SELECT DISTINCT *
+        FROM loopname as ln 
+        INNER JOIN 
+        loop_activities as la 
+        ON ln.no = la.loopNo
+        WHERE userHandle = '$userHandle' AND  (";
+
+$sql .= implode(' OR ', $conditions);
+$sql .= ') AND (';
+
+$sql .= implode(' OR ', $doing_conditions);
+$sql .= ')';
 
 
-// -------------------------------------------------------------------------------
+$result = mysqli_query($conn, $sql);
+$output = mysqli_fetch_all($result);
+
+// echo ($sql);
+
+//----------------------------------------->> r2  [when r1 is null == no loop select]
+// have to print what can feel
+
+if (!empty($output)) {
+    $sql = "SELECT DISTINCT *
+            FROM loopname as ln
+            INNER JOIN
+            loop_activities as la
+            ON ln.no = la.loopNo
+            WHERE userHandle = '$userHandle' AND  (";
+
+    $sql .= implode(' OR ', $doing_conditions); // only doing conditions
+    $sql .= ')';
+    // echo ($sql);
+
+    $result = mysqli_query($conn, $sql);
+    $output = mysqli_fetch_all($result);
+
+    if (!empty($output)) { // doctor suggestion on basis of feeling
+
+        $feelingsArray = array_map('trim', explode(',', $feelings)); // for__feelings
+        $conditions = [];
+        foreach ($feelingsArray as $feeling) {
+            $conditions[] = "la.do LIKE '%" . $feeling . "%'";
+        }
+
+        $sql = "SELECT loopName, do, canDo
+                FROM loopname as ln
+                INNER JOIN
+                loop_activities as la 
+                ON ln.no = la.loopNo
+                WHERE ln.no = 6
+                AND (";
+
+        $sql .= implode(' OR ', $conditions); // feelings
+        $sql .= ')';
+
+
+        // echo ($sql);
+
+        $result = mysqli_query($conn, $sql);
+        $output = mysqli_fetch_all($result);
+    }
+}
+// ----------------------------------------------------------------------------------------------------
+
+
+
+$userHandle = 'tashin19'; // need to change
+
+// --------------------------------------------All Loops (fetch  2)--------------------------------------------------------
+
+$sql = "SELECT ln.loopName, la.do, la.canDo
+        FROM loopname as ln
+        INNER JOIN loop_activities as la
+        ON ln.no = la.loopNo
+        WHERE userHandle = 'tashin19'
+        ORDER BY ln.loopName";
+
+$result = mysqli_query($conn, $sql);
+$allloops = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+$structuredData = [];
+
+foreach ($allloops as $row) {
+    $loopName = $row['loopName'];
+    $do = $row['do'];
+    $canDo = $row['canDo'];
+
+    if (!isset($structuredData[$loopName])) {
+        $structuredData[$loopName] = ['do' => [], 'canDo' => []];
+    }
+
+    $structuredData[$loopName]['do'][] = $do;
+    $structuredData[$loopName]['canDo'][] = $canDo;
+}
+
+// echo '<pre>';
+// print_r($structuredData);
+// echo '</pre>';
+
+// ----------------------------------------------------------------------------------------------------
 
 ?>
 
@@ -53,56 +167,7 @@ $p3WantToDoThis = null;
 
 <body class="bg-custom">
 
-
-
     <main class="main bg-white shadow z-0">
-        <!------------------------------ head Segment ------------------------------>
-        <div class="row p-4 p-md-5 mb-4 rounded text-bg-secondary justify-content-center">
-            <div class="col-10 text-bg-secondary d-flex flex-column ">
-                <h1 class="display-6 fst-italic text-bg-secondary">
-                    Are you <b class="text-bg-secondary">Procrastinating</b> ? <br>
-                    wasting your <b class="text-bg-secondary">Time</b> ?<br>
-                    are you in a <b class="text-bg-secondary">Loop</b> ?
-                </h1>
-            </div>
-            <div class="tashin col-2 text-bg-secondary d-flex flex-column justify-content-center">
-                <button type="button" class="btn btn-outline-danger " data-bs-toggle="modal" data-bs-target="#exampleModal">YES</button>
-                <button type="button" class="btn btn-outline-dark">NO</button>
-            </div>
-        </div>
-        <!------------------------------ Modal (YES) ------------------------------>
-        <div class="modal fade modal-dialog modal-dialog-centered modal-dialog-scrollable" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-            <div class="modal-dialog">
-                <div class="modal-content">
-                    <div class="modal-header">
-                        <h1 class="modal-title fs-5" id="exampleModalLabel">Modal title</h1>
-                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                    </div>
-                    <div class="modal-body">
-                        <form>
-                            <div class="row mb-3">
-                                <label for="input1" class="col-sm-6 col-form-label">What are you feeling?</label>
-                                <div class="col-sm-6">
-                                    <input type="" class="form-control" id="input1">
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <label for="input2" class="col-sm-6 col-form-label">Are you doing something?</label>
-                                <div class="col-sm-6">
-                                    <input type="" class="form-control" id="input2">
-                                </div>
-                            </div>
-                        </form>
-                    </div>
-                    <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                        <button type="submit" class="btn btn-primary">Help</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <!------------------------------ Body Segment ------------------------------>
-
 
         <!------------------------------ Body Segment ------------------------------>
         <div class="row p-4 p-md-5 mb-4">
@@ -189,34 +254,57 @@ $p3WantToDoThis = null;
             </div>
             <hr>
 
-            <!------------------- cards ------------------->
+            <!------------------- ALL loops (cards) (New)  tashin ------------------->
             <div class="row">
                 <div class="col-sm-6">
                     <div class="card">
                         <div class="card-body">
                             <h5 class="card-title">Doctor Suggestion</h5>
                             <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Update Loop</a>
+                            <a href="#" class="btn btn-primary">View/Edit Loop</a>
+                            <a href="#" class="btn btn-success">Delete Loop</a>
                         </div>
                     </div>
                 </div>
 
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Special title treatment</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">Update Loop</a>
+                <?php
+                foreach ($structuredData as $loopName => $activities) { ?>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"> <?php echo $loopName; ?></h5>
+
+                                <p class="card-text">
+                                    <?php
+                                    echo "Do: ";
+                                    foreach ($activities['do'] as $doItem) {
+                                        echo "$doItem ,";
+                                    }
+                                    echo "\n";   ?>
+                                </p>
+
+                                <p class="card-text">
+                                    <?php
+                                    echo "Can Do: ";
+                                    foreach ($activities['canDo'] as $canDoItem) {
+                                        echo "$canDoItem ,";
+                                    }
+                                    echo "\n";
+                                    ?>
+                                </p>
+
+                                <!-- card btn -->
+                                <a href="#" class="btn btn-primary">View/Edit Loop</a>
+                                <a href="#" class="btn btn-success">Delete Loop</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
+            <!--------------------------------------------------------------------->
+
         </div>
 
-
-
-
-        <!-- ------------------------------------------------------------------- -->
 
     </main>
 </body>

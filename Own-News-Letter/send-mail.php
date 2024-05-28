@@ -31,21 +31,21 @@ foreach ($users_send_mail as $ptr) {
     //---------------------------------------------------------------------------------------------------------
 
     $intro = "
-<p>Hello $surname,</p>
-<p>Welcome to your KAIROS update! Here are your recent notes and journal entries, tailored to support your personal growth and help you track your progress.</p>
-<p><strong>About KAIROS</strong></p>
-<p>Kairos is dedicated to aiding your personal development by encouraging positive habits, providing effective life-tracking tools, and helping you overcome negative behaviors, such as procrastination.</p>
-";
+    <p>Hello $surname,</p>
+    <p>Welcome to your KAIROS update! Here are your recent notes and journal entries, tailored to support your personal growth and help you track your progress.</p>
+    <p><strong>About KAIROS</strong></p>
+    <p>Kairos is dedicated to aiding your personal development by encouraging positive habits, providing effective life-tracking tools, and helping you overcome negative behaviors, such as procrastination.</p>
+    ";
 
     $signature = "
-<p>We hope these entries inspire and guide you in your journey. Remember, at KAIROS, we are here to support you every step of the way.</p>
-<p>Best regards,<br>
-The KAIROS Team</p><br>
-<p><strong>KAIROS</strong><br>
-Helping you cultivate positive habits and track your life effectively.<br>
-<a href='#'>Visit our website</a><br>
-<a href='#'>Follow us on Social Media</a></p>
-";
+    <p>We hope these entries inspire and guide you in your journey. Remember, at KAIROS, we are here to support you every step of the way.</p>
+    <p>Best regards,<br>
+    The KAIROS Team</p><br>
+    <p><strong>KAIROS</strong><br>
+    Helping you cultivate positive habits and track your life effectively.<br>
+    <a href='#'>Visit our website</a><br>
+    <a href='#'>Follow us on Social Media</a></p>
+    ";
 
     //---------------------------------------------------------------------------------------------------------
 
