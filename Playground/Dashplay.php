@@ -193,12 +193,10 @@ mysqli_close($conn);
         transition: transform 0.3s, background-color 0.3s;
         background-color: white;
         outline: none;
-        outline: white;
     }
 
     .card {
         outline: none;
-        outline: white;
     }
 
     .card-text {
@@ -335,7 +333,6 @@ mysqli_close($conn);
     .card {
         display: flex;
         flex-direction: column;
-        outline-color: white;
     }
 
     .card-body {
@@ -555,9 +552,8 @@ foreach ($Notes as $index => $note) {
     $randomClass = $hoverClasses[array_rand($hoverClasses)];
     ?>
                         <div class="col bg-transparent">
-                            <div class="card h-100 card-hover shadow <?php echo $randomClass; ?>"
-                                style="outline-color:white;">
-                                <button type="button" id="card-btn" class="card-link btn btn-link p-0 m-0 "
+                            <div class="card h-100 card-hover shadow <?php echo $randomClass; ?>">
+                                <button type="button" id="card-btn" class="card-link btn btn-link p-0 m-0 border-0"
                                     data-bs-toggle="modal" data-bs-target="#editNoteModal"
                                     data-note-title="<?php echo htmlspecialchars($note[0]); ?>"
                                     data-note-details="<?php echo htmlspecialchars($note[1]); ?>"

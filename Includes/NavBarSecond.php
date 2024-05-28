@@ -4,17 +4,15 @@ $username = 'root';
 $password = '';
 $databasename = 'Kairos';
 
-
 // connection obj
 $conn = mysqli_connect($servername, $username, $password, $databasename);
 
 // check connection
 if (!$conn) {
-    die("Sorry failed to connect: " . mysqli_connect_error());
+    exit('Sorry failed to connect: '.mysqli_connect_error());
 }
 
-
-$data = array();
+$data = [];
 // --------------------------------------------- fetch data For search ------------------------
 // fetch data ( FROM Notes )
 
@@ -26,7 +24,7 @@ $sql = "SELECT title
         FROM notes
         WHERE userHandle = 'tashin19';";
 
-$result  =  mysqli_query($conn, $sql);  // get query result 
+$result = mysqli_query($conn, $sql);  // get query result
 
 foreach ($result as $row) {
     $data[] = $row['title'];
@@ -34,41 +32,41 @@ foreach ($result as $row) {
 
 // fetch data ( FROM Blogs )
 
-$sql = "SELECT topicName
+$sql = 'SELECT topicName
         FROM blog
         UNION
         SELECT description
-        FROM blog;";
+        FROM blog;';
 
-$result  =  mysqli_query($conn, $sql);  // get query result 
+$result = mysqli_query($conn, $sql);  // get query result
 
 foreach ($result as $row) {
-  $data[] = $row['topicName'];
+    $data[] = $row['topicName'];
 }
 
 // fetch data ( FROM Category )
 
-$sql = "SELECT name
-        FROM `category`;";
+$sql = 'SELECT name
+        FROM `category`;';
 
-$result  =  mysqli_query($conn, $sql);  // get query result 
+$result = mysqli_query($conn, $sql);  // get query result
 
 foreach ($result as $row) {
-  $data[] = $row['name'];
+    $data[] = $row['name'];
 }
 
 // fetch data ( FROM Life_library)
 
-$sql = "SELECT bookname
+$sql = 'SELECT bookname
         FROM `life_library` 
         UNION ALL
         SELECT details
-        FROM `life_library`";
+        FROM `life_library`';
 
-$result  =  mysqli_query($conn, $sql);  // get query result 
+$result = mysqli_query($conn, $sql);  // get query result
 
 foreach ($result as $row) {
-  $data[] = $row['bookname'];
+    $data[] = $row['bookname'];
 }
 
 // fetch data ( FROM personal journal)
@@ -81,14 +79,14 @@ $sql = "SELECT title
         FROM `personal_journal`
         WHERE userHandle = 'tashin19';";
 
-$result  =  mysqli_query($conn, $sql);  // get query result 
+$result = mysqli_query($conn, $sql);  // get query result
 
 foreach ($result as $row) {
-  $data[] = $row['title'];
+    $data[] = $row['title'];
 }
 
 // print_r($data);
-//--------------------------------------------- DATA fetch done ---------------------
+// --------------------------------------------- DATA fetch done ---------------------
 
 ?>
 
@@ -107,12 +105,12 @@ foreach ($result as $row) {
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
         integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
-        rel="stylesheet">
-      <link rel="stylesheet" href="style.css">
 
-       <!-- Required meta tags -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300..700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="style.css">
+    <!-- Required meta tags -->
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
 
@@ -137,159 +135,185 @@ foreach ($result as $row) {
 <body>
 
     <style>
-      *{
-        z-index: 5000;
-      }
-#navSearch {
-  --background: #ffffff;
-  --text-color: #414856;
-  --primary-color: #111111;
-  --border-radius: 20px;
-  --width: 190px;    
-  --height: 55px;      
-  background: var(--background);
-  width: auto;
-  height: var(--height);
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--border-radius);
-  box-shadow: 0 10px 30px rgba(#414856, .05);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  input[type="text"] {
-    position: relative;
-    width: var(--height);
-    height: var(--height);
-    font: 400 16px 'Varela Round', sans-serif;
-    color: var(--text-color);
-    border: 0;
-    box-sizing: border-box;
-    outline: none;
-    padding: 0 0 0 40px;
-    transition: width .6s ease;
-    z-index: 10;
-    opacity: 0;
-    cursor: pointer;
-    &:focus {
-      z-index: 0;
-      opacity: 1;
-      width: var(--width);
-      ~ .symbol {
-        &::before {
-          width: 0%;
-        }
-        &:after {
-          clip-path: inset(0% 0% 0% 100%);
-          transition: clip-path .04s linear .105s;
-        }
-        .cloud {
-          top: -30px;
-          left: -30px;
-          transform: translate(0, 0);
-          transition: all .6s ease;
-        }
-        .lens {
-          top: 20px;
-          left: 15px;
-          transform: translate(0, 0);
-          fill: var(--primary-color);
-          transition: top .5s ease .1s, left .5s ease .1s, fill .3s ease;
-        }
-      }
+    body {
+        font-family: "Space Grotesk", sans-serif;
+        src: url();
     }
-  }
-  .symbol {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    &:before {
-      content:"";
-      position: absolute;
-      right: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--primary-color);
-      z-index: -1;
-      transition: width .6s ease;
-    }
-    &:after {
-      content:"";
-      position: absolute;
-      top: 21px;
-      left: 21px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--primary-color);
-      z-index: 1;
-      clip-path: inset(0% 0% 0% 0%);
-      transition: clip-path .04s linear .225s;
-    }
-    .cloud,
-    .lens {
-      position: absolute;
-      fill: #fff;
-      stroke: currentColor;
-      top: 50%;
-      left: 50%;
-    }
-    .cloud {
-      width: 35px;
-      height: 32px;
-      transform: translate(-50%, -60%);
-      transition: all .6s ease;
-    }
-    .lens {
-      fill: #fff;
-      width: 16px;
-      height: 16px;
-      z-index: 2;
-      top: 24px;
-      left: 24px;
-      transition: top .3s ease, left .3s ease, fill .2s ease .2s;
-    }
-  }
-}
 
-.NavContainer {
-  background: #fff;
-  font: 400 16px 'Varela Round', sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  .socials {
-    position: fixed;
-    display: block;
-    left: 20px;
-    bottom: 20px;
-    > Nava {
-      display: block;
-      width: 30px;
-      opacity: var(--opacity, .2);
-      transform: scale(var(--scale, .8));
-      transition: transform .3s cubic-bezier(0.38,-0.12, 0.24, 1.91);
+    #navSearch {
+        --background: #ffffff;
+        --text-color: #414856;
+        --primary-color: #111111;
+        --border-radius: 20px;
+        --width: 190px;
+        --height: 55px;
+        background: var(--background);
+        width: auto;
+        height: var(--height);
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--border-radius);
+        box-shadow: 0 10px 30px rgba(#414856, .05);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        input[type="text"] {
+            position: relative;
+            width: var(--height);
+            height: var(--height);
+            font: 400 16px 'Varela Round', sans-serif;
+            color: var(--text-color);
+            border: 0;
+            box-sizing: border-box;
+            outline: none;
+            padding: 0 0 0 40px;
+            transition: width .6s ease;
+            z-index: 10;
+            opacity: 0;
+            cursor: pointer;
+
+            &:focus {
+                z-index: 0;
+                opacity: 1;
+                width: var(--width);
+
+                ~.symbol {
+                    &::before {
+                        width: 0%;
+                    }
+
+                    &:after {
+                        clip-path: inset(0% 0% 0% 100%);
+                        transition: clip-path .04s linear .105s;
+                    }
+
+                    .cloud {
+                        top: -30px;
+                        left: -30px;
+                        transform: translate(0, 0);
+                        transition: all .6s ease;
+                    }
+
+                    .lens {
+                        top: 20px;
+                        left: 15px;
+                        transform: translate(0, 0);
+                        fill: var(--primary-color);
+                        transition: top .5s ease .1s, left .5s ease .1s, fill .3s ease;
+                    }
+                }
+            }
+        }
+
+        .symbol {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+
+            &:before {
+                content: "";
+                position: absolute;
+                right: 0;
+                width: 100%;
+                height: 100%;
+                background: var(--primary-color);
+                z-index: -1;
+                transition: width .6s ease;
+            }
+
+            &:after {
+                content: "";
+                position: absolute;
+                top: 21px;
+                left: 21px;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: var(--primary-color);
+                z-index: 1;
+                clip-path: inset(0% 0% 0% 0%);
+                transition: clip-path .04s linear .225s;
+            }
+
+            .cloud,
+            .lens {
+                position: absolute;
+                fill: #fff;
+                stroke: currentColor;
+                top: 50%;
+                left: 50%;
+            }
+
+            .cloud {
+                width: 35px;
+                height: 32px;
+                transform: translate(-50%, -60%);
+                transition: all .6s ease;
+            }
+
+            .lens {
+                fill: #fff;
+                width: 16px;
+                height: 16px;
+                z-index: 2;
+                top: 24px;
+                left: 24px;
+                transition: top .3s ease, left .3s ease, fill .2s ease .2s;
+            }
+        }
     }
-  }
-}
+
+    .NavContainer {
+        background: #fff;
+        font: 400 16px 'Varela Round', sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .socials {
+            position: fixed;
+            display: block;
+            left: 20px;
+            bottom: 20px;
+
+            >Nava {
+                display: block;
+                width: 30px;
+                opacity: var(--opacity, .2);
+                transform: scale(var(--scale, .8));
+                transition: transform .3s cubic-bezier(0.38, -0.12, 0.24, 1.91);
+            }
+        }
+    }
+
+    #search-txt {
+        z-index: 1000;
+    }
+
+    #iconSrch {
+        fill: transparent;
+    }
     </style>
 
     <header class="header shadow z-2">
         <div class="container-fluid bg-white" style="background-color: transparent;">
             <div class="container-fluid bg-white align-items-right">
-            <form class="searchBar bg-white" action="">
-                <span id="search-txt" class="z-10000">Search</span>
-                <!-- <input type="search" required> -->
-                <input type="search" class="bg-white align-items-center border-secondary" name="country_name" id="country_name" placeholder="Search Keyword" autocomplete="off" required style="width: 800px;"/>
-                <i class="fa fa-search"></i>
-            </form>
+                <form class="searchBar bg-white" action="">
+                    <span id="search-txt" class="z-10000">Search</span>
+                    <!-- <input type="search" required> -->
+                    <input type="search" class="bg-white align-items-center border-secondary" name="country_name"
+                        id="country_name" placeholder="Search Keyword" autocomplete="off" required
+                        style="width: 800px;" />
+                    <i id="iconSrch" class="fa fa-search z-10"></i>
+                </form>
             </div>
         </div>
     </header>
@@ -297,7 +321,6 @@ foreach ($result as $row) {
         <div class="upContainerProfile">
             <div class="profile">
                 <a href="\Profile\editProfile.php">
-                    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                     <svg class="bg-white" width="40" height="40" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path opacity="0.4"
@@ -313,7 +336,6 @@ foreach ($result as $row) {
         <div class="upContainerSignOut">
             <div class="signOut">
                 <a href="#">
-                    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                     <svg class="bg-white" width="40" height="40" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -329,47 +351,47 @@ foreach ($result as $row) {
         </div>
     </header>
     <script>
-        document.getElementById('searchInput').addEventListener('focus', function () {
-            document.querySelector('.container-fluid.bg-white.align-items-right').classList.add('hidden');
-        });
+    document.getElementById('searchInput').addEventListener('focus', function() {
+        document.querySelector('.container-fluid.bg-white.align-items-right').classList.add('hidden');
+    });
     </script>
 </body>
 
 </html>
 
 <script>
-    $(document).ready(function() {
-        var countries = <?php echo json_encode($data); ?>;
+$(document).ready(function() {
+    var countries = <?php echo json_encode($data); ?>;
 
-        // Instantiate the Bloodhound suggestion engine
-        var countriesBloodhound = new Bloodhound({
-            datumTokenizer: Bloodhound.tokenizers.whitespace,
-            queryTokenizer: Bloodhound.tokenizers.whitespace,
-            local: countries
-        });
-
-        // Initialize the Typeahead plugin
-        $('#country_name').typeahead({
-            hint: true,
-            highlight: true,
-            minLength: 1
-        }, {
-            name: 'countries',
-            source: countriesBloodhound
-        });
+    // Instantiate the Bloodhound suggestion engine
+    var countriesBloodhound = new Bloodhound({
+        datumTokenizer: Bloodhound.tokenizers.whitespace,
+        queryTokenizer: Bloodhound.tokenizers.whitespace,
+        local: countries
     });
+
+    // Initialize the Typeahead plugin
+    $('#country_name').typeahead({
+        hint: true,
+        highlight: true,
+        minLength: 1
+    }, {
+        name: 'countries',
+        source: countriesBloodhound
+    });
+});
 </script>
 <script>
-    document.getElementById("country_name").addEventListener("keypress", function(event) {
-        if (event.key === "Enter") {
-            // Get the value entered in the input field
-            var countryName = document.getElementById("country_name").value;
-            // <?php
-            // session_start();
-            // $_SESSION['country_name'] = countryName;
-            // ?>
-            // Redirect to another page passing the search query as a parameter
-            window.location.href = "/Includes/SideNavMain.php";
-        }
-    });
+document.getElementById("country_name").addEventListener("keypress", function(event) {
+    if (event.key === "Enter") {
+        // Get the value entered in the input field
+        var countryName = document.getElementById("country_name").value;
+        // <?php
+        // session_start();
+        // $_SESSION['country_name'] = countryName;
+        //?>
+        // Redirect to another page passing the search query as a parameter
+        window.location.href = "/Includes/SideNavMain.php";
+    }
+});
 </script>
