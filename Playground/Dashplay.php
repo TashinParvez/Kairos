@@ -11,7 +11,7 @@ $conn = mysqli_connect($servername, $username, $password, $databasename);
 
 // check connection
 if (!$conn) {
-    exit('Sorry failed to connect: ' . mysqli_connect_error());
+    exit('Sorry failed to connect: '.mysqli_connect_error());
 }
 
 session_start(); // Start the session
@@ -40,7 +40,7 @@ if (isset($_POST['saveNote'])) {
         // success
         header('Location: DashboardMain.php');
     } else {
-        echo 'query error: ' . mysqli_error($conn);
+        echo 'query error: '.mysqli_error($conn);
     }
 
     // close connection
@@ -67,17 +67,8 @@ if (isset($_POST['saveChanges']) || isset($_POST['deleteNote'])) {
 
     // .....****** If we don't want to store deleted Notes in database, then it will be deleted *******...............
     if (isset($_POST['deleteNote'])) {
-
-        // print($noteCreatedAt);
         $sql = "DELETE FROM notes
-                WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
-
-        /*
-                DELETE FROM notes
-                WHERE userHandle = 'tashin19' AND created_at = '2024-05-28 23:07:20';
-
-
-                */
+        WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
     }
 
     // .....****** If we want to store deleted Notes in database, then it will be uncommented *******...............
@@ -91,7 +82,7 @@ if (isset($_POST['saveChanges']) || isset($_POST['deleteNote'])) {
         // success
         header('Location: DashboardMain.php');
     } else {
-        echo 'query error: ' . mysqli_error($conn);
+        echo 'query error: '.mysqli_error($conn);
     }
 
     // close connection
@@ -198,17 +189,14 @@ mysqli_close($conn);
         background-color: #f1f4fb;
     }
 
-
     .card-hover {
         transition: transform 0.3s, background-color 0.3s;
         background-color: white;
         outline: none;
-        outline: white;
     }
 
     .card {
         outline: none;
-        outline: white;
     }
 
     .card-text {
@@ -228,7 +216,6 @@ mysqli_close($conn);
             background-color: #aed6f1;
         } */
 
-
     /* -------------------------------------- */
     .card-hover {
         transition: transform 0.3s, background-color 0.3s, outline-width 0.3s;
@@ -241,7 +228,6 @@ mysqli_close($conn);
         outline-width: none;
         /* Width of the outline when hovered */
     }
-
 
     .card-hover-1:hover {
         transform: translateY(-5px);
@@ -305,7 +291,6 @@ mysqli_close($conn);
 
     /* -------------------------------------- */
 
-
     .card-hover .card-body,
     .card-hover .card-footer {
         background-color: inherit;
@@ -317,7 +302,6 @@ mysqli_close($conn);
         color: gray;
         cursor: pointer;
     }
-
 
     .hover-underline-animation::after {
         content: '';
@@ -331,7 +315,6 @@ mysqli_close($conn);
         transform-origin: bottom right;
         transition: transform 0.25s ease-out;
     }
-
 
     .hover-underline-animation:hover {
         color: gray;
@@ -350,7 +333,6 @@ mysqli_close($conn);
     .card {
         display: flex;
         flex-direction: column;
-        outline-color: white;
     }
 
     .card-body {
@@ -457,7 +439,6 @@ mysqli_close($conn);
         +button {
             display: block;
         }
-
     }
 
     #srchForm {
@@ -489,13 +470,11 @@ mysqli_close($conn);
             display: block;
         }
     }
-
     </style>
 </head>
 
 <body class="bg-custom">
     <?php
-
         include '../Includes/NavBarSecond.php'; // uncomment
 include '../Includes/Sidebar.php'; // uncomment
 include '../Includes/HappyJar.php'; // uncomment
@@ -556,7 +535,6 @@ include '../Includes/HappyJar.php'; // uncomment
                     <div class="row row-cols-1 row-cols-md-3 g-4 bg-transparent">
                         <!-- cards create -->
                         <?php
-
                             $hoverClasses = [
                                 'card-hover-1',
                                 'card-hover-2',
@@ -574,9 +552,8 @@ foreach ($Notes as $index => $note) {
     $randomClass = $hoverClasses[array_rand($hoverClasses)];
     ?>
                         <div class="col bg-transparent">
-                            <div class="card h-100 card-hover shadow <?php echo $randomClass; ?>"
-                                style="outline-color:white;">
-                                <button type="button" id="card-btn" class="card-link btn btn-link p-0 m-0 "
+                            <div class="card h-100 card-hover shadow <?php echo $randomClass; ?>">
+                                <button type="button" id="card-btn" class="card-link btn btn-link p-0 m-0 border-0"
                                     data-bs-toggle="modal" data-bs-target="#editNoteModal"
                                     data-note-title="<?php echo htmlspecialchars($note[0]); ?>"
                                     data-note-details="<?php echo htmlspecialchars($note[1]); ?>"
@@ -630,7 +607,6 @@ foreach ($Notes as $index => $note) {
                                         </span>
                                     </div>
                                 </button>
-
                             </div>
                         </div>
 
@@ -805,7 +781,6 @@ foreach ($Notes as $index => $note) {
             });
         });
 
-
         // Set the "All" button as active by default
         document.getElementById('all').classList.add('active');
     });
@@ -825,7 +800,6 @@ foreach ($Notes as $index => $note) {
         const messageElement = document.getElementById('message');
         truncateText(messageElement, 20); // Adjust the word limit as needed
     });
-
     </script>
 </body>
 
