@@ -11,7 +11,7 @@ $conn = mysqli_connect($servername, $username, $password, $databasename);
 
 // check connection
 if (!$conn) {
-    exit('Sorry failed to connect: '.mysqli_connect_error());
+    exit('Sorry failed to connect: ' . mysqli_connect_error());
 }
 
 session_start(); // Start the session
@@ -40,7 +40,7 @@ if (isset($_POST['saveNote'])) {
         // success
         header('Location: DashboardMain.php');
     } else {
-        echo 'query error: '.mysqli_error($conn);
+        echo 'query error: ' . mysqli_error($conn);
     }
 
     // close connection
@@ -67,8 +67,17 @@ if (isset($_POST['saveChanges']) || isset($_POST['deleteNote'])) {
 
     // .....****** If we don't want to store deleted Notes in database, then it will be deleted *******...............
     if (isset($_POST['deleteNote'])) {
+
+        // print($noteCreatedAt);
         $sql = "DELETE FROM notes
-        WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
+                WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
+
+        /*
+                DELETE FROM notes
+                WHERE userHandle = 'tashin19' AND created_at = '2024-05-28 23:07:20';
+
+
+                */
     }
 
     // .....****** If we want to store deleted Notes in database, then it will be uncommented *******...............
@@ -82,7 +91,7 @@ if (isset($_POST['saveChanges']) || isset($_POST['deleteNote'])) {
         // success
         header('Location: DashboardMain.php');
     } else {
-        echo 'query error: '.mysqli_error($conn);
+        echo 'query error: ' . mysqli_error($conn);
     }
 
     // close connection
@@ -186,9 +195,11 @@ mysqli_close($conn);
             background-color: white;
             outline: none;
         }
-        .card{
+
+        .card {
             outline: none;
         }
+
         /* .card-hover:hover {
             transform: translateY(-5px);
             background-color: #aed6f1;
@@ -198,11 +209,13 @@ mysqli_close($conn);
         .card-hover {
             transition: transform 0.3s, background-color 0.3s, outline-width 0.3s;
             outline-style: solid;
-            outline-width: 0px; /* Initial outline width */
+            outline-width: 0px;
+            /* Initial outline width */
         }
 
         .card-hover:hover {
-            outline-width: none; /* Width of the outline when hovered */
+            outline-width: none;
+            /* Width of the outline when hovered */
         }
 
         .card-hover-1:hover {
@@ -271,6 +284,7 @@ mysqli_close($conn);
         .card-hover .card-footer {
             background-color: inherit;
         }
+
         .hover-underline-animation {
             display: inline-block;
             position: relative;
@@ -290,6 +304,7 @@ mysqli_close($conn);
             transform-origin: bottom right;
             transition: transform 0.25s ease-out;
         }
+
         .hover-underline-animation:hover {
             color: gray;
         }
@@ -303,6 +318,7 @@ mysqli_close($conn);
             transform: scaleX(1);
             transform-origin: bottom left;
         }
+
         .card {
             display: flex;
             flex-direction: column;
@@ -315,16 +331,15 @@ mysqli_close($conn);
         .card-footer {
             flex-shrink: 0;
         }
-
     </style>
 </head>
 
 <body class="bg-custom">
     <?php
     include '../Includes/NavBarSecond.php'; // uncomment
-include '../Includes/Sidebar.php'; // uncomment
-include '../Includes/HappyJar.php'; // uncomment
-?>
+    include '../Includes/Sidebar.php'; // uncomment
+    include '../Includes/HappyJar.php'; // uncomment
+    ?>
 
 
     <main class="main bg-white shadow z-0">
@@ -370,40 +385,40 @@ include '../Includes/HappyJar.php'; // uncomment
                     <div class="row row-cols-1 row-cols-md-3 g-4 bg-transparent">
                         <!-- cards create -->
                         <?php
-                            $hoverClasses = [
-                                'card-hover-1',
-                                'card-hover-2',
-                                'card-hover-3',
-                                'card-hover-4',
-                                'card-hover-5',
-                                'card-hover-6',
-                                'card-hover-7',
-                                'card-hover-8',
-                                'card-hover-9',
-                                'card-hover-10',
-                            ];
+                        $hoverClasses = [
+                            'card-hover-1',
+                            'card-hover-2',
+                            'card-hover-3',
+                            'card-hover-4',
+                            'card-hover-5',
+                            'card-hover-6',
+                            'card-hover-7',
+                            'card-hover-8',
+                            'card-hover-9',
+                            'card-hover-10',
+                        ];
 
-foreach ($Notes as $index => $note) {
-    $randomClass = $hoverClasses[array_rand($hoverClasses)];
-    ?>
+                        foreach ($Notes as $index => $note) {
+                            $randomClass = $hoverClasses[array_rand($hoverClasses)];
+                        ?>
                             <div class="col bg-transparent">
-                            <div class="card h-100 card-hover shadow <?php echo $randomClass; ?>">
-    <button type="button" class="card-link btn btn-link p-0 m-0 border-0" data-bs-toggle="modal" data-bs-target="#editNoteModal" data-note-title="<?php echo htmlspecialchars($note[0]); ?>" data-note-details="<?php echo htmlspecialchars($note[1]); ?>" data-note-createdAt="<?php echo htmlspecialchars($note[2]); ?>" data-note-public="<?php echo htmlspecialchars($note[3]); ?>" style="text-decoration: none; color: inherit;">
-        <div class="card-body bg-transparent">
-            <h5 class="card-title bg-transparent">
-                <?php echo htmlspecialchars($note[0]); ?>
-            </h5>
-            <p class="card-text bg-transparent">
-                <?php echo htmlspecialchars($note[1]); ?>
-            </p>
-        </div>
-        <div class="card-footer bg-transparent">
-            <small class="text-muted bg-transparent">Created
-                <?php echo htmlspecialchars($note[2]); ?>
-            </small>
-        </div>
-    </button>
-</div>
+                                <div class="card h-100 card-hover shadow <?php echo $randomClass; ?>">
+                                    <button type="button" class="card-link btn btn-link p-0 m-0 border-0" data-bs-toggle="modal" data-bs-target="#editNoteModal" data-note-title="<?php echo htmlspecialchars($note[0]); ?>" data-note-details="<?php echo htmlspecialchars($note[1]); ?>" data-note-createdAt="<?php echo htmlspecialchars($note[2]); ?>" data-note-public="<?php echo htmlspecialchars($note[3]); ?>" style="text-decoration: none; color: inherit;">
+                                        <div class="card-body bg-transparent">
+                                            <h5 class="card-title bg-transparent">
+                                                <?php echo htmlspecialchars($note[0]); ?>
+                                            </h5>
+                                            <p class="card-text bg-transparent">
+                                                <?php echo htmlspecialchars($note[1]); ?>
+                                            </p>
+                                        </div>
+                                        <div class="card-footer bg-transparent">
+                                            <small class="text-muted bg-transparent">Created
+                                                <?php echo htmlspecialchars($note[2]); ?>
+                                            </small>
+                                        </div>
+                                    </button>
+                                </div>
 
                             </div>
                         <?php } ?>
@@ -565,7 +580,6 @@ foreach ($Notes as $index => $note) {
             // Set the "All" button as active by default
             document.getElementById('all').classList.add('active');
         });
-
     </script>
 </body>
 
