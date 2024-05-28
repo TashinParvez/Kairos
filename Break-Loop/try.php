@@ -14,7 +14,6 @@ if (!$conn) {
 
 // -------------------------------------------------
 $userHandle = 'tashin19';
-
 $loopName = 'loop1';
 
 $p1DoThis = null;
@@ -25,7 +24,6 @@ $p2WantToDoThis = null;
 
 $p3DoThis = null;
 $p3WantToDoThis = null;
-
 
 // ---------------------------------------- USer clicked helped btn ----------------------------------
 $userHandle = 'tashin19';
@@ -83,11 +81,68 @@ if (!empty($output)) {
     $result = mysqli_query($conn, $sql);
     $output = mysqli_fetch_all($result);
 
+    if (!empty($output)) { // doctor suggestion on basis of feeling
 
-    
+        $feelingsArray = array_map('trim', explode(',', $feelings)); // for__feelings
+        $conditions = [];
+        foreach ($feelingsArray as $feeling) {
+            $conditions[] = "la.do LIKE '%" . $feeling . "%'";
+        }
+
+        $sql = "SELECT loopName, do, canDo
+                FROM loopname as ln
+                INNER JOIN
+                loop_activities as la 
+                ON ln.no = la.loopNo
+                WHERE ln.no = 6
+                AND (";
+
+        $sql .= implode(' OR ', $conditions); // feelings
+        $sql .= ')';
+
+
+        // echo ($sql);
+
+        $result = mysqli_query($conn, $sql);
+        $output = mysqli_fetch_all($result);
+    }
+}
+// ----------------------------------------------------------------------------------------------------
+
+
+
+$userHandle = 'tashin19'; // need to change
+
+// --------------------------------------------All Loops (fetch  2)--------------------------------------------------------
+
+$sql = "SELECT ln.loopName, la.do, la.canDo
+        FROM loopname as ln
+        INNER JOIN loop_activities as la
+        ON ln.no = la.loopNo
+        WHERE userHandle = 'tashin19'
+        ORDER BY ln.loopName";
+
+$result = mysqli_query($conn, $sql);
+$allloops = mysqli_fetch_all($result, MYSQLI_ASSOC);
+
+$structuredData = [];
+
+foreach ($allloops as $row) {
+    $loopName = $row['loopName'];
+    $do = $row['do'];
+    $canDo = $row['canDo'];
+
+    if (!isset($structuredData[$loopName])) {
+        $structuredData[$loopName] = ['do' => [], 'canDo' => []];
+    }
+
+    $structuredData[$loopName]['do'][] = $do;
+    $structuredData[$loopName]['canDo'][] = $canDo;
 }
 
-
+// echo '<pre>';
+// print_r($structuredData);
+// echo '</pre>';
 
 // ----------------------------------------------------------------------------------------------------
 
@@ -111,8 +166,6 @@ if (!empty($output)) {
 </head>
 
 <body class="bg-custom">
-
-
 
     <main class="main bg-white shadow z-0">
 
@@ -201,7 +254,7 @@ if (!empty($output)) {
             </div>
             <hr>
 
-            <!------------------- cards ------------------->
+            <!------------------- ALL loops (cards) (New)  tashin ------------------->
             <div class="row">
                 <div class="col-sm-6">
                     <div class="card">
@@ -214,21 +267,44 @@ if (!empty($output)) {
                     </div>
                 </div>
 
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">user Loop Name</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
-                            <a href="#" class="btn btn-primary">View/Edit Loop</a>
-                            <a href="#" class="btn btn-success">Delete Loop</a>
+                <?php
+                foreach ($structuredData as $loopName => $activities) { ?>
+                    <div class="col-sm-6">
+                        <div class="card">
+                            <div class="card-body">
+                                <h5 class="card-title"> <?php echo $loopName; ?></h5>
+
+                                <p class="card-text">
+                                    <?php
+                                    echo "Do: ";
+                                    foreach ($activities['do'] as $doItem) {
+                                        echo "$doItem ,";
+                                    }
+                                    echo "\n";   ?>
+                                </p>
+
+                                <p class="card-text">
+                                    <?php
+                                    echo "Can Do: ";
+                                    foreach ($activities['canDo'] as $canDoItem) {
+                                        echo "$canDoItem ,";
+                                    }
+                                    echo "\n";
+                                    ?>
+                                </p>
+
+                                <!-- card btn -->
+                                <a href="#" class="btn btn-primary">View/Edit Loop</a>
+                                <a href="#" class="btn btn-success">Delete Loop</a>
+                            </div>
                         </div>
                     </div>
-                </div>
+                <?php } ?>
             </div>
+            <!--------------------------------------------------------------------->
 
         </div>
 
-        <!-- ------------------------------------------------------------------- -->
 
     </main>
 </body>
