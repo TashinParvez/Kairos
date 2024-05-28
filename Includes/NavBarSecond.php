@@ -122,11 +122,6 @@ foreach ($result as $row) {
 
     <!-- jQuery -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
-    <!-- Bootstrap CSS -->
-    <link href="library/bootstrap-5/bootstrap.min.css" rel="stylesheet" />
-
-    <!-- jQuery -->
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
 
     <!-- Typeahead.js -->
     <script src="https://cdnjs.cloudflare.com/ajax/libs/typeahead.js/0.11.1/typeahead.bundle.min.js"></script>
@@ -140,156 +135,158 @@ foreach ($result as $row) {
       *{
         z-index: 5000;
       }
-#navSearch {
-  --background: #ffffff;
-  --text-color: #414856;
-  --primary-color: #111111;
-  --border-radius: 20px;
-  --width: 190px;    
-  --height: 55px;      
-  background: var(--background);
-  width: auto;
-  height: var(--height);
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--border-radius);
-  box-shadow: 0 10px 30px rgba(#414856, .05);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  input[type="text"] {
-    position: relative;
-    width: var(--height);
-    height: var(--height);
-    font: 400 16px 'Varela Round', sans-serif;
-    color: var(--text-color);
-    border: 0;
-    box-sizing: border-box;
-    outline: none;
-    padding: 0 0 0 40px;
-    transition: width .6s ease;
-    z-index: 10;
-    opacity: 0;
-    cursor: pointer;
-    &:focus {
-      z-index: 0;
-      opacity: 1;
-      width: var(--width);
-      ~ .symbol {
-        &::before {
-          width: 0%;
+      #navSearch {
+        --background: #ffffff;
+        --text-color: #414856;
+        --primary-color: #111111;
+        --border-radius: 20px;
+        --width: 190px;    
+        --height: 55px;      
+        background: var(--background);
+        width: auto;
+        height: var(--height);
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--border-radius);
+        box-shadow: 0 10px 30px rgba(#414856, .05);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        input[type="text"] {
+          position: relative;
+          width: var(--height);
+          height: var(--height);
+          font: 400 16px 'Varela Round', sans-serif;
+          color: var(--text-color);
+          border: 0;
+          box-sizing: border-box;
+          outline: none;
+          padding: 0 0 0 40px;
+          transition: width .6s ease;
+          z-index: 10;
+          opacity: 0;
+          cursor: pointer;
+          &:focus {
+            z-index: 0;
+            opacity: 1;
+            width: var(--width);
+            ~ .symbol {
+              &::before {
+                width: 0%;
+              }
+              &:after {
+                clip-path: inset(0% 0% 0% 100%);
+                transition: clip-path .04s linear .105s;
+              }
+              .cloud {
+                top: -30px;
+                left: -30px;
+                transform: translate(0, 0);
+                transition: all .6s ease;
+              }
+              .lens {
+                top: 20px;
+                left: 15px;
+                transform: translate(0, 0);
+                fill: var(--primary-color);
+                transition: top .5s ease .1s, left .5s ease .1s, fill .3s ease;
+              }
+            }
+          }
         }
-        &:after {
-          clip-path: inset(0% 0% 0% 100%);
-          transition: clip-path .04s linear .105s;
-        }
-        .cloud {
-          top: -30px;
-          left: -30px;
-          transform: translate(0, 0);
-          transition: all .6s ease;
-        }
-        .lens {
-          top: 20px;
-          left: 15px;
-          transform: translate(0, 0);
-          fill: var(--primary-color);
-          transition: top .5s ease .1s, left .5s ease .1s, fill .3s ease;
+        .symbol {
+          height: 100%;
+          width: 100%;
+          position: absolute;
+          top: 0;
+          z-index: 1;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: transparent;
+          &:before {
+            content:"";
+            position: absolute;
+            right: 0;
+            width: 100%;
+            height: 100%;
+            background: var(--primary-color);
+            z-index: -1;
+            transition: width .6s ease;
+          }
+          &:after {
+            content:"";
+            position: absolute;
+            top: 21px;
+            left: 21px;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--primary-color);
+            z-index: 1;
+            clip-path: inset(0% 0% 0% 0%);
+            transition: clip-path .04s linear .225s;
+          }
+          .cloud,
+          .lens {
+            position: absolute;
+            fill: #fff;
+            stroke: currentColor;
+            top: 50%;
+            left: 50%;
+          }
+          .cloud {
+            width: 35px;
+            height: 32px;
+            transform: translate(-50%, -60%);
+            transition: all .6s ease;
+          }
+          .lens {
+            fill: #fff;
+            width: 16px;
+            height: 16px;
+            z-index: 2;
+            top: 24px;
+            left: 24px;
+            transition: top .3s ease, left .3s ease, fill .2s ease .2s;
+          }
         }
       }
-    }
-  }
-  .symbol {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    &:before {
-      content:"";
-      position: absolute;
-      right: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--primary-color);
-      z-index: -1;
-      transition: width .6s ease;
-    }
-    &:after {
-      content:"";
-      position: absolute;
-      top: 21px;
-      left: 21px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--primary-color);
-      z-index: 1;
-      clip-path: inset(0% 0% 0% 0%);
-      transition: clip-path .04s linear .225s;
-    }
-    .cloud,
-    .lens {
-      position: absolute;
-      fill: #fff;
-      stroke: currentColor;
-      top: 50%;
-      left: 50%;
-    }
-    .cloud {
-      width: 35px;
-      height: 32px;
-      transform: translate(-50%, -60%);
-      transition: all .6s ease;
-    }
-    .lens {
-      fill: #fff;
-      width: 16px;
-      height: 16px;
-      z-index: 2;
-      top: 24px;
-      left: 24px;
-      transition: top .3s ease, left .3s ease, fill .2s ease .2s;
-    }
-  }
-}
 
-.NavContainer {
-  background: #fff;
-  font: 400 16px 'Varela Round', sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  .socials {
-    position: fixed;
-    display: block;
-    left: 20px;
-    bottom: 20px;
-    > Nava {
-      display: block;
-      width: 30px;
-      opacity: var(--opacity, .2);
-      transform: scale(var(--scale, .8));
-      transition: transform .3s cubic-bezier(0.38,-0.12, 0.24, 1.91);
-    }
-  }
-}
+      .NavContainer {
+        background: #fff;
+        font: 400 16px 'Varela Round', sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .socials {
+          position: fixed;
+          display: block;
+          left: 20px;
+          bottom: 20px;
+          > Nava {
+            display: block;
+            width: 30px;
+            opacity: var(--opacity, .2);
+            transform: scale(var(--scale, .8));
+            transition: transform .3s cubic-bezier(0.38,-0.12, 0.24, 1.91);
+          }
+        }
+      }
     </style>
 
     <header class="header shadow z-2">
         <div class="container-fluid bg-white" style="background-color: transparent;">
             <div class="container-fluid bg-white align-items-right">
+              <!------------------------------------ search (tashin) ------------------------------------>
             <form class="searchBar bg-white" action="">
                 <span id="search-txt" class="z-10000">Search</span>
                 <!-- <input type="search" required> -->
                 <input type="search" class="bg-white align-items-center border-secondary" name="country_name" id="country_name" placeholder="Search Keyword" autocomplete="off" required style="width: 800px;"/>
                 <i class="fa fa-search"></i>
             </form>
+            <!-- ----------------------------- -->
             </div>
         </div>
     </header>
