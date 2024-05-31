@@ -64,7 +64,7 @@ if (!$conn) {
             $result = mysqli_query($conn, $sql);
             $blogs_output = mysqli_fetch_all($result);
 
-    
+
             //------------ for life_library
             $sql = "SELECT DISTINCT bookName, authorName, details
                     FROM life_library
