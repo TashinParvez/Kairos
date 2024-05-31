@@ -1,0 +1,51 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <style>
+        .card {
+    width: 300px;
+    border: 1px solid #ddd;
+    padding: 15px;
+    border-radius: 5px;
+    margin: 20px;
+}
+
+.card-text {
+    display: -webkit-box;
+    -webkit-line-clamp: 3; /* Number of lines to show */
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    max-height: 4.5em; /* Assuming a line height of 1.5em */
+}
+
+    </style>
+    <div class="card">
+        <div class="card-body">
+            <p class="card-text" id="message">This is a very long message that should be truncated if it exceeds the word limit set for this card. Only a certain number of words should be displayed, and the rest should be hidden with an ellipsis...</p>
+        </div>
+    </div>    
+    <script>
+        function truncateText(element, wordLimit) {
+    const originalText = element.innerHTML;
+    const words = originalText.split(' ');
+
+    if (words.length > wordLimit) {
+        const truncatedText = words.slice(0, wordLimit).join(' ') + '...';
+        element.innerHTML = truncatedText;
+    }
+}
+
+document.addEventListener("DOMContentLoaded", function() {
+    const messageElement = document.getElementById('message');
+    truncateText(messageElement, 20); // Adjust the word limit as needed
+});
+
+    </script>
+</body>
+</html>

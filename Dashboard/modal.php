@@ -18,7 +18,7 @@ if (isset($_POST['skip'])) {
         // success
         header('Location: DashboardMain.php');
     } else {
-        echo 'query error: ' . mysqli_error($conn);
+        echo 'query error: '.mysqli_error($conn);
     }
 
     // close connection
@@ -28,7 +28,6 @@ if (isset($_POST['skip'])) {
 if (isset($_POST['save'])) {
     // Save
 }
-
 
 // Submit --> to submit user have to choose atleat 1 interest
 $sql = "UPDATE user_info
@@ -118,8 +117,11 @@ mysqli_close($conn);
     <link href="https://maxcdn.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
 
     <!-- Bootstrap links -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+    </script>
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha1/dist/css/bootstrap.min.css" rel="stylesheet">
 
@@ -132,15 +134,15 @@ mysqli_close($conn);
 
     <!-- JavaScript to Open Modal Automatically -->
     <script>
-        // Use window.onload to execute code when the page finishes loading
-        window.onload = function() {
-            // Select the modal element by its ID
-            var modal = document.getElementById('exampleModalXl');
-            // Create a new Bootstrap modal instance
-            var modalInstance = new bootstrap.Modal(modal);
-            // Open the modal
-            modalInstance.show();
-        };
+    // Use window.onload to execute code when the page finishes loading
+    window.onload = function() {
+        // Select the modal element by its ID
+        var modal = document.getElementById('exampleModalXl');
+        // Create a new Bootstrap modal instance
+        var modalInstance = new bootstrap.Modal(modal);
+        // Open the modal
+        modalInstance.show();
+    };
     </script>
     <!-- extra Large Modal For Interest Page -->
 
@@ -148,7 +150,8 @@ mysqli_close($conn);
         Extra large modal
     </button>
 
-    <div class="modal fade" id="exampleModalXl" data-bs-backdrop="static" tabindex="-1" aria-labelledby="exampleModalXlLabel" aria-hidden="true">
+    <div class="modal fade" id="exampleModalXl" data-bs-backdrop="static" tabindex="-1"
+        aria-labelledby="exampleModalXlLabel" aria-hidden="true">
         <div class="modal-dialog modal-dialog-centered modal-xl" style="width: 85%;">
             <div class="modal-content">
                 <div class="modal-header">
@@ -162,25 +165,29 @@ mysqli_close($conn);
 
                         <?php
                         foreach ($interests as $key => $interest) { // Use $key as a unique identifier
-                        ?>
-                            <div class="form-check form-check-inline" style="justify-content:center; align-items:center;">
-                                <input class="form-check-input" type="checkbox" id="inlineCheckbox<?php echo $key; ?>" value="option1">
-                                <!-- Use unique ID for each checkbox -->
-                                <label class="form-check-label" for="inlineCheckbox<?php echo $key; ?>" style="white-space: nowrap;">
-                                    <div class="card mb-3">
-                                        <div class="row g-0" style="height:50px;">
-                                            <div class="col-md-4" style="width: 50px; height:10px;">
-                                                <img src="<?php echo htmlspecialchars($interest[2]); ?>" class="img-fluid rounded-start" alt="...">
-                                            </div>
-                                            <div class="col-md-8" style="width:fit-content;">
-                                                <div class="card-body" style="width:fit-content;">
-                                                    <h5 class="card-title" style="width:fit-content;"> <?php echo htmlspecialchars($interest[1]); ?> </h5>
-                                                </div>
+                            ?>
+                        <div class="form-check form-check-inline" style="justify-content:center; align-items:center;">
+                            <input class="form-check-input" type="checkbox" id="inlineCheckbox<?php echo $key; ?>"
+                                value="option1">
+                            <!-- Use unique ID for each checkbox -->
+                            <label class="form-check-label" for="inlineCheckbox<?php echo $key; ?>"
+                                style="white-space: nowrap;">
+                                <div class="card mb-3">
+                                    <div class="row g-0" style="height:50px;">
+                                        <div class="col-md-4" style="width: 50px; height:10px;">
+                                            <img src="<?php echo htmlspecialchars($interest[2]); ?>"
+                                                class="img-fluid rounded-start" alt="...">
+                                        </div>
+                                        <div class="col-md-8" style="width:fit-content;">
+                                            <div class="card-body" style="width:fit-content;">
+                                                <h5 class="card-title" style="width:fit-content;">
+                                                    <?php echo htmlspecialchars($interest[1]); ?> </h5>
                                             </div>
                                         </div>
                                     </div>
-                                </label>
-                            </div>
+                                </div>
+                            </label>
+                        </div>
                         <?php } ?>
 
 
@@ -188,12 +195,13 @@ mysqli_close($conn);
                         <br>
 
                         <label for="exampleDataList" class="form-label">Others</label>
-                        <input class="form-control" list="datalistOptions" id="exampleDataList" placeholder="Example: Riding, Cycling,...">
+                        <input class="form-control" list="datalistOptions" id="exampleDataList"
+                            placeholder="Example: Riding, Cycling,...">
                         <datalist id="datalistOptions">
                             <?php
-                            foreach ($otherinterests as $key => $interest) { // Use $key as a unique identifier
-                            ?>
-                                <option value="<?php echo htmlspecialchars($interest[1]); ?>">
+                                foreach ($otherinterests as $key => $interest) { // Use $key as a unique identifier
+                                    ?>
+                            <option value="<?php echo htmlspecialchars($interest[1]); ?>">
                                 <?php } ?>
                         </datalist>
                         <br>

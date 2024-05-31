@@ -31,7 +31,6 @@
                 style="background-color: transparent;">
 
                 <nav class="flex-grow-1" style="background-color: transparent;">
-                    <?xml version="1.0" encoding="utf-8"?>
                     <svg class="bg-white" width="30" height="30" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <g id="Interface / Label">
@@ -51,7 +50,6 @@
         <div class="upContainerProfile">
             <div class="profile">
                 <a href="#">
-                    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                     <svg class="bg-white" width="40" height="40" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path opacity="0.4"
@@ -67,7 +65,6 @@
         <div class="upContainerSignOut">
             <div class="signOut">
                 <a href="#">
-                    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                     <svg class="bg-white" width="40" height="40" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
