@@ -1,17 +1,14 @@
 <?php
 
-include('connect_db.php'); // database connection
+include 'connect_db.php'; // database connection
 
+$labels = null;
 
-
-$labels  =  null;
-
-// check get request userHandle 
+// check get request userHandle
 if (isset($_GET['userHandle'])) {
-
     $userHandle = mysqli_real_escape_string($conn, $_GET['userHandle']);
 
-    //----------------- For label of users ---------------
+    // ----------------- For label of users ---------------
 
     // sql query
 
@@ -22,16 +19,15 @@ if (isset($_GET['userHandle'])) {
         ON uinfo.userHandle = l.userHandle
         WHERE uinfo.userHandle = '$userHandle'; ";
 
-    $resultantLabel =  mysqli_query($conn, $sql);  // get query result
+    $resultantLabel = mysqli_query($conn, $sql);  // get query result
 
     $labels = mysqli_fetch_all($resultantLabel); // conver to array
 
     // print_r($labels);
 
+    // ----------------- For Notes of users ---------------
 
-    //----------------- For Notes of users ---------------
-
-    // sql query 
+    // sql query
     $sql = "SELECT title, details, created_at
         FROM user_info AS uinfo
         INNER JOIN
@@ -39,7 +35,7 @@ if (isset($_GET['userHandle'])) {
         ON uinfo.userHandle = n.userHandle
         WHERE uinfo.userHandle = '$userHandle'; ";
 
-    $resultantNotes =  mysqli_query($conn, $sql);  // get query result
+    $resultantNotes = mysqli_query($conn, $sql);  // get query result
 
     // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
     $Notes = mysqli_fetch_all($resultantNotes); // conver to array
@@ -48,14 +44,10 @@ if (isset($_GET['userHandle'])) {
     mysqli_free_result($resultantLabel);
     mysqli_free_result($resultantNotes);
     mysqli_close($conn);
-} else {  // full else remove after adding login 
-
-
+} else {  // full else remove after adding login
     $userHandle = mysqli_real_escape_string($conn, 'bijoy123');
 
-    //----------------- For label of users ---------------
-
-
+    // ----------------- For label of users ---------------
 
     // sql query
 
@@ -66,16 +58,15 @@ if (isset($_GET['userHandle'])) {
         ON uinfo.userHandle = l.userHandle
         WHERE uinfo.userHandle = '$userHandle'; ";
 
-    $resultantLabel =  mysqli_query($conn, $sql);  // get query result
+    $resultantLabel = mysqli_query($conn, $sql);  // get query result
 
     $labels = mysqli_fetch_all($resultantLabel); // conver to array
 
     // print_r($labels);
 
+    // ----------------- For Notes of users ---------------
 
-    //----------------- For Notes of users ---------------
-
-    // sql query 
+    // sql query
     $sql = "SELECT title, details, created_at
         FROM user_info AS uinfo
         INNER JOIN
@@ -83,9 +74,9 @@ if (isset($_GET['userHandle'])) {
         ON uinfo.userHandle = n.userHandle
         WHERE uinfo.userHandle = '$userHandle'; ";
 
-    $resultantNotes =  mysqli_query($conn, $sql);  // get query result
+    $resultantNotes = mysqli_query($conn, $sql);  // get query result
 
-    // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array 
+    // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
     $Notes = mysqli_fetch_all($resultantNotes); // conver to array
 
     // print_r($Notes);
@@ -111,11 +102,16 @@ if (isset($_GET['userHandle'])) {
     <link rel="stylesheet" href="style.css">
 
     <!-- Bootstrap links -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+    </script>
 
     <!-- Bootstrap and Masonry -->
-    <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js" integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous" async></script>
+    <script defer src="https://cdn.jsdelivr.net/npm/masonry-layout@4.2.2/dist/masonry.pkgd.min.js"
+        integrity="sha384-GNFwBvfVxBkLMJpYMOABq3c+d3KnQxudP/mGPkzpZSTYykLBNsZEnG2D9G/X/+7D" crossorigin="anonymous"
+        async></script>
 
 
 
@@ -135,8 +131,8 @@ if (isset($_GET['userHandle'])) {
     <!-- ------------------------------------------------------------------ -->
 
     <?php
-    include('navbar.php');
-    ?>
+    include 'navbar.php';
+?>
 
 
 
@@ -152,8 +148,10 @@ if (isset($_GET['userHandle'])) {
                 <div class="block" style="height: 200px; ">
 
 
-                    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light ms-1 rounded border" style=" width: 270px;  height: 83.5vh;">
-                        <a href="" class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
+                    <div class="d-flex flex-column flex-shrink-0 p-3 bg-light ms-1 rounded border"
+                        style=" width: 270px;  height: 83.5vh;">
+                        <a href=""
+                            class="d-flex align-items-center mb-3 mb-md-0 me-md-auto link-dark text-decoration-none">
                             <svg class="bi me-2" width="40" height="32">
                             </svg>
                             <span class="fs-4">Sidebar</span>
@@ -168,13 +166,14 @@ if (isset($_GET['userHandle'])) {
                             <!--  $labels -->
 
                             <?php
-                            foreach ($labels as $label) { ?>
-                                <li class="nav-item mb-2">
-                                    <a href="#" class="nav-link list-group-item" aria-current="page">
-                                        <img src="../images/label.png" alt="BinFilderlogo" height="16vh" style="padding-left: 19px;">
-                                        <?php echo htmlspecialchars($label[0]); ?>
-                                    </a>
-                                </li>
+                        foreach ($labels as $label) { ?>
+                            <li class="nav-item mb-2">
+                                <a href="#" class="nav-link list-group-item" aria-current="page">
+                                    <img src="../images/label.png" alt="BinFilderlogo" height="16vh"
+                                        style="padding-left: 19px;">
+                                    <?php echo htmlspecialchars($label[0]); ?>
+                                </a>
+                            </li>
                             <?php } ?>
 
 
@@ -182,7 +181,8 @@ if (isset($_GET['userHandle'])) {
 
                             <li>
                                 <a href="#" class="nav-link link-dark">
-                                    <img src="../images/recycle-bin.png" alt="BinFilderlogo" height="16vh" style="padding-left: 19px;">
+                                    <img src="../images/recycle-bin.png" alt="BinFilderlogo" height="16vh"
+                                        style="padding-left: 19px;">
                                     Trash
                                 </a>
                             </li>
@@ -192,12 +192,14 @@ if (isset($_GET['userHandle'])) {
 
                         <hr>
                         <div class="dropdown">
-                            <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle" id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
-                                <img src="https://github.com/mdo.png" alt="" width="32" height="32" class="rounded-circle me-2">
+                            <a href="#" class="d-flex align-items-center link-dark text-decoration-none dropdown-toggle"
+                                id="dropdownUser2" data-bs-toggle="dropdown" aria-expanded="false">
+                                <img src="https://github.com/mdo.png" alt="" width="32" height="32"
+                                    class="rounded-circle me-2">
                                 <strong>
                                     <?php
-                                    echo htmlspecialchars($userHandle);
-                                    ?>
+                                echo htmlspecialchars($userHandle);
+?>
                                 </strong>
                             </a>
                             <ul class="dropdown-menu text-small shadow" aria-labelledby="dropdownUser2">
@@ -220,13 +222,15 @@ if (isset($_GET['userHandle'])) {
                     <div class="row">
                         <!-- Write Your Note Field (70% width) -->
                         <div class="col-lg-9 " style=" position: sticky;    z-index: 1000; ">
-                            <input class="form-control form-control-lg mt-3 pt-3 pb-3" type="text" placeholder="Write Your Note" aria-label=".form-control-lg example">
+                            <input class="form-control form-control-lg mt-3 pt-3 pb-3" type="text"
+                                placeholder="Write Your Note" aria-label=".form-control-lg example">
                         </div>
 
                         <!-- Search Field (30% width) -->
                         <div class="col-lg-3" style="      position: sticky;      z-index: 1000;">
                             <div class="input-group mt-3">
-                                <input class="form-control form-control-lg pt-3 pb-3" type="text" placeholder="Search notes" aria-label=".form-control-lg example">
+                                <input class="form-control form-control-lg pt-3 pb-3" type="text"
+                                    placeholder="Search notes" aria-label=".form-control-lg example">
                                 <button class="btn btn-outline-secondary" type="button">
                                     <img src="../images/Search-icon.png" alt="Search" style="height: 50%;">
                                 </button>
@@ -262,30 +266,30 @@ if (isset($_GET['userHandle'])) {
                             <?php
                             foreach ($Notes as $note) { ?>
 
-                                <div class="col">
-                                    <div class="card h-100" >
-                                        <img src="/Images/logo.png" class="card-img-top" alt="...">
-                                        <div class="card-body">
-                                            <h5 class="card-title">
-                                                <?php
-                                                echo htmlspecialchars($note[0]);
-                                                ?>
-                                            </h5>
-                                            <p class="card-text">
-                                                <?php
-                                                echo htmlspecialchars($note[1]);
-                                                ?>
-                                            </p>
-                                        </div>
-                                        <div class="card-footer">
-                                            <small class="text-muted">Created
-                                                <?php
-                                                echo htmlspecialchars($note[2]);
-                                                ?>
-                                            </small>
-                                        </div>
+                            <div class="col">
+                                <div class="card h-100">
+                                    <img src="/Images/logo.png" class="card-img-top" alt="...">
+                                    <div class="card-body">
+                                        <h5 class="card-title">
+                                            <?php
+            echo htmlspecialchars($note[0]);
+                                ?>
+                                        </h5>
+                                        <p class="card-text">
+                                            <?php
+                                echo htmlspecialchars($note[1]);
+                                ?>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer">
+                                        <small class="text-muted">Created
+                                            <?php
+                                echo htmlspecialchars($note[2]);
+                                ?>
+                                        </small>
                                     </div>
                                 </div>
+                            </div>
                             <?php } ?>
 
                         </div>

@@ -22,224 +22,251 @@
 
 <body>
     <style>
-#navSearch {
-  --background: #ffffff;
-  --text-color: #414856;
-  --primary-color: #111111;
-  --border-radius: 10px;
-  --width: 500px;    
-  --height: 55px;      
-  background: var(--background);
-  width: 500px;
-  height: var(--height);
-  position: relative;
-  overflow: hidden;
-  border-radius: var(--border-radius);
-  box-shadow: 0 10px 30px rgba(#414856, .05);
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  input[type="text"] {
-    position: relative;
-    width: var(--height);
-    height: var(--height);
-    font: 400 16px 'Varela Round', sans-serif;
-    color: var(--text-color);
-    border: 0;
-    box-sizing: border-box;
-    outline: none;
-    padding: 0 0 0 40px;
-    transition: width .6s ease;
-    z-index: 10;
-    opacity: 0;
-    cursor: pointer;
-    &:focus {
-      z-index: 0;
-      opacity: 1;
-      width: var(--width);
-      ~ .symbol {
-        &::before {
-          width: 0%;
+    #navSearch {
+        --background: #ffffff;
+        --text-color: #414856;
+        --primary-color: #111111;
+        --border-radius: 10px;
+        --width: 500px;
+        --height: 55px;
+        background: var(--background);
+        width: 500px;
+        height: var(--height);
+        position: relative;
+        overflow: hidden;
+        border-radius: var(--border-radius);
+        box-shadow: 0 10px 30px rgba(#414856, .05);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+
+        input[type="text"] {
+            position: relative;
+            width: var(--height);
+            height: var(--height);
+            font: 400 16px 'Varela Round', sans-serif;
+            color: var(--text-color);
+            border: 0;
+            box-sizing: border-box;
+            outline: none;
+            padding: 0 0 0 40px;
+            transition: width .6s ease;
+            z-index: 10;
+            opacity: 0;
+            cursor: pointer;
+
+            &:focus {
+                z-index: 0;
+                opacity: 1;
+                width: var(--width);
+
+                ~.symbol {
+                    &::before {
+                        width: 0%;
+                    }
+
+                    &:after {
+                        clip-path: inset(0% 0% 0% 100%);
+                        transition: clip-path .04s linear .105s;
+                    }
+
+                    .cloud {
+                        top: -30px;
+                        left: -30px;
+                        transform: translate(0, 0);
+                        transition: all .6s ease;
+                    }
+
+                    .lens {
+                        top: 20px;
+                        left: 15px;
+                        transform: translate(0, 0);
+                        fill: var(--primary-color);
+                        transition: top .5s ease .1s, left .5s ease .1s, fill .3s ease;
+                    }
+                }
+            }
         }
-        &:after {
-          clip-path: inset(0% 0% 0% 100%);
-          transition: clip-path .04s linear .105s;
+
+        .symbol {
+            height: 100%;
+            width: 100%;
+            position: absolute;
+            top: 0;
+            z-index: 1;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: transparent;
+
+            &:before {
+                content: "";
+                position: absolute;
+                right: 0;
+                width: 100%;
+                height: 100%;
+                background: var(--primary-color);
+                z-index: -1;
+                transition: width .6s ease;
+            }
+
+            &:after {
+                content: "";
+                position: absolute;
+                top: 21px;
+                left: 21px;
+                width: 20px;
+                height: 20px;
+                border-radius: 50%;
+                background: var(--primary-color);
+                z-index: 1;
+                clip-path: inset(0% 0% 0% 0%);
+                transition: clip-path .04s linear .225s;
+            }
+
+            .cloud,
+            .lens {
+                position: absolute;
+                fill: #fff;
+                stroke: currentColor;
+                top: 50%;
+                left: 50%;
+            }
+
+            .cloud {
+                width: 35px;
+                height: 32px;
+                transform: translate(-50%, -60%);
+                transition: all .6s ease;
+            }
+
+            .lens {
+                fill: #fff;
+                width: 16px;
+                height: 16px;
+                z-index: 2;
+                top: 24px;
+                left: 24px;
+                transition: top .3s ease, left .3s ease, fill .2s ease .2s;
+            }
         }
-        .cloud {
-          top: -30px;
-          left: -30px;
-          transform: translate(0, 0);
-          transition: all .6s ease;
+    }
+
+    .NavContainer {
+        background: #fff;
+        font: 400 16px 'Varela Round', sans-serif;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+
+        .socials {
+            position: fixed;
+            display: block;
+            left: 20px;
+            bottom: 20px;
+
+            >Nava {
+                display: block;
+                width: 30px;
+                opacity: var(--opacity, .2);
+                transform: scale(var(--scale, .8));
+                transition: transform .3s cubic-bezier(0.38, -0.12, 0.24, 1.91);
+            }
         }
-        .lens {
-          top: 20px;
-          left: 15px;
-          transform: translate(0, 0);
-          fill: var(--primary-color);
-          transition: top .5s ease .1s, left .5s ease .1s, fill .3s ease;
+    }
+
+    :root {
+        --rad: 0.42rem;
+        /* 0.7rem * 0.6 */
+        --dur: 0.18s;
+        /* 0.3s * 0.6 */
+        --color-dark: #2f2f2f;
+        --color-light: #fff;
+        --color-brand: #57bd84;
+        --font-fam: 'Lato', sans-serif;
+        --height: 3rem;
+        /* 5rem * 0.6 */
+        --btn-width: 3.6rem;
+        /* 6rem * 0.6 */
+        --bez: cubic-bezier(0, 0, 0.43, 1.49);
+    }
+
+    .SearchContainer {
+        background: var(--color-light);
+        display: flex;
+        align-items: center;
+        justify-content: right;
+        outline: var(--color-dark);
+    }
+
+    form {
+        position: relative;
+        width: 18rem;
+        /* 30rem * 0.6 */
+        background: var(--color-brand);
+        border-radius: var(--rad);
+    }
+
+    input,
+    button {
+        height: var(--height);
+        font-family: var(--font-fam);
+        border: 0;
+        color: var(--color-dark);
+        font-size: 1.08rem;
+        /* 1.8rem * 0.6 */
+    }
+
+    input[type="search"] {
+        outline: 0;
+        width: 100%;
+        background: var(--color-light);
+        padding: 0 0.96rem;
+        /* 1.6rem * 0.6 */
+        border-radius: var(--rad);
+        appearance: none;
+        transition: all var(--dur) var(--bez);
+        z-index: 1;
+        position: relative;
+        transition-property: width, border-radius, box-shadow;
+        box-shadow: 0 0 0 2px var(--text-color);
+    }
+
+    .sbtn {
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: var(--btn-width);
+        font-weight: bold;
+        background: var(--color-brand);
+        border-radius: 0 var(--rad) var(--rad) 0;
+    }
+
+    input:not(:placeholder-shown) {
+        border-radius: var(--rad) 0 0 var(--rad);
+        width: calc(100% - var(--btn-width));
+
+        +button {
+            display: block;
         }
-      }
     }
-  }
-  .symbol {
-    height: 100%;
-    width: 100%;
-    position: absolute;
-    top: 0;
-    z-index: 1;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: transparent;
-    &:before {
-      content:"";
-      position: absolute;
-      right: 0;
-      width: 100%;
-      height: 100%;
-      background: var(--primary-color);
-      z-index: -1;
-      transition: width .6s ease;
-    }
-    &:after {
-      content:"";
-      position: absolute;
-      top: 21px;
-      left: 21px;
-      width: 20px;
-      height: 20px;
-      border-radius: 50%;
-      background: var(--primary-color);
-      z-index: 1;
-      clip-path: inset(0% 0% 0% 0%);
-      transition: clip-path .04s linear .225s;
-    }
-    .cloud,
-    .lens {
-      position: absolute;
-      fill: #fff;
-      stroke: currentColor;
-      top: 50%;
-      left: 50%;
-    }
-    .cloud {
-      width: 35px;
-      height: 32px;
-      transform: translate(-50%, -60%);
-      transition: all .6s ease;
-    }
-    .lens {
-      fill: #fff;
-      width: 16px;
-      height: 16px;
-      z-index: 2;
-      top: 24px;
-      left: 24px;
-      transition: top .3s ease, left .3s ease, fill .2s ease .2s;
-    }
-  }
-}
 
-.NavContainer {
-  background: #fff;
-  font: 400 16px 'Varela Round', sans-serif;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  .socials {
-    position: fixed;
-    display: block;
-    left: 20px;
-    bottom: 20px;
-    > Nava {
-      display: block;
-      width: 30px;
-      opacity: var(--opacity, .2);
-      transform: scale(var(--scale, .8));
-      transition: transform .3s cubic-bezier(0.38,-0.12, 0.24, 1.91);
+    label {
+        position: absolute;
+        clip: rect(1px, 1px, 1px, 1px);
+        padding: 0;
+        border: 0;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
     }
-  }
-}
-:root {
-  --rad: 0.42rem; /* 0.7rem * 0.6 */
-  --dur: 0.18s; /* 0.3s * 0.6 */
-  --color-dark: #2f2f2f;
-  --color-light: #fff;
-  --color-brand: #57bd84;
-  --font-fam: 'Lato', sans-serif;
-  --height: 3rem; /* 5rem * 0.6 */
-  --btn-width: 3.6rem; /* 6rem * 0.6 */
-  --bez: cubic-bezier(0, 0, 0.43, 1.49);
-}
-
-.SearchContainer {
-    background: var(--color-light); 
-    display: flex; 
-    align-items: center; 
-    justify-content: right;
-    outline: var(--color-dark);
-}
-
-form {
-  position: relative;
-  width: 18rem; /* 30rem * 0.6 */
-  background: var(--color-brand);
-  border-radius: var(--rad);
-}
-input, button {
-  height: var(--height);
-  font-family: var(--font-fam);
-  border: 0;
-  color: var(--color-dark);
-  font-size: 1.08rem; /* 1.8rem * 0.6 */
-}
-input[type="search"] {
-  outline: 0;
-  width: 100%;
-  background: var(--color-light);
-  padding: 0 0.96rem; /* 1.6rem * 0.6 */
-  border-radius: var(--rad);
-  appearance: none;
-  transition: all var(--dur) var(--bez);
-  z-index: 1;
-  position: relative;
-  transition-property: width, border-radius, box-shadow;
-  box-shadow: 0 0 0 2px var(--text-color);
-}
-.sbtn {
-  display: none;
-  position: absolute;
-  top: 0;
-  right: 0;
-  width: var(--btn-width);
-  font-weight: bold;
-  background: var(--color-brand);
-  border-radius: 0 var(--rad) var(--rad) 0;
-}
-input:not(:placeholder-shown) {
-  border-radius: var(--rad) 0 0 var(--rad);
-  width: calc(100% - var(--btn-width));
-  + button {
-    display: block;
-  }
-}
-label {
-  position: absolute;
-  clip: rect(1px, 1px, 1px, 1px);
-  padding: 0;
-  border: 0;
-  height: 1px;
-  width: 1px;
-  overflow: hidden;
-}
-
-
     </style>
 
     <header class="header shadow z-2">
         <div class="container-fluid" style="background-color: transparent;">
-                <!-- <div class="NavContainer">
+            <!-- <div class="NavContainer">
 <div class="search" id="navSearch">
   <input type="text" placeholder="search" />
   <div class="symbol">
@@ -270,18 +297,22 @@ label {
                 </nav>
             </div> -->
             <div class="container-fluid bg-white align-items-right">
-            <div class="SearchContainer">
-            <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
-            <svg class="bg-white" width="30px" height="30px" viewBox="0 -0.5 25 25" fill="none" xmlns="http://www.w3.org/2000/svg">
-            <path fill-rule="evenodd" clip-rule="evenodd" d="M7.30524 15.7137C6.4404 14.8306 5.85381 13.7131 5.61824 12.4997C5.38072 11.2829 5.50269 10.0233 5.96924 8.87469C6.43181 7.73253 7.22153 6.75251 8.23924 6.05769C10.3041 4.64744 13.0224 4.64744 15.0872 6.05769C16.105 6.75251 16.8947 7.73253 17.3572 8.87469C17.8238 10.0233 17.9458 11.2829 17.7082 12.4997C17.4727 13.7131 16.8861 14.8306 16.0212 15.7137C14.8759 16.889 13.3044 17.5519 11.6632 17.5519C10.0221 17.5519 8.45059 16.889 7.30524 15.7137V15.7137Z" stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-            <path d="M11.6702 7.20292C11.2583 7.24656 10.9598 7.61586 11.0034 8.02777C11.0471 8.43968 11.4164 8.73821 11.8283 8.69457L11.6702 7.20292ZM13.5216 9.69213C13.6831 10.0736 14.1232 10.2519 14.5047 10.0904C14.8861 9.92892 15.0644 9.4888 14.9029 9.10736L13.5216 9.69213ZM16.6421 15.0869C16.349 14.7943 15.8741 14.7947 15.5815 15.0879C15.2888 15.381 15.2893 15.8559 15.5824 16.1485L16.6421 15.0869ZM18.9704 19.5305C19.2636 19.8232 19.7384 19.8228 20.0311 19.5296C20.3237 19.2364 20.3233 18.7616 20.0301 18.4689L18.9704 19.5305ZM11.8283 8.69457C12.5508 8.61801 13.2384 9.02306 13.5216 9.69213L14.9029 9.10736C14.3622 7.83005 13.0496 7.05676 11.6702 7.20292L11.8283 8.69457ZM15.5824 16.1485L18.9704 19.5305L20.0301 18.4689L16.6421 15.0869L15.5824 16.1485Z" fill="#000000"/>
-            </svg>
-                <form class="ou" onsubmit="event.preventDefault();" role="search">
-                    <label for="search">Search for stuff</label>
-                    <input id="search" type="search" placeholder="Search..." autofocus required />
-                    <button class="sbtn" type="submit">Go</button>    
-                </form>
-            </div>
+                <div class="SearchContainer">
+                    <svg class="bg-white" width="30px" height="30px" viewBox="0 -0.5 25 25" fill="none"
+                        xmlns="http://www.w3.org/2000/svg">
+                        <path fill-rule="evenodd" clip-rule="evenodd"
+                            d="M7.30524 15.7137C6.4404 14.8306 5.85381 13.7131 5.61824 12.4997C5.38072 11.2829 5.50269 10.0233 5.96924 8.87469C6.43181 7.73253 7.22153 6.75251 8.23924 6.05769C10.3041 4.64744 13.0224 4.64744 15.0872 6.05769C16.105 6.75251 16.8947 7.73253 17.3572 8.87469C17.8238 10.0233 17.9458 11.2829 17.7082 12.4997C17.4727 13.7131 16.8861 14.8306 16.0212 15.7137C14.8759 16.889 13.3044 17.5519 11.6632 17.5519C10.0221 17.5519 8.45059 16.889 7.30524 15.7137V15.7137Z"
+                            stroke="#000000" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                        <path
+                            d="M11.6702 7.20292C11.2583 7.24656 10.9598 7.61586 11.0034 8.02777C11.0471 8.43968 11.4164 8.73821 11.8283 8.69457L11.6702 7.20292ZM13.5216 9.69213C13.6831 10.0736 14.1232 10.2519 14.5047 10.0904C14.8861 9.92892 15.0644 9.4888 14.9029 9.10736L13.5216 9.69213ZM16.6421 15.0869C16.349 14.7943 15.8741 14.7947 15.5815 15.0879C15.2888 15.381 15.2893 15.8559 15.5824 16.1485L16.6421 15.0869ZM18.9704 19.5305C19.2636 19.8232 19.7384 19.8228 20.0311 19.5296C20.3237 19.2364 20.3233 18.7616 20.0301 18.4689L18.9704 19.5305ZM11.8283 8.69457C12.5508 8.61801 13.2384 9.02306 13.5216 9.69213L14.9029 9.10736C14.3622 7.83005 13.0496 7.05676 11.6702 7.20292L11.8283 8.69457ZM15.5824 16.1485L18.9704 19.5305L20.0301 18.4689L16.6421 15.0869L15.5824 16.1485Z"
+                            fill="#000000" />
+                    </svg>
+                    <form class="ou" onsubmit="event.preventDefault();" role="search">
+                        <label for="search">Search for stuff</label>
+                        <input id="search" type="search" placeholder="Search..." autofocus required />
+                        <button class="sbtn" type="submit">Go</button>
+                    </form>
+                </div>
 
             </div>
         </div>
@@ -290,7 +321,6 @@ label {
         <div class="upContainerProfile">
             <div class="profile">
                 <a href="\Profile\editProfile.php">
-                    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                     <svg class="bg-white" width="40" height="40" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path opacity="0.4"
@@ -306,7 +336,6 @@ label {
         <div class="upContainerSignOut">
             <div class="signOut">
                 <a href="\login Main\logout.php">
-                    <?xml version="1.0" encoding="utf-8"?><!-- Uploaded to: SVG Repo, www.svgrepo.com, Generator: SVG Repo Mixer Tools -->
                     <svg class="bg-white" width="40" height="40" viewBox="0 0 24 24" fill="none"
                         xmlns="http://www.w3.org/2000/svg">
                         <path
@@ -322,9 +351,9 @@ label {
         </div>
     </header>
     <script>
-        document.getElementById('searchInput').addEventListener('focus', function () {
-          document.querySelector('.container-fluid.bg-white.align-items-right').classList.add('hidden');
-        });
+    document.getElementById('searchInput').addEventListener('focus', function() {
+        document.querySelector('.container-fluid.bg-white.align-items-right').classList.add('hidden');
+    });
     </script>
 </body>
 

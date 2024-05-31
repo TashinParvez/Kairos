@@ -5,7 +5,7 @@ $currentDateTimeObject = new DateTime();
 $todaysDate = $currentDateTimeObject->format('d/m/Y'); // today's date
 
 
-$labels = $data = '';
+$labels = $data = $sql = '';
 if (isset($_POST['weakly'])) {
 
     $labels = array(1, 2, 3, 4, 5, 6, 7, 8, 9, 10);
@@ -43,6 +43,8 @@ if (isset($_POST['monthly'])) {
 }
 if (isset($_POST['yearly'])) {
 }
+
+
 
 // // Data generation functions
 // function generateLabels()
