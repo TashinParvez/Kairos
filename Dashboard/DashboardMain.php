@@ -123,11 +123,10 @@ $sql = "SELECT title, details, created_at, public
         INNER JOIN
         notes as n
         ON uinfo.userHandle = n.userHandle
-        WHERE uinfo.userHandle = '$userHandle'; ";
+        WHERE uinfo.userHandle = '$userHandle'
+        ORDER BY created_at DESC;";
 
 $resultantNotes = mysqli_query($conn, $sql);  // get query result
-
-// $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
 $Notes = mysqli_fetch_all($resultantNotes); // conver to array
 // print_r($Notes);
 
@@ -147,7 +146,7 @@ $sql = "SELECT title, details, created_at, l.labelName
 $resultantNotes = mysqli_query($conn, $sql);  // get query result
 
 // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
-$Notes = mysqli_fetch_all($resultantNotes); // conver to array
+// $Notes = mysqli_fetch_all($resultantNotes); // conver to array
 
 // for memory free
 mysqli_free_result($resultantLabel);
