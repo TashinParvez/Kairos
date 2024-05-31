@@ -12,17 +12,22 @@ if (!$conn) {
     exit('Sorry failed to connect: '.mysqli_connect_error());
 }
 
-$data = [];
+
+
 // --------------------------------------------- fetch data For search ------------------------
+$data = array();
+
 // fetch data ( FROM Notes )
 
-$sql = "SELECT title
-        FROM notes
-        WHERE userHandle = 'tashin19'
-        UNION ALL
-        SELECT details
-        FROM notes
-        WHERE userHandle = 'tashin19';";
+$sql = "SELECT left(title, 105) as title
+        FROM (  SELECT title
+                FROM notes
+                WHERE userHandle = 'tashin19'
+                UNION ALL
+                SELECT details
+                FROM notes
+                WHERE userHandle = 'tashin19'
+                ) as ntc;";
 
 $result = mysqli_query($conn, $sql);  // get query result
 
@@ -32,11 +37,15 @@ foreach ($result as $row) {
 
 // fetch data ( FROM Blogs )
 
-$sql = 'SELECT topicName
-        FROM blog
-        UNION
-        SELECT description
-        FROM blog;';
+
+$sql = "SELECT left(topicName, 105) as topicName
+        FROM (SELECT topicName
+              FROM blog
+              UNION
+              SELECT description
+              FROM blog
+              ) as ntc;";
+
 
 $result = mysqli_query($conn, $sql);  // get query result
 
@@ -46,8 +55,9 @@ foreach ($result as $row) {
 
 // fetch data ( FROM Category )
 
-$sql = 'SELECT name
-        FROM `category`;';
+
+$sql = "SELECT name
+        FROM category;";
 
 $result = mysqli_query($conn, $sql);  // get query result
 
@@ -55,13 +65,20 @@ foreach ($result as $row) {
     $data[] = $row['name'];
 }
 
-// fetch data ( FROM Life_library)
+// fetch data (FROM Life_library)
 
-$sql = 'SELECT bookname
-        FROM `life_library` 
-        UNION ALL
-        SELECT details
-        FROM `life_library`';
+
+$sql = "SELECT left(bookname, 105) as bookname
+        FROM (  SELECT bookname
+                FROM life_library 
+                UNION ALL
+                SELECT authorName
+                FROM life_library
+                UNION ALL
+                SELECT details
+                FROM life_library
+                ) as ntc";
+
 
 $result = mysqli_query($conn, $sql);  // get query result
 
@@ -71,13 +88,15 @@ foreach ($result as $row) {
 
 // fetch data ( FROM personal journal)
 
-$sql = "SELECT title
-        FROM `personal_journal`
-        WHERE userHandle = 'tashin19'
-        UNION ALL
-        SELECT details
-        FROM `personal_journal`
-        WHERE userHandle = 'tashin19';";
+$sql = "SELECT left(title, 105) as title
+        FROM (  SELECT title
+                FROM personal_journal
+                WHERE userHandle = 'tashin19'
+                UNION ALL
+                SELECT details
+                FROM personal_journal
+                WHERE userHandle = 'tashin19'
+                ) as ntc;";
 
 $result = mysqli_query($conn, $sql);  // get query result
 
@@ -86,7 +105,9 @@ foreach ($result as $row) {
 }
 
 // print_r($data);
-// --------------------------------------------- DATA fetch done ---------------------
+
+//--------------------------------------------- DATA fetch done -----------------------------------
+
 
 ?>
 
@@ -306,15 +327,31 @@ foreach ($result as $row) {
         <div class="container-fluid bg-white" style="background-color: transparent;">
             <div class="container-fluid bg-white align-items-right">
 
-                <form class="searchBar bg-white" action="">
-                    <span id="search-txt" class="z-10000">Search</span>
-                    <!-- <input type="search" required> -->
-                    <input type="search" class="bg-white align-items-center border-secondary" name="country_name"
-                        id="country_name" placeholder="Search Keyword" autocomplete="off" required
-                        style="width: 800px;" />
-                    <i id="iconSrch" class="fa fa-search z-10"></i>
-                </form>
+              <!------------------------------------ search (tashin) ------------------------------------>
+            <!-- <form class="searchBar bg-white" action="">
+                <span id="search-txt" class="z-10000">Search</span>
+                <input type="search" class="bg-white align-items-center border-secondary" name="country_name" 
+                
+                id="country_name" placeholder="Search Keyword" autocomplete="off" required style="width: 800px;"/>
+                <i class="fa fa-search"></i>
+            </form> -->
+          
 
+
+            <!-- New Tashin -->
+            <form class="searchBar bg-white" method="GET" action="../Includes/global-search-bar.php">
+                <span id="search-txt" class="z-10000">Search</span>
+                <input type="search" class="bg-white align-items-center border-secondary" name="country_name" 
+                    value="<?php echo isset($_GET['country_name']) ? htmlspecialchars($_GET['country_name']) : ''; ?>"
+                    id="country_name" placeholder="Search Keyword" autocomplete="off" required style="width: 800px;"/>
+                <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                    <i class="fa fa-search"></i>
+                </button>
+            </form>
+
+
+
+            <!-- ----------------------------- -->
             </div>
         </div>
     </header>
