@@ -165,7 +165,7 @@ if (isset($_POST['search'])) {
     if ($result && mysqli_num_rows($result) > 0) {
         $Notes = mysqli_fetch_all($result);
     } else {
-        $blogs = 'Empty result!';
+        $Notes = 'Empty result!';
     }
 }
 
