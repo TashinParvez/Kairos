@@ -115,6 +115,7 @@ $labels = mysqli_fetch_all($resultantLabel); // conver to array
 // print_r($labels);
 
 // ------------------------------------- inner Page search -----------------------------
+$notesLabel = isset($_POST['notesLabel']) ? $_POST['notesLabel'] : '';
 $search_text = '';
 
 if (isset($_POST['btnSrch'])) {
@@ -132,7 +133,7 @@ if (isset($_POST['btnSrch'])) {
     } else {
         $Notes = 'Empty result!';
     }
-} else {
+} else if ($notesLabel == '' || $notesLabel == 'All') {
     // ----------------- For Notes of users ---------------
 
     // sql query
@@ -148,12 +149,11 @@ if (isset($_POST['btnSrch'])) {
 
     $Notes = mysqli_fetch_all($resultantNotes); // conver to array
     // print_r($Notes);
-}
+} else {
+    // ----------------- For Notes of #label 1 clicked (From brooks) ---------------
 
-// ----------------- For Notes of #label 1 clicked (From brooks) ---------------
-
-// sql query
-$sql = "SELECT title, details, created_at, l.labelName
+    // sql query
+    $sql = "SELECT title, details, created_at, l.labelName
         FROM user_info AS uinfo
         INNER JOIN
         notes as n
@@ -161,9 +161,13 @@ $sql = "SELECT title, details, created_at, l.labelName
         INNER JOIN
         label as l
         ON l.userHandle = uinfo.userHandle
-        WHERE uinfo.userHandle = 'bijoy123' AND l.labelName = 'Books';";
+        WHERE uinfo.userHandle = 'bijoy123' AND l.labelName = '$notesLabel';";
 
-$resultantNotes = mysqli_query($conn, $sql);  // get query result
+    $resultantNotes = mysqli_query($conn, $sql);  // get query result
+    $Notes = mysqli_fetch_all($resultantNotes); // conver to array
+}
+
+
 
 // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
 // $Notes = mysqli_fetch_all($resultantNotes); // conver to array
@@ -172,9 +176,12 @@ $resultantNotes = mysqli_query($conn, $sql);  // get query result
 
 
 
+
+
+
 // for memory free
 mysqli_free_result($resultantLabel);
-mysqli_free_result($resultantNotes);
+// mysqli_free_result($resultantNotes);
 mysqli_close($conn);
 
 ?>
@@ -526,11 +533,30 @@ mysqli_close($conn);
                     <a id="all" style="text-decoration:none;" href="" class="hover-underline-animation active">All</a>
                 </div>
 
+                <!-- Filtered by -->
+                <script>
+                    function submitForm(notesLabel) {
+                        document.getElementById('notesLabelInput').value = notesLabel;
+                        document.getElementById('notesLabelForm').submit();
+                    }
+                </script>
+
+                <form id="notesLabelForm" action="DashboardMain.php" method="post">
+                    <input type="hidden" name="notesLabel" id="notesLabelInput">
+                </form>
+
+                <!-- <ul class="dropdown-menu dropdown-menu-dark">
+                    <li><a class="dropdown-item" href="#" onclick="submitForm('newest')"> newest first</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="submitForm('popular')"> most popular book</a></li>
+                    <li><a class="dropdown-item" href="#" onclick="submitForm('alphabetical')"> alphabetically</a></li>
+                </ul> -->
+
                 <?php foreach ($labels as $label) { ?>
                     <div class="second col-sm-auto" style="position: sticky; z-index: 1000;">
-                        <a style="text-decoration:none;" href="" class="hover-underline-animation"><?php echo htmlspecialchars($label[0]); ?></a>
+                        <a style="text-decoration:none;" href="#" class="hover-underline-animation" onclick="submitForm('<?php echo htmlspecialchars($label[0]); ?>')"><?php echo htmlspecialchars($label[0]); ?></a>
                     </div>
                 <?php } ?>
+                <!-- ............... -->
             </div>
             <div class="container m-0 bg-transparent p-0 mt-2" style="outline:none;">
                 <div class="row bg-white m-0 mb-2" style="display: flex; align-items: flex-end;">
@@ -545,7 +571,7 @@ mysqli_close($conn);
                         </button>
                     </div>
                     <div class="col-lg-3 bg-transparent m-0 bg-transparent" style="position: sticky; z-index: 1000;">
-                        <form action="DashboardMain.php" method="POST" id="srchForm" class="border shadow" role="search" >
+                        <form action="DashboardMain.php" method="POST" id="srchForm" class="border shadow" role="search">
                             <label for="search" style=" color:white;">Search for stuff</label>
                             <input id="srchBar" name="srchBar" type="search" placeholder="Search..." autofocus required />
                             <button id="btnSrch" name="btnSrch" type="submit">Go</button>
