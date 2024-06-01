@@ -1,3 +1,65 @@
+<?php
+include '../Dashboard/connect_db.php'; // database connection
+$userHandle = 'tashin19';
+
+// for notes 
+
+$sql = "SELECT title, details, created_at, YEAR(CURDATE())-YEAR(created_at) AS years_ago
+        FROM notes
+        WHERE userHandle = '$userHandle'
+        AND MONTH(created_at) = MONTH(CURDATE())
+        AND DAY(created_at) = DAY(CURDATE())
+        AND YEAR(created_at) < YEAR(CURDATE());";
+
+$result = mysqli_query($conn, $sql);
+
+$notes = mysqli_fetch_all($result);
+
+// print_r($notes);
+
+// for journal
+
+$sql = "SELECT title, details, created_at, YEAR(CURDATE())-YEAR(created_at) AS years_ago
+        FROM personal_journal
+        WHERE userHandle = 'tashin19'
+        AND MONTH(created_at) = MONTH(CURDATE())
+        AND DAY(created_at) = DAY(CURDATE())
+        AND YEAR(created_at) < YEAR(CURDATE());";
+
+$result = mysqli_query($conn, $sql);
+
+$journals = mysqli_fetch_all($result);
+
+//----------------------- turn off/On personal Journal btn clicked --------------------------
+
+$sql = "SELECT personal_journal_mail 
+        FROM user_info
+        WHERE userHandle = '$userHandle'";
+$result = mysqli_query($conn, $sql);
+$flag = mysqli_fetch_all($result);
+$flag = $flag[0][0];
+
+// print($flag);
+
+if ($flag == 1) {
+    $sql = "UPDATE user_info
+            SET personal_journal_mail = 0
+            WHERE userHandle = '$userHandle';";
+    $result = mysqli_query($conn, $sql);
+} else {
+    $sql = "UPDATE user_info
+            SET personal_journal_mail = 1
+            WHERE userHandle = '$userHandle';";
+    $result = mysqli_query($conn, $sql);
+}
+
+
+
+// --------------------------------------
+
+
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 
@@ -7,26 +69,20 @@
     <title>Kairos</title>
     <link rel="icon" type="image/x-icon" href="/Images/Picture1.png">
     </link>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../Includes/style.css">
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js"
-        integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-        integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
     </script>
     <style>
-    .bg-custom {
-        background-color: #f1f4fb;
-    }
+        .bg-custom {
+            background-color: #f1f4fb;
+        }
     </style>
 </head>
 
@@ -39,9 +95,7 @@
     <main class=" main bg-white shadow z-0 pr-0">
         <div class="row bg-white">
             <div class="col-auto bg-white">
-                <svg class="rounded" version="1.1" width="200" height="200" xmlns="http://www.w3.org/2000/svg"
-                    xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 500"
-                    style="enable-background:new 0 0 500 500;" xml:space="preserve">
+                <svg class="rounded" version="1.1" width="200" height="200" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" x="0px" y="0px" viewBox="0 0 500 500" style="enable-background:new 0 0 500 500;" xml:space="preserve">
                     <g id="BACKGROUND">
                         <rect style="fill:#FAEFEB;" width="500" height="500" />
                     </g>
@@ -70,16 +124,13 @@
 						C242.765,182.917,237.524,188.078,237.474,194.494z" />
                                         <path style="fill:#EBAEA3;" d="M229.144,223.852l-0.527,22.104c0.002,7.836-4.865,6.864-12.578,6.803l0,0
 						c-6.584-0.051-14.64,1.827-15.406-4.713l2.239-35.05L229.144,223.852z" />
-                                        <polygon style="fill:#D69087;"
-                                            points="228.778,239.21 204.367,218.005 229.194,221.564 					" />
+                                        <polygon style="fill:#D69087;" points="228.778,239.21 204.367,218.005 229.194,221.564 					" />
                                         <path style="fill:#EBAEA3;" d="M228.424,228.324L228.424,228.324c14.829-0.872,26.46-14.505,26.155-26.639l-0.82-26.312
 						c-0.382-15.208-12.758-27.372-27.971-27.49l0,0c-15.574-0.121-31.026,12.384-31.147,27.958l0.968,23.014
 						C196.358,216.654,210.61,228.186,228.424,228.324z" />
                                         <g>
 
-                                            <path
-                                                style="fill:none;stroke:#1C2238;stroke-width:1.1962;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                d="
+                                            <path style="fill:none;stroke:#1C2238;stroke-width:1.1962;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="
 							M239.055,203.009l0.651,3.531c0.154,0.836-0.44,1.626-1.286,1.709l-1.967,0.194" />
                                             <path style="fill:#1C2238;" d="M223.935,184.553c0,0,6.047-0.956,6.294,1.516c0,0,0.121,1.677-5.162,2.409
 							c-5.283,0.732-8.258,0.741-8.862-0.798C215.602,186.141,221.082,184.783,223.935,184.553z" />
@@ -90,31 +141,25 @@
                                             <path style="fill:#1C2238;" d="M222.31,197.409c0.041,1.414,1.22,2.527,2.634,2.486c1.414-0.041,2.527-1.221,2.486-2.635
 							c-0.041-1.414-1.22-2.527-2.634-2.486C223.382,194.815,222.269,195.995,222.31,197.409z" />
 
-                                            <path
-                                                style="fill:none;stroke:#1C2238;stroke-width:1.1962;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                d="
+                                            <path style="fill:none;stroke:#1C2238;stroke-width:1.1962;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="
 							M238.111,213.456c0,0-3.285,1.978-6.603-0.261" />
                                         </g>
                                         <path style="fill:#1C2238;" d="M233.032,145.27c0,0,13.211,5.432,9.825,14.353c-4.18,11.01-26.886,26.285-49.787,30.612
 						c0,0-12.626-19.525-0.238-31.617c12.389-12.092,22.043-13.593,22.043-13.593L233.032,145.27z" />
                                         <path style="fill:#1C2238;" d="M253.76,175.373c0,0-19.429-13.301-18.948-25.303c0,0-4.827-4.587,6.385-0.671
 						C252.41,153.314,256.875,167.887,253.76,175.373z" />
-                                        <path style="fill:#1C2238;"
-                                            d="M209.451,178.648c0.005,0.614-6.758,21.148-6.758,21.148l-5.249-18.785L209.451,178.648z" />
+                                        <path style="fill:#1C2238;" d="M209.451,178.648c0.005,0.614-6.758,21.148-6.758,21.148l-5.249-18.785L209.451,178.648z" />
                                         <g>
                                             <path style="fill:#EBAEA3;" d="M181.831,196.989c-0.05,6.461,5.147,11.74,11.608,11.79c6.461,0.05,11.739-5.147,11.79-11.608
 							c0.05-6.461-5.147-11.74-11.608-11.79C187.159,185.331,181.881,190.528,181.831,196.989z" />
 
-                                            <path
-                                                style="fill:none;stroke:#1C2238;stroke-width:1.1962;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                d="
+                                            <path style="fill:none;stroke:#1C2238;stroke-width:1.1962;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="
 							M197.591,200.591c0,0,0.066-8.481-8.055-7.21" />
                                         </g>
                                     </g>
                                     <g>
                                         <g>
-                                            <polygon style="fill:#FFB661;"
-                                                points="337.062,272.793 284.286,355.132 325.47,385.664 340.44,340.466 						" />
+                                            <polygon style="fill:#FFB661;" points="337.062,272.793 284.286,355.132 325.47,385.664 340.44,340.466 						" />
                                             <g>
                                                 <g>
                                                     <path style="fill:#FFFFFF;" d="M348.475,454.135c0,0-1.258,17.437-22.119,11.553c-19.304-5.444-33.462-10.05-12.639-60.172
@@ -124,27 +169,19 @@
                                                             <path id="XMLID_26_" d="M340.732,391.886c0,0,9.863,49.302,7.689,62.229c-2.173,12.927-42.525,6.775-42.069-15.022
 											c0.455-21.797,15.126-53.272,15.126-53.272L340.732,391.886z" />
                                                         </defs>
-                                                        <use xlink:href="#XMLID_26_"
-                                                            style="overflow:visible;fill:#36364E;" />
-                                                        <clipPath
-                                                            id="XMLID_00000148642353925275077180000013977129484844108674_">
+                                                        <use xlink:href="#XMLID_26_" style="overflow:visible;fill:#36364E;" />
+                                                        <clipPath id="XMLID_00000148642353925275077180000013977129484844108674_">
                                                             <use xlink:href="#XMLID_26_" style="overflow:visible;" />
                                                         </clipPath>
                                                     </g>
                                                     <g>
                                                         <g>
 
-                                                            <line
-                                                                style="fill:none;stroke:#FFFFFF;stroke-width:2.82;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                                x1="338.092" y1="421.207" x2="322.736" y2="417.279" />
+                                                            <line style="fill:none;stroke:#FFFFFF;stroke-width:2.82;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="338.092" y1="421.207" x2="322.736" y2="417.279" />
 
-                                                            <line
-                                                                style="fill:none;stroke:#FFFFFF;stroke-width:2.82;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                                x1="338.001" y1="414.301" x2="323.768" y2="410.66" />
+                                                            <line style="fill:none;stroke:#FFFFFF;stroke-width:2.82;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="338.001" y1="414.301" x2="323.768" y2="410.66" />
 
-                                                            <line
-                                                                style="fill:none;stroke:#FFFFFF;stroke-width:2.82;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                                x1="337.244" y1="407.225" x2="324.799" y2="404.041" />
+                                                            <line style="fill:none;stroke:#FFFFFF;stroke-width:2.82;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="337.244" y1="407.225" x2="324.799" y2="404.041" />
                                                         </g>
                                                     </g>
                                                 </g>
@@ -155,9 +192,7 @@
                                                         <path style="fill:#FFB661;" d="M365.511,379.454l-45.126-17.475l12.866-77.78c1.233-13.412,12.413-23.716,25.88-23.855l0,0
 										c16.067-0.166,28.515,14.006,26.278,29.917L365.511,379.454z" />
 
-                                                        <polyline
-                                                            style="fill:none;stroke:#1C2238;stroke-width:1.2415;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                            points="
+                                                        <polyline style="fill:none;stroke:#1C2238;stroke-width:1.2415;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" points="
 										329.639,365.562 320.385,361.978 331.383,301.359 									" />
                                                     </g>
                                                 </g>
@@ -170,34 +205,25 @@
                                                 <g>
                                                     <path style="fill:#36364E;" d="M438.493,414.491c0,0,17.467,0.727,12.22,21.758c-4.855,19.46-9.029,33.753-59.76,14.46
 									L438.493,414.491z" />
-                                                    <polygon style="fill:#EBAEA3;"
-                                                        points="328.543,394.722 376.508,424.122 371.031,443.551 312.969,419.642 								" />
+                                                    <polygon style="fill:#EBAEA3;" points="328.543,394.722 376.508,424.122 371.031,443.551 312.969,419.642 								" />
                                                     <g>
                                                         <defs>
                                                             <path id="XMLID_25_" d="M376.508,424.122c0,0,48.98-11.356,61.967-9.576c12.987,1.78,8.063,42.299-13.738,42.506
 											c-21.801,0.207-53.707-13.501-53.707-13.501L376.508,424.122z" />
                                                         </defs>
-                                                        <use xlink:href="#XMLID_25_"
-                                                            style="overflow:visible;fill:#3B3855;" />
-                                                        <clipPath
-                                                            id="XMLID_00000065056262735087867460000014298543682514401438_">
+                                                        <use xlink:href="#XMLID_25_" style="overflow:visible;fill:#3B3855;" />
+                                                        <clipPath id="XMLID_00000065056262735087867460000014298543682514401438_">
                                                             <use xlink:href="#XMLID_25_" style="overflow:visible;" />
                                                         </clipPath>
                                                     </g>
                                                     <g>
                                                         <g>
 
-                                                            <line
-                                                                style="fill:none;stroke:#FFFFFF;stroke-width:2.82;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                                x1="405.896" y1="425.87" x2="402.437" y2="441.337" />
+                                                            <line style="fill:none;stroke:#FFFFFF;stroke-width:2.82;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="405.896" y1="425.87" x2="402.437" y2="441.337" />
 
-                                                            <line
-                                                                style="fill:none;stroke:#FFFFFF;stroke-width:2.82;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                                x1="398.996" y1="426.17" x2="395.789" y2="440.508" />
+                                                            <line style="fill:none;stroke:#FFFFFF;stroke-width:2.82;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="398.996" y1="426.17" x2="395.789" y2="440.508" />
 
-                                                            <line
-                                                                style="fill:none;stroke:#FFFFFF;stroke-width:2.82;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                                x1="391.946" y1="427.142" x2="389.142" y2="439.678" />
+                                                            <line style="fill:none;stroke:#FFFFFF;stroke-width:2.82;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="391.946" y1="427.142" x2="389.142" y2="439.678" />
                                                         </g>
                                                     </g>
                                                 </g>
@@ -205,13 +231,9 @@
                                                     <path style="fill:#FFB661;" d="M270.278,335.868l93.529,64.151l-19.717,42.663l-107-52.967
 									c-19.03-9.556-23.442-34.767-8.788-50.217l0,0C239.359,327.84,257.383,326.281,270.278,335.868z" />
 
-                                                    <line
-                                                        style="fill:none;stroke:#1C2238;stroke-width:1.2415;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                        x1="237.09" y1="389.715" x2="274.573" y2="408.27" />
+                                                    <line style="fill:none;stroke:#1C2238;stroke-width:1.2415;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="237.09" y1="389.715" x2="274.573" y2="408.27" />
 
-                                                    <line
-                                                        style="fill:none;stroke:#1C2238;stroke-width:1.2415;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                        x1="326.904" y1="374.707" x2="288.146" y2="349.249" />
+                                                    <line style="fill:none;stroke:#1C2238;stroke-width:1.2415;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="326.904" y1="374.707" x2="288.146" y2="349.249" />
                                                 </g>
                                             </g>
                                         </g>
@@ -219,23 +241,16 @@
                                     <g>
                                         <g>
                                             <g>
-                                                <polygon style="fill:#D1765C;"
-                                                    points="311.865,239.244 286.059,207.695 284.124,261.228 310.993,263.371 							" />
-                                                <polygon style="fill:#E0C8C3;"
-                                                    points="307.397,241.694 279.153,213.911 277.73,253.262 305.815,255.028 							" />
-                                                <polygon style="fill:#FAEFEB;"
-                                                    points="283.169,232.097 282.169,248.96 301.68,252.619 301.68,244.829 							" />
+                                                <polygon style="fill:#D1765C;" points="311.865,239.244 286.059,207.695 284.124,261.228 310.993,263.371 							" />
+                                                <polygon style="fill:#E0C8C3;" points="307.397,241.694 279.153,213.911 277.73,253.262 305.815,255.028 							" />
+                                                <polygon style="fill:#FAEFEB;" points="283.169,232.097 282.169,248.96 301.68,252.619 301.68,244.829 							" />
                                             </g>
-                                            <polygon style="fill:#B75A44;"
-                                                points="301.68,244.829 311.865,239.244 310.487,311.233 300.523,320.421 						" />
+                                            <polygon style="fill:#B75A44;" points="301.68,244.829 311.865,239.244 310.487,311.233 300.523,320.421 						" />
                                             <g>
-                                                <polygon style="fill:#EDDBD6;"
-                                                    points="259.799,260.341 259.799,234.233 301.68,244.829 301.449,259.945 							" />
+                                                <polygon style="fill:#EDDBD6;" points="259.799,260.341 259.799,234.233 301.68,244.829 301.449,259.945 							" />
                                                 <g>
-                                                    <polygon style="fill:#D1765C;"
-                                                        points="249.957,240.727 301.68,244.829 300.523,320.421 250.232,316.258 								" />
-                                                    <polygon style="fill:#FAEFEB;"
-                                                        points="257.27,254.617 292.564,256.71 292.564,265.394 257.27,263.085 								" />
+                                                    <polygon style="fill:#D1765C;" points="249.957,240.727 301.68,244.829 300.523,320.421 250.232,316.258 								" />
+                                                    <polygon style="fill:#FAEFEB;" points="257.27,254.617 292.564,256.71 292.564,265.394 257.27,263.085 								" />
                                                 </g>
                                             </g>
                                         </g>
@@ -245,39 +260,27 @@
 								c1.083,12.903,12.693,22.308,25.54,20.69h0c11.613-1.463,20.226-11.49,19.92-23.191l-0.445-96.601
 								c-0.381-14.567-12.883-25.845-27.412-24.73h0C171.087,254.911,161.762,267.218,161.752,281.357z" />
 
-                                                <line
-                                                    style="fill:none;stroke:#1C2238;stroke-width:1.2415;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                    x1="207.243" y1="331.694" x2="207.774" y2="284.605" />
+                                                <line style="fill:none;stroke:#1C2238;stroke-width:1.2415;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="207.243" y1="331.694" x2="207.774" y2="284.605" />
                                             </g>
                                             <g>
                                                 <g>
-                                                    <path style="fill:#EBAEA3;"
-                                                        d="M217.298,325.108l17.893-21.169c0,0,0.217-20.237,15.043-24.846v5.512
+                                                    <path style="fill:#EBAEA3;" d="M217.298,325.108l17.893-21.169c0,0,0.217-20.237,15.043-24.846v5.512
 									c0,0,4.154,2.328,20.29-7.767c3.523-2.204,8.19-1.056,10.259,2.548c1.091,1.9,2.008,4.309,2.342,7.278
 									c0.179,1.592-0.184,5.174-1.027,6.537c-2.547,4.116-9.892,11.387-27.612,18.426l-19.173,26.962L217.298,325.108z" />
 
-                                                    <path
-                                                        style="fill:none;stroke:#D69087;stroke-width:0.9285;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                        d="
+                                                    <path style="fill:none;stroke:#D69087;stroke-width:0.9285;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="
 									M261.814,289.196c0,0,9.317-3.406,17.196-11.251" />
 
-                                                    <path
-                                                        style="fill:none;stroke:#D69087;stroke-width:0.9285;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                        d="
+                                                    <path style="fill:none;stroke:#D69087;stroke-width:0.9285;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="
 									M263.999,294.101c0,0,10.72-3.57,17.975-12.202" />
 
-                                                    <path
-                                                        style="fill:none;stroke:#D69087;stroke-width:0.9285;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                        d="
+                                                    <path style="fill:none;stroke:#D69087;stroke-width:0.9285;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" d="
 									M266.754,299.384c0,0,11.191-4.089,16.37-12.719" />
                                                 </g>
                                                 <g>
-                                                    <polygon style="fill:#E1C8CE;"
-                                                        points="209.011,388.7 252.182,326.369 226.238,312.076 181.128,359.409 								" />
+                                                    <polygon style="fill:#E1C8CE;" points="209.011,388.7 252.182,326.369 226.238,312.076 181.128,359.409 								" />
 
-                                                    <line
-                                                        style="fill:none;stroke:#1C2238;stroke-width:1.2415;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                                        x1="186.485" y1="353.788" x2="226.238" y2="312.076" />
+                                                    <line style="fill:none;stroke:#1C2238;stroke-width:1.2415;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" x1="186.485" y1="353.788" x2="226.238" y2="312.076" />
                                                 </g>
                                             </g>
                                         </g>
@@ -292,12 +295,10 @@
 						c0.606-0.539,6.067-5.234,10.915-4.281c1.419,0.28,3.387,1.181,4.707,3.884c3.039,6.223-2.086,10.2-6.607,13.71
 						C127.389,427.072,124.983,428.939,123.299,431.165z" />
 
-                                        <line style="fill:none;stroke:#BC5942;stroke-width:1.0616;stroke-miterlimit:10;"
-                                            x1="80.976" y1="407.099" x2="124.13" y2="407.099" />
+                                        <line style="fill:none;stroke:#BC5942;stroke-width:1.0616;stroke-miterlimit:10;" x1="80.976" y1="407.099" x2="124.13" y2="407.099" />
                                     </g>
                                     <g>
-                                        <path style="fill:#FFFFFF;"
-                                            d="M109.596,393.734c-2.509-0.228-5.309-0.433-8.019-1.835c-1.38-0.734-2.588-1.767-3.514-3.116
+                                        <path style="fill:#FFFFFF;" d="M109.596,393.734c-2.509-0.228-5.309-0.433-8.019-1.835c-1.38-0.734-2.588-1.767-3.514-3.116
 						c-0.916-1.331-1.539-3.102-1.347-4.967c0.097-0.896,0.359-1.785,0.751-2.582c0.389-0.804,0.906-1.478,1.442-2.08
 						c1.088-1.196,2.288-2.044,3.444-2.796c1.166-0.752,2.301-1.371,3.282-1.994c1.003-0.635,1.955-1.3,2.819-2.009
 						c1.71-1.402,3.109-3.07,3.744-4.736c0.672-1.667,0.681-3.638,0.104-4.928c-0.585-1.253-1.57-1.957-3.19-2.299
@@ -326,9 +327,7 @@
                             <g>
                                 <g>
 
-                                    <rect x="300.086" y="38"
-                                        style="fill:none;stroke:#1C2238;stroke-width:1.2026;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                        width="80.546" height="80.714" />
+                                    <rect x="300.086" y="38" style="fill:none;stroke:#1C2238;stroke-width:1.2026;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" width="80.546" height="80.714" />
                                     <rect x="307.765" y="47.208" style="fill:#E1C8CE;" width="65.187" height="62.143" />
                                 </g>
                                 <g>
@@ -340,20 +339,15 @@
                                         <clipPath id="XMLID_00000155866274818829152650000010118341178146028221_">
                                             <use xlink:href="#XMLID_27_" style="overflow:visible;" />
                                         </clipPath>
-                                        <path
-                                            style="clip-path:url(#XMLID_00000155866274818829152650000010118341178146028221_);fill:#1C2238;"
-                                            d="M332.11,56.608
+                                        <path style="clip-path:url(#XMLID_00000155866274818829152650000010118341178146028221_);fill:#1C2238;" d="M332.11,56.608
 						c0,0,10.392,14.752,26.539,7.158C358.649,63.766,349.917,51.283,332.11,56.608z" />
-                                        <path
-                                            style="clip-path:url(#XMLID_00000155866274818829152650000010118341178146028221_);fill:#1C2238;"
-                                            d="M322.275,67.17
+                                        <path style="clip-path:url(#XMLID_00000155866274818829152650000010118341178146028221_);fill:#1C2238;" d="M322.275,67.17
 						c0,0,15.93-2.373,13.568-14.636C335.843,52.534,322.934,58.599,322.275,67.17z" />
                                     </g>
                                     <path style="fill:#FFB661;" d="M365.802,109.351c0,0-6.198-16.687-25.437-16.687c-19.24,0-25.448,16.687-25.448,16.687H365.802z
 					" />
                                     <g>
-                                        <path style="fill:#1C2238;"
-                                            d="M332.143,78.356c0.45,3.987,3.832,7.086,7.939,7.086c4.107,0,7.489-3.099,7.939-7.086H332.143z" />
+                                        <path style="fill:#1C2238;" d="M332.143,78.356c0.45,3.987,3.832,7.086,7.939,7.086c4.107,0,7.489-3.099,7.939-7.086H332.143z" />
                                         <path style="fill:#D1765C;" d="M334.599,83.26c1.431,1.352,3.36,2.182,5.484,2.182c2.033,0,3.887-0.76,5.297-2.01l-0.073-0.172
 						C339.974,80.661,334.671,83.225,334.599,83.26z" />
                                     </g>
@@ -368,14 +362,9 @@
                             <g>
                                 <g>
 
-                                    <rect x="350.973" y="139.845"
-                                        transform="matrix(6.123234e-17 -1 1 6.123234e-17 197.8925 583.934)"
-                                        style="fill:none;stroke:#1C2238;stroke-width:1.2026;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                        width="79.88" height="106.352" />
+                                    <rect x="350.973" y="139.845" transform="matrix(6.123234e-17 -1 1 6.123234e-17 197.8925 583.934)" style="fill:none;stroke:#1C2238;stroke-width:1.2026;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" width="79.88" height="106.352" />
 
-                                    <rect x="357.569" y="147.901"
-                                        transform="matrix(6.123234e-17 -1 1 6.123234e-17 197.8259 583.8674)"
-                                        style="fill:#FFFFFF;" width="66.555" height="90.24" />
+                                    <rect x="357.569" y="147.901" transform="matrix(6.123234e-17 -1 1 6.123234e-17 197.8259 583.8674)" style="fill:#FFFFFF;" width="66.555" height="90.24" />
                                 </g>
                                 <g>
                                     <path style="fill:#E1C8CE;" d="M419.861,226.298c0,0-0.714-22.831-26.411-22.831c-25.697,0-27.125,22.831-27.125,22.831H419.861
@@ -385,21 +374,15 @@
                                         <g>
                                             <defs>
 
-                                                <ellipse id="XMLID_31_"
-                                                    transform="matrix(0.1609 -0.987 0.987 0.1609 142.2204 545.2798)"
-                                                    cx="391.799" cy="188.998" rx="14.469" ry="14.469" />
+                                                <ellipse id="XMLID_31_" transform="matrix(0.1609 -0.987 0.987 0.1609 142.2204 545.2798)" cx="391.799" cy="188.998" rx="14.469" ry="14.469" />
                                             </defs>
                                             <use xlink:href="#XMLID_31_" style="overflow:visible;fill:#EBAEA3;" />
                                             <clipPath id="XMLID_00000065060948613455057510000014140674046863185081_">
                                                 <use xlink:href="#XMLID_31_" style="overflow:visible;" />
                                             </clipPath>
-                                            <path
-                                                style="clip-path:url(#XMLID_00000065060948613455057510000014140674046863185081_);fill:#1C2238;"
-                                                d="M379.475,173.299
+                                            <path style="clip-path:url(#XMLID_00000065060948613455057510000014140674046863185081_);fill:#1C2238;" d="M379.475,173.299
 							c0,0,15.921,13.277,29.255,7.006C408.73,180.305,394.181,168.902,379.475,173.299z" />
-                                            <path
-                                                style="clip-path:url(#XMLID_00000065060948613455057510000014140674046863185081_);fill:#1C2238;"
-                                                d="M373.885,188.238
+                                            <path style="clip-path:url(#XMLID_00000065060948613455057510000014140674046863185081_);fill:#1C2238;" d="M373.885,188.238
 							c0,0,17.913,0.76,13.358-17.999C387.244,170.239,374.43,181.16,373.885,188.238z" />
                                         </g>
                                     </g>
@@ -408,73 +391,52 @@
                             <g>
                                 <g>
 
-                                    <rect x="135.199" y="26.598"
-                                        transform="matrix(6.123234e-17 -1 1 6.123234e-17 86.3657 253.9129)"
-                                        style="fill:none;stroke:#1C2238;stroke-width:1.2026;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                        width="69.88" height="114.352" />
+                                    <rect x="135.199" y="26.598" transform="matrix(6.123234e-17 -1 1 6.123234e-17 86.3657 253.9129)" style="fill:none;stroke:#1C2238;stroke-width:1.2026;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" width="69.88" height="114.352" />
 
-                                    <rect x="141.795" y="34.653"
-                                        transform="matrix(6.123234e-17 -1 1 6.123234e-17 86.2991 253.8463)"
-                                        style="fill:#FFFFFF;" width="56.555" height="98.24" />
+                                    <rect x="141.795" y="34.653" transform="matrix(6.123234e-17 -1 1 6.123234e-17 86.2991 253.8463)" style="fill:#FFFFFF;" width="56.555" height="98.24" />
                                 </g>
                                 <g>
                                     <g>
                                         <g>
                                             <defs>
 
-                                                <ellipse id="XMLID_29_"
-                                                    transform="matrix(0.1668 -0.986 0.986 0.1668 46.2838 213.8378)"
-                                                    cx="149.668" cy="79.533" rx="9.605" ry="9.605" />
+                                                <ellipse id="XMLID_29_" transform="matrix(0.1668 -0.986 0.986 0.1668 46.2838 213.8378)" cx="149.668" cy="79.533" rx="9.605" ry="9.605" />
                                             </defs>
                                             <use xlink:href="#XMLID_29_" style="overflow:visible;fill:#EBAEA3;" />
                                             <clipPath id="XMLID_00000045584108383909962510000002057805172833847680_">
                                                 <use xlink:href="#XMLID_29_" style="overflow:visible;" />
                                             </clipPath>
-                                            <path
-                                                style="clip-path:url(#XMLID_00000045584108383909962510000002057805172833847680_);fill:#1C2238;"
-                                                d="M144.707,69.928
+                                            <path style="clip-path:url(#XMLID_00000045584108383909962510000002057805172833847680_);fill:#1C2238;" d="M144.707,69.928
 							c0,0,3.794,7.87,15.38,6.332C160.087,76.26,158.241,65.851,144.707,69.928z" />
-                                            <path
-                                                style="clip-path:url(#XMLID_00000045584108383909962510000002057805172833847680_);fill:#1C2238;"
-                                                d="M138.653,77.039
+                                            <path style="clip-path:url(#XMLID_00000045584108383909962510000002057805172833847680_);fill:#1C2238;" d="M138.653,77.039
 							c-0.094,0.296,7.24,0.241,8.433-7.764C147.086,69.275,140.084,72.52,138.653,77.039z" />
                                         </g>
-                                        <path style="fill:#FFB661;"
-                                            d="M171.427,111.878c0,0-0.588-22.739-21.759-22.739s-22.347,22.739-22.347,22.739H171.427z" />
+                                        <path style="fill:#FFB661;" d="M171.427,111.878c0,0-0.588-22.739-21.759-22.739s-22.347,22.739-22.347,22.739H171.427z" />
                                     </g>
                                     <g>
                                         <circle style="fill:#1C2238;" cx="193.774" cy="69.275" r="5.323" />
                                         <g>
                                             <defs>
 
-                                                <ellipse id="XMLID_28_"
-                                                    transform="matrix(0.9248 -0.3805 0.3805 0.9248 -17.1818 79.9981)"
-                                                    cx="193.774" cy="83.463" rx="9.605" ry="9.605" />
+                                                <ellipse id="XMLID_28_" transform="matrix(0.9248 -0.3805 0.3805 0.9248 -17.1818 79.9981)" cx="193.774" cy="83.463" rx="9.605" ry="9.605" />
                                             </defs>
                                             <use xlink:href="#XMLID_28_" style="overflow:visible;fill:#EBAEA3;" />
                                             <clipPath id="XMLID_00000144313598348698081010000011151945788630502019_">
                                                 <use xlink:href="#XMLID_28_" style="overflow:visible;" />
                                             </clipPath>
-                                            <path
-                                                style="clip-path:url(#XMLID_00000144313598348698081010000011151945788630502019_);fill:#1C2238;"
-                                                d="M183.58,80.235
+                                            <path style="clip-path:url(#XMLID_00000144313598348698081010000011151945788630502019_);fill:#1C2238;" d="M183.58,80.235
 							c-0.082,0.208,10.194,0.566,10.194-7.289C193.774,72.947,186.34,73.23,183.58,80.235z" />
-                                            <path
-                                                style="clip-path:url(#XMLID_00000144313598348698081010000011151945788630502019_);fill:#1C2238;"
-                                                d="M203.379,80.235
+                                            <path style="clip-path:url(#XMLID_00000144313598348698081010000011151945788630502019_);fill:#1C2238;" d="M203.379,80.235
 							c0.082,0.208-10.194,0.566-10.194-7.289C193.185,72.947,200.619,73.23,203.379,80.235z" />
                                         </g>
-                                        <path style="fill:#E1C8CE;"
-                                            d="M215.533,111.878c0,0-0.588-18.81-21.759-18.81s-22.347,18.81-22.347,18.81H215.533z" />
+                                        <path style="fill:#E1C8CE;" d="M215.533,111.878c0,0-0.588-18.81-21.759-18.81s-22.347,18.81-22.347,18.81H215.533z" />
                                     </g>
                                 </g>
                             </g>
                             <g>
                                 <g>
 
-                                    <rect x="41.168" y="180.521"
-                                        style="fill:none;stroke:#1C2238;stroke-width:1.2026;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;"
-                                        width="80.602" height="88.294" />
+                                    <rect x="41.168" y="180.521" style="fill:none;stroke:#1C2238;stroke-width:1.2026;stroke-linecap:round;stroke-linejoin:round;stroke-miterlimit:10;" width="80.602" height="88.294" />
                                     <rect x="48.339" y="189.12" style="fill:#E1C8CE;" width="66.258" height="70.951" />
                                 </g>
                                 <g>
@@ -488,9 +450,7 @@
                                         <clipPath id="XMLID_00000041284944452247259160000002211761575728397239_">
                                             <use xlink:href="#XMLID_30_" style="overflow:visible;" />
                                         </clipPath>
-                                        <path
-                                            style="clip-path:url(#XMLID_00000041284944452247259160000002211761575728397239_);fill:#1C2238;"
-                                            d="M67.625,215.643
+                                        <path style="clip-path:url(#XMLID_00000041284944452247259160000002211761575728397239_);fill:#1C2238;" d="M67.625,215.643
 						h27.37c0,0-4.811-9.548-14.128-10.715C71.55,203.762,67.625,215.643,67.625,215.643z" />
                                     </g>
                                     <path style="fill:#D1765C;" d="M107.744,260.072c0,0-0.726-28.088-26.877-28.088c-26.151,0-27.604,28.088-27.604,28.088H107.744
@@ -511,61 +471,66 @@
                 </blockquote>
                 <br>
                 <div class="form-check form-switch bg-transparent">
-                    <input class="form-check-input bg-transparent" type="checkbox" role="switch"
-                        id="flexSwitchCheckDefault" checked>
+                    <input class="form-check-input bg-transparent" type="checkbox" role="switch" id="flexSwitchCheckDefault" checked>
                     <label class="form-check-label bg-transparent" for="flexSwitchCheckDefault">Switch of notifiation
                         about
                         Memories</label>
                 </div>
             </div>
             <br>
-            <div class="row bg-transparent pt-3 pr-4">
-                <div class="card m-2 mr-4 p-2 bg-transparent shadow">
-                    <h5 class="card-header bg-transparent">Date without time</h5>
-                    <div class="card-body bg-transparent">
-                        <h5 class="card-title bg-transparent">Special title treatment</h5>
-                        <p class="card-text bg-transparent">With supporting text below as a natural lead-in to
-                            additional content.
-                        </p>
+            <!-- -------------------------------Notes--------------------------------------- -->
+
+            <?php
+            if ($notes != null && !empty($notes)) { ?>
+
+                <h4>Notes</h4>
+                <hr>
+                <?php foreach ($notes as $ptr) { ?>
+                    <div class="row bg-transparent pt-3 pr-4">
+                        <div class="card m-2 mr-4 p-2 bg-transparent shadow">
+                            <!--  title, details, created_at, YEAR(CURDATE())-YEAR(created_at) AS years_ago -->
+                            <!-- <h5 class="card-title bg-transparent"> <?php echo htmlspecialchars($ptr[0]); ?></h5> -->
+                            <h5 class="card-header bg-transparent">Date without time:
+                                <?php echo htmlspecialchars($ptr[2]); ?>
+                            </h5>
+                            <div class="card-body bg-transparent">
+                                <h5 class="card-title bg-transparent"> <?php echo htmlspecialchars($ptr[0]); ?></h5>
+                                <p class="card-text bg-transparent">
+                                    <?php echo htmlspecialchars($ptr[1]); ?>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <br>
-            <div class="row bg-transparent pt-3 pr-4">
-                <div class="card m-2 mr-4 p-2 bg-transparent shadow">
-                    <h5 class="card-header bg-transparent">Date without time</h5>
-                    <div class="card-body bg-transparent">
-                        <h5 class="card-title bg-transparent">Special title treatment</h5>
-                        <p class="card-text bg-transparent">With supporting text below as a natural lead-in to
-                            additional content.
-                        </p>
+                    <br>
+                <?php } ?>
+            <?php } ?>
+
+            <!-- -------------------------------Journal-------------------------------------- -->
+
+            <?php
+            if ($journals != null && !empty($journals)) { ?>
+                <h4>Journals</h4>
+                <hr>
+                <?php foreach ($journals as $ptr) { ?>
+                    <div class="row bg-transparent pt-3 pr-4">
+                        <div class="card m-2 mr-4 p-2 bg-transparent shadow">
+                            <!--  title, details, created_at, YEAR(CURDATE())-YEAR(created_at) AS years_ago -->
+                            <h5 class="card-header bg-transparent">Date without time:
+                                <?php echo htmlspecialchars($ptr[2]); ?>
+                            </h5>
+                            <div class="card-body bg-transparent">
+                                <h5 class="card-title bg-transparent"> <?php echo htmlspecialchars($ptr[0]); ?></h5>
+                                <p class="card-text bg-transparent">
+                                    <?php echo htmlspecialchars($ptr[1]); ?>
+                                </p>
+                            </div>
+                        </div>
                     </div>
-                </div>
-            </div>
-            <br>
-            <div class="row bg-transparent pt-3 pr-4">
-                <div class="card m-2 mr-4 p-2 bg-transparent shadow">
-                    <h5 class="card-header bg-transparent">Date without time</h5>
-                    <div class="card-body bg-transparent">
-                        <h5 class="card-title bg-transparent">Special title treatment</h5>
-                        <p class="card-text bg-transparent">With supporting text below as a natural lead-in to
-                            additional content.
-                        </p>
-                    </div>
-                </div>
-            </div>
-            <br>
-            <div class="row bg-transparent pt-3 pr-4">
-                <div class="card m-2 mr-4 p-2 bg-transparent shadow">
-                    <h5 class="card-header bg-transparent">Date without time</h5>
-                    <div class="card-body bg-transparent">
-                        <h5 class="card-title bg-transparent">Special title treatment</h5>
-                        <p class="card-text bg-transparent">With supporting text below as a natural lead-in to
-                            additional content.
-                        </p>
-                    </div>
-                </div>
-            </div>
+                    <br>
+                <?php } ?>
+            <?php } ?>
+            <!-- --------------------------------- -->
+
         </div>
     </main>
 </body>
