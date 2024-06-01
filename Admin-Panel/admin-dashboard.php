@@ -15,59 +15,177 @@ $duration = isset($_POST['duration']) ? $_POST['duration'] : 'weakly';
 switch ($duration) {
     case 'weakly':
 
-        $sql = "SELECT week_range , COUNT(*), week_ll,weel__rr
+
+        //.........gpt......
+
+    //     $sql = "SELECT 
+    //     CONCAT(
+    //         DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL (week_num - 1) * 7 DAY), '%d/%m/%y'), 
+    //         ' to ', 
+    //         DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL week_num * 7 - 1 DAY), '%d/%m/%y')
+    //     ) AS week_range,
+    //     COUNT(uf.userHandle) AS signup_count
+    // FROM 
+    //     (SELECT 1 AS week_num UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 
+    //      UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10) AS weeks
+    // LEFT JOIN user_info AS uf
+    // ON uf.joinDate BETWEEN 
+    //     DATE_SUB(CURRENT_DATE(), INTERVAL week_num * 7 DAY) 
+    //     AND DATE_SUB(CURRENT_DATE(), INTERVAL (week_num - 1) * 7 DAY)
+    // GROUP BY week_range
+    // ORDER BY DATE_SUB(CURRENT_DATE(), INTERVAL week_num * 7 DAY);";
+    
+        //.........
+
+        $sql = "SELECT duration_range , COUNT(*), duration_ll, duration__rr
                 FROM(
                     SELECT DISTINCT  *,  
-                    STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(week_range, ' to ', 1), ' ', -1), '%m/%d/%y')  AS week_ll,
-                    STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(week_range, ' to ', -1), ' ', -1), '%m/%d/%y')  AS weel__rr
+                    STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(duration_range, ' to ', 1), ' ', -1), '%m/%d/%y')  AS duration_ll,
+                    STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(duration_range, ' to ', -1), ' ', -1), '%m/%d/%y')  AS duration__rr
                 FROM
                 (	SELECT 
                     CONCAT(
-                        DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL (week_num - 1) * 7 DAY), '%m/%d/%y'), 
+                        DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL (duration_num - 1) * 7 DAY), '%m/%d/%y'), 
                         ' to ', 
-                        DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL week_num * 7 - 1 DAY), '%m/%d/%y')
-                            ) AS week_range
+                        DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL duration_num * 7 - 1 DAY), '%m/%d/%y')
+                            ) AS duration_range
                     FROM 
-                    (SELECT 1 AS week_num UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 
-                    UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10) AS weeks
-                    ORDER BY  week_num
+                    (SELECT 1 AS duration_num UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 
+                    UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10) AS durations
+                    ORDER BY  duration_num
                 ) as ntb
                 LEFT JOIN
                 user_info as uf
                 ON 
                 STR_TO_DATE(DATE_FORMAT(joinDate,'%m/%d/%y'), '%m/%d/%y')
                 
-                BETWEEN STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(week_range, ' to ', -1), ' ', -1), '%m/%d/%y') 
-                    AND STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(week_range, ' to ', 1), ' ', -1), '%m/%d/%y')
+                BETWEEN STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(duration_range, ' to ', -1), ' ', -1), '%m/%d/%y') 
+                    AND STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(duration_range, ' to ', 1), ' ', -1), '%m/%d/%y')
                 
                 ORDER BY joinDate DESC) as cnt_ntb
-                GROUP BY cnt_ntb.week_range
-                ORDER BY cnt_ntb.week_ll";
+                GROUP BY cnt_ntb.duration_range
+                ORDER BY cnt_ntb.duration_ll";
+
+        $result = mysqli_query($conn, $sql);
+        $weeklyData = mysqli_fetch_all($result);
+        print_r($weeklyData);
+
+        $labels = array();
+        $labels[0] = $weeklyData[0][3];
+        for ($i = 0; $i < count($weeklyData); $i++) {
+            $labels[$i + 1] = $weeklyData[$i][2];
+        }
+        // print_r($labels);
+
+        $data = array();
+        $data[0] = 0;
+        for ($i = 0; $i < count($weeklyData); $i++) {
+            $data[$i + 1] = $weeklyData[$i][1];
+        }
         break;
     case 'monthly':
-        $orderByClause = "ORDER BY l.clicked DESC";
+
+        /* $sql = "SELECT duration_range , COUNT(*), duration_ll, duration__rr
+                FROM(
+                    SELECT DISTINCT  *,  
+                    STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(duration_range, ' to ', 1), ' ', -1), '%m/%d/%y')  AS duration_ll,
+                    STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(duration_range, ' to ', -1), ' ', -1), '%m/%d/%y')  AS duration__rr
+                FROM
+                (	SELECT 
+                    CONCAT(
+                        DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL (duration_num - 1) * 30 DAY), '%m/%d/%y'), 
+                        ' to ', 
+                        DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL duration_num * 30 - 1 DAY), '%m/%d/%y')
+                            ) AS duration_range
+                    FROM 
+                    (SELECT 1 AS duration_num UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 
+                    UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10) AS durations
+                    ORDER BY  duration_num
+                ) as ntb
+                LEFT JOIN
+                user_info as uf
+                ON 
+                STR_TO_DATE(DATE_FORMAT(joinDate,'%m/%d/%y'), '%m/%d/%y')
+                
+                BETWEEN STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(duration_range, ' to ', -1), ' ', -1), '%m/%d/%y') 
+                    AND STR_TO_DATE(SUBSTRING_INDEX(SUBSTRING_INDEX(duration_range, ' to ', 1), ' ', -1), '%m/%d/%y')
+                
+                ORDER BY joinDate DESC) as cnt_ntb
+                GROUP BY cnt_ntb.duration_range
+                ORDER BY cnt_ntb.duration_ll";*/
+
+        ////////.........gpt.......
+
+        $sql = "SELECT 
+                    DATE_FORMAT(LAST_DAY(DATE_SUB(CURRENT_DATE(), INTERVAL (duration_num - 1) MONTH)), '%M-%y') AS month_year,
+                    COUNT(uf.userHandle) AS signup_count
+                FROM 
+                    (SELECT 1 AS duration_num UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 
+                    UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10) AS durations
+                LEFT JOIN user_info AS uf
+                ON uf.joinDate BETWEEN 
+                    DATE_SUB(LAST_DAY(DATE_SUB(CURRENT_DATE(), INTERVAL (duration_num - 1) MONTH)), INTERVAL (DAY(LAST_DAY(DATE_SUB(CURRENT_DATE(), INTERVAL (duration_num - 1) MONTH))) - 1) DAY)
+                    AND IF(duration_num = 1, CURRENT_DATE(), LAST_DAY(DATE_SUB(CURRENT_DATE(), INTERVAL (duration_num - 1) MONTH)))
+                GROUP BY month_year
+                ORDER BY LAST_DAY(DATE_SUB(CURRENT_DATE(), INTERVAL (duration_num - 1) MONTH))";
+
+        $result = mysqli_query($conn, $sql);
+        $monthlyData = mysqli_fetch_all($result);
+
+        $labels = array();
+        // $labels[0] = $weeklyData[0][3];
+        for ($i = 0; $i < count($monthlyData); $i++) {
+            $labels[$i] = $monthlyData[$i][0];
+        }
+        // print_r($labels);
+
+        $data = array();
+        // $data[0] = 0;
+        for ($i = 0; $i < count($monthlyData); $i++) {
+            $data[$i] = $monthlyData[$i][1];
+        }
+        // print_r($labels);
+        // print_r($data);
+        //..........
         break;
     case 'yearly':
-        $orderByClause = "ORDER BY n.title";
+        ////////.........gpt.......
+
+        $sql = "SELECT 
+                    DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL (year_num - 1) YEAR), '%Y') AS year,
+                    COUNT(uf.userHandle) AS signup_count
+                FROM 
+                    (SELECT 1 AS year_num UNION ALL SELECT 2 UNION ALL SELECT 3 UNION ALL SELECT 4 UNION ALL SELECT 5 
+                    UNION ALL SELECT 6 UNION ALL SELECT 7 UNION ALL SELECT 8 UNION ALL SELECT 9 UNION ALL SELECT 10) AS years
+                LEFT JOIN user_info AS uf
+                ON uf.joinDate BETWEEN 
+                    DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL (year_num - 1) YEAR), '%Y-01-01')
+                    AND IF(year_num = 1, CURRENT_DATE(), DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL (year_num - 1) YEAR), '%Y-12-31'))
+                GROUP BY year
+                ORDER BY year";
+
+        $result = mysqli_query($conn, $sql);
+        $monthlyData = mysqli_fetch_all($result);
+
+        $labels = array();
+        // $labels[0] = $weeklyData[0][3];
+        for ($i = 0; $i < count($monthlyData); $i++) {
+            $labels[$i] = $monthlyData[$i][0];
+        }
+        // print_r($labels);
+
+        $data = array();
+        // $data[0] = 0;
+        for ($i = 0; $i < count($monthlyData); $i++) {
+            $data[$i] = $monthlyData[$i][1];
+        }
+        // print_r($labels);
+        // print_r($data);
+        //..........
         break;
 }
 
-$result = mysqli_query($conn, $sql);
-$weeklyData = mysqli_fetch_all($result);
-// print_r($data);
 
-$labels = array();
-$labels[0] = $weeklyData[0][3];
-for ($i = 0; $i < count($weeklyData); $i++) {
-    $labels[$i+1] = $weeklyData[$i][2];
-}
-// print_r($labels);
-
-$data = array();
-$data[0] = 0;
-for ($i = 0; $i < count($weeklyData); $i++) {
-    $data[$i+1] = $weeklyData[$i][1];
-}
 // print_r($data);
 
 
@@ -135,7 +253,7 @@ for ($i = 0; $i < count($weeklyData); $i++) {
                 }
             </script>
 
-            <form id="durationForm" action="notes-approve.php" method="post">
+            <form id="durationForm" action="admin-dashboard.php" method="post">
                 <input type="hidden" name="duration" id="durationInput">
             </form>
             <button class="btn btn-primary" type="button" onclick="submitForm('weakly')" id="weakly" name="weakly">Weakly</button>
