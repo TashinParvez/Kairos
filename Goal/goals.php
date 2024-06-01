@@ -594,21 +594,21 @@ include '../Includes/Sidebar.php'; // uncomment
                     <!-- example of life progress Bar -->
                     <!-- <iframe src="https://indify.co/widgets/live/counter/y2ZzVIgNb0qDCpQyOYDl" width="100%" height="300px" frameborder="0"></iframe> -->
                     <div class="row bg-white">
-                        <div class="col-2 bg-white">
+                        <div class="col-2 bg-transparent">
                             <button type="button" class="btn btn-light shadow"
                                 style="height:40px; width:40px;">-</button>
                         </div>
-                        <div class="col-2 bg-white" style="justify-content:center; align-items:center">
+                        <div class="col-2 bg-transparent" style="justify-content:center; align-items:center">
                             <div class="container bg-white"
                                 style="height:40px; width:40px; justify-content:center; align-items:center; font-size:1.8rem">
                                 <p class="pCount bg-white">0</p>
                             </div>
                         </div>
-                        <div class="col-2 bg-white">
+                        <div class="col-2 bg-transparent">
                             <button type="button" class="btn btn-light shadow"
                                 style="height:40px; width:40px;">+</button>
                         </div>
-                        <div class="col-3 bg-white">
+                        <div class="col-3 bg-transparent">
                             <button type="button" class="btn btn-secondary shadow">Reset</button>
                         </div>
                     </div>
@@ -636,7 +636,7 @@ include '../Includes/Sidebar.php'; // uncomment
         <div class="modal-dialog  modal-dialog-centered">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">New Task</h1>
+                    <h1 class="modal-title fs-5 bg-transparent" id="exampleModalLabel">New Task</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
@@ -647,7 +647,7 @@ include '../Includes/Sidebar.php'; // uncomment
                             aria-describedby="inputGroup-sizing-default">
                     </div>
 
-                    <input id="datepicker" width="462" placeholder="With in the date you want to finishe" />
+                    <input id="datepicker" width="462" placeholder="With in the date you want to finish" />
                     <script>
                     $('#datepicker').datepicker({
                         uiLibrary: 'bootstrap5'
