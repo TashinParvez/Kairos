@@ -11,7 +11,7 @@ $conn = mysqli_connect($servername, $username, $password, $databasename);
 
 // check connection
 if (!$conn) {
-    exit('Sorry failed to connect: ' . mysqli_connect_error());
+    exit('Sorry failed to connect: '.mysqli_connect_error());
 }
 
 session_start(); // Start the session
@@ -40,7 +40,7 @@ if (isset($_POST['saveNote'])) {
         // success
         header('Location: DashboardMain.php');
     } else {
-        echo 'query error: ' . mysqli_error($conn);
+        echo 'query error: '.mysqli_error($conn);
     }
 
     // close connection
@@ -67,7 +67,6 @@ if (isset($_POST['saveChanges']) || isset($_POST['deleteNote'])) {
 
     // .....****** If we don't want to store deleted Notes in database, then it will be deleted *******...............
     if (isset($_POST['deleteNote'])) {
-
         // print($noteCreatedAt);
         $sql = "DELETE FROM notes
                 WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
@@ -91,7 +90,7 @@ if (isset($_POST['saveChanges']) || isset($_POST['deleteNote'])) {
         // success
         header('Location: DashboardMain.php');
     } else {
-        echo 'query error: ' . mysqli_error($conn);
+        echo 'query error: '.mysqli_error($conn);
     }
 
     // close connection
@@ -123,11 +122,10 @@ $sql = "SELECT title, details, created_at, public
         INNER JOIN
         notes as n
         ON uinfo.userHandle = n.userHandle
-        WHERE uinfo.userHandle = '$userHandle'; ";
+        WHERE uinfo.userHandle = '$userHandle'
+        ORDER BY created_at DESC;";
 
 $resultantNotes = mysqli_query($conn, $sql);  // get query result
-
-// $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
 $Notes = mysqli_fetch_all($resultantNotes); // conver to array
 // print_r($Notes);
 
@@ -147,7 +145,29 @@ $sql = "SELECT title, details, created_at, l.labelName
 $resultantNotes = mysqli_query($conn, $sql);  // get query result
 
 // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
-$Notes = mysqli_fetch_all($resultantNotes); // conver to array
+// $Notes = mysqli_fetch_all($resultantNotes); // conver to array
+
+
+// ------------------------------------- inner Page search -----------------------------
+$search_text = '';
+
+if (isset($_POST['search'])) {
+    $search_text = $_POST['search_field'];
+
+    $sql = "SELECT DISTINCT *
+            FROM notes
+            WHERE userHandle ='$userHandle' &&
+            ( title LIKE '%".$search_text."%' || details LIKE '%".$search_text."%' );";
+
+    $result = mysqli_query($conn, $sql);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        $Notes = mysqli_fetch_all($result);
+    } else {
+        $Notes = 'Empty result!';
+    }
+}
+
 
 // for memory free
 mysqli_free_result($resultantLabel);
@@ -489,7 +509,6 @@ mysqli_close($conn);
             display: block;
         }
     }
-
     </style>
 </head>
 
@@ -687,8 +706,8 @@ foreach ($Notes as $index => $note) {
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch" id="public"
                                             name="public">
-                                        <label class="form-check-label" for="public">Make it
-                                            public</label>
+                                        <p class="form-check-label bg-transparent" for="public">Make it
+                                            public</p>
                                     </div>
                                 </div>
                                 <div class="col-5">
@@ -772,7 +791,7 @@ foreach ($Notes as $index => $note) {
                                     <div class="form-check form-switch">
                                         <input class="form-check-input" type="checkbox" role="switch" id="public"
                                             name="public">
-                                        <label class="form-check-label" for="public">Public</label>
+                                        <p class="form-check-label bg-transparent" for="public">Public</p>
                                     </div>
                                 </div>
                             </div>
@@ -825,7 +844,6 @@ foreach ($Notes as $index => $note) {
         const messageElement = document.getElementById('message');
         truncateText(messageElement, 20); // Adjust the word limit as needed
     });
-
     </script>
 </body>
 

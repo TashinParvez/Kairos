@@ -8,7 +8,77 @@ if ($conn->connect_error) {
     die("Connection failed: " . $conn->connect_error);
 }
 // $userHandle = $_SESSION['userHandle'];
+
 $userHandle = 'aarifeen';
+
+$cat_id = 2; // for namaz
+
+//---------------------------- ALL Post Data Fetch -------------------------------------
+$sql = "SELECT * 
+        FROM user_post
+        WHERE categoryID = $cat_id 
+        ORDER BY created_at DESC;"; 
+
+$result = mysqli_query($conn, $sql);
+$allpost = mysqli_fetch_all($result);
+
+
+//---------------------------- Joined Btn clicked -------------------------------------
+
+//--------------  update user cnt 
+$sql = "SELECT cntUser
+        FROM category
+        WHERE id = $cat_id";
+
+$result = mysqli_query($conn, $sql);
+$cntUser = mysqli_fetch_all($result);
+$cntUser += 1;
+
+$sql = "UPDATE category
+        SET cntUser = $cntUser
+        WHERE id = $cat_id;";
+
+$result = mysqli_query($conn, $sql);
+
+// ------ used info add in joined table
+$sql = "INSERT INTO user_joined_category (`userHandle`, `cat_id`) 
+        VALUES ('$userHandle', '$cat_id');";
+
+$result = mysqli_query($conn, $sql);
+
+
+//---------------------------- Graph Code ----------------------------------------
+$sql = "SELECT * 
+        FROM (  SELECT *
+                FROM user_joined_category
+                WHERE joined_date < 
+                (SELECT joined_date
+                FROM user_joined_category
+                WHERE userHandle = 'tashin19')
+                ORDER BY joined_date DESC
+                LIMIT 2
+            ) as earlier_entries
+            
+        UNION ALL
+
+        SELECT * 
+        FROM (  SELECT *
+                FROM user_joined_category
+                WHERE joined_date >
+                (SELECT joined_date
+                FROM user_joined_category
+                WHERE userHandle = 'tashin19')
+                ORDER BY joined_date ASC
+                LIMIT 2
+            ) as later_entries;";
+
+$result = mysqli_query($conn, $sql);
+$graphsdata = mysqli_fetch_all($result);
+
+
+
+//---------------------------- update todays namaz ----------------------------------------
+
 if (isset($_POST['update'])) {
     $fajarPrayer = isset($_POST['fajarPrayer']) ? 1 : 0;
     $dhuhrPrayer = isset($_POST['dhuhrPrayer']) ? 1 : 0;
@@ -23,6 +93,40 @@ if (isset($_POST['update'])) {
         echo json_encode(array("status" => "error", "message" => $conn->error));
     }
 }
+
+
+// ------------------------------------- inner Page search -----------------------------
+$search_text = '';
+
+if (isset($_POST['search'])) {
+    $search_text = $_POST['search_field'];
+
+    $sql = "SELECT DISTINCT userHandle, title, description, created_at, userInteractions
+            FROM user_post
+            WHERE categoryID = '2' AND
+            (userHandle LIKE '%" . $search_text . "%' || title LIKE '%" . $search_text . "%' || description LIKE '%" . $search_text . "%');";
+
+    $result = mysqli_query($conn, $sql);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        $posts = mysqli_fetch_all($result);
+    } else {
+        $posts = 'Empty result!';
+    }
+}
+
+// ------------------------------------- New Post add btn click -----------------------------
+$title = '';
+$description = '';
+
+$sql = "INSERT INTO `user_post` (`userHandle`, `created_at`, `title`, `description`, `userInteractions`, `categoryID`) 
+        VALUES ('$userHandle', current_timestamp(), '$title', '$description', '0', '$cat_id');";
+
+$result = mysqli_query($conn, $sql);
+$graphsdata = mysqli_fetch_all($result);
+
+
+
 $conn->close();
 ?>
 
@@ -99,10 +203,10 @@ $conn->close();
 </head>
 
 <body class="bg-custom p-2 text-dark">
-<?php
-        include '../Includes/NavBarSecond.php';
-include '../Includes/Sidebar.php';
-?>
+    <?php
+    include '../Includes/NavBarSecond.php';
+    include '../Includes/Sidebar.php';
+    ?>
     <main>
         <div class="bg-white">
             <div class="row justify-content-left">
