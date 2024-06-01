@@ -17,7 +17,7 @@ session_start(); // Start the session
 // $userHandle = mysqli_real_escape_string($conn, $_SESSION['userHandle']); // after linked all page. it will be uncommented
 $userHandle = mysqli_real_escape_string($conn, 'bijoy123'); // after linked all page. it will be deleted
 
-$userHandle = 'tashin19'; 
+$userHandle = 'tashin19';
 
 // ---------------------------- Fetch all communities for segment 1
 // sql query
@@ -48,6 +48,24 @@ $sql = "SELECT ntc.name, ntc.Details, ntc.cntUser, ntc.displayPicture
 $result = mysqli_query($conn, $sql);
 $Recommended_comm = mysqli_fetch_all($result);
 
+// ------------------------------------- inner Page search -----------------------------
+$search_text = '';
+
+if (isset($_POST['search'])) {
+    $search_text = $_POST['search_field'];
+
+    $sql = "SELECT DISTINCT name, Details, cntUser, displayPicture
+            FROM category
+            WHERE name LIKE '%".$search_text."%' || details LIKE '%".$search_text."%' ;";
+
+    $result = mysqli_query($conn, $sql);
+
+    if ($result && mysqli_num_rows($result) > 0) {
+        $communities = mysqli_fetch_all($result);
+    } else {
+        $communities = 'Empty result!';
+    }
+}
 
 mysqli_close($conn);
 
@@ -95,6 +113,10 @@ mysqli_close($conn);
             <div class="col-sm-6 bg-white">
                 <h1>Communities</h1>
             </div>
+
+            <!-- inner Search add tashin-->
+             
+
         </div>
         <div class="bg-white">
 
