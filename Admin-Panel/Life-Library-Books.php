@@ -138,20 +138,12 @@ mysqli_close($conn);
 </head>
 
 <body>
+    <?php include('sidebar.php'); ?>
 
-    <?php
-    include('admin-navbar.php');
-    ?>
 
 
     <div class="container-fluid">
         <div class="row me-0 justify-content-between">
-            <!------------------------------------- Sidebar ------------------------------------->
-            <div class="col-2 p-0">
-                <div class="block">
-                    <?php include('sidebar.php'); ?>
-                </div>
-            </div>
             <!----------------------------------- Main Block ----------------------------------->
             <div class="col-9 p-0 me-5 ">
                 <!--------- Search and filter --------->
