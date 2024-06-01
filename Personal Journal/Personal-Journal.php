@@ -321,7 +321,7 @@ include '../Includes/Sidebar.php'; // uncomment
                                     style="color: gray;"><?php echo '@'.$today; ?></span></h4>
                         </div>
                         <div class="col bg-white">
-                            <button type="button" class="btn btn-outline-secondary"><a class="bg-white"
+                            <button type="button" class="btn btn-outline-secondary"><a class="bg-transparent"
                                     href="#todaysSlices" style="text-decoration: none; color: inherit;">Today's All
                                     Slice</a> </button>
                             <button type="button" class="btn btn-outline-secondary" type="submit" name="newSlice">New

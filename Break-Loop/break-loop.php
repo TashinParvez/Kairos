@@ -9,26 +9,26 @@ $conn = mysqli_connect($servername, $username, $password, $databasename);
 
 // check connection
 if (!$conn) {
-    exit('Sorry failed to connect: ' . mysqli_connect_error());
+    exit('Sorry failed to connect: '.mysqli_connect_error());
 }
 
 // ---------------------------------------- USer clicked helped btn ----------------------------------
 $userHandle = 'tashin19';
-$feelings = "happy, sad, excited";
-$doing = "facebook, insta";
+$feelings = 'happy, sad, excited';
+$doing = 'facebook, insta';
 
-//----------------------------------------->> r1
+// ----------------------------------------->> r1
 
 $feelingsArray = array_map('trim', explode(',', $feelings)); // for__feelings
 $conditions = [];
 foreach ($feelingsArray as $feeling) {
-    $conditions[] = "feelings LIKE '%" . $feeling . "%'";
+    $conditions[] = "feelings LIKE '%".$feeling."%'";
 }
 
 $doingsArray = array_map('trim', explode(',', $doing));  // for__doings
 $doing_conditions = [];
 foreach ($doingsArray as $ptr) {
-    $doing_conditions[] = "la.do LIKE '%" . $ptr . "%'";
+    $doing_conditions[] = "la.do LIKE '%".$ptr."%'";
 }
 
 $sql = "SELECT DISTINCT *
@@ -44,13 +44,12 @@ $sql .= ') AND (';
 $sql .= implode(' OR ', $doing_conditions);
 $sql .= ')';
 
-
 $result = mysqli_query($conn, $sql);
 $output = mysqli_fetch_all($result);
 
 // echo ($sql);
 
-//----------------------------------------->> r2  [when r1 is null == no loop select]
+// ----------------------------------------->> r2  [when r1 is null == no loop select]
 // have to print what can feel
 
 if (!empty($output)) {
@@ -69,24 +68,22 @@ if (!empty($output)) {
     $output = mysqli_fetch_all($result);
 
     if (!empty($output)) { // doctor suggestion on basis of feeling
-
         $feelingsArray = array_map('trim', explode(',', $feelings)); // for__feelings
         $conditions = [];
         foreach ($feelingsArray as $feeling) {
-            $conditions[] = "la.do LIKE '%" . $feeling . "%'";
+            $conditions[] = "la.do LIKE '%".$feeling."%'";
         }
 
-        $sql = "SELECT loopName, do, canDo
+        $sql = 'SELECT loopName, do, canDo
                 FROM loopname as ln
                 INNER JOIN
                 loop_activities as la 
                 ON ln.no = la.loopNo
                 WHERE ln.no = 6
-                AND (";
+                AND (';
 
         $sql .= implode(' OR ', $conditions); // feelings
         $sql .= ')';
-
 
         // echo ($sql);
 
@@ -96,9 +93,6 @@ if (!empty($output)) {
 }
 
 // ----------------------------------------------------------------------------------------------------
-
-
-
 
 $userHandle = 'tashin19'; // need to change
 
@@ -132,7 +126,6 @@ foreach ($allloops as $row) {
 // echo '<pre>';
 // print_r($structuredData);
 // echo '</pre>';
-
 
 // ---------------------------------------- New Loop Create ----------------------------------
 
@@ -371,27 +364,28 @@ include '../Includes/HappyJar.php'; // uncomment
                     echo '
                     <div class="col bg-transparent">
                         <div class="card shadow-sm bg-transparent">
-                            <div class="card-header bg-transparent">' . $loop[0] . '</div>
+                            <div class="card-header bg-transparent">'.$loop[0].'</div>
                             <div class="card-body bg-transparent">
-                                <p class="card-text bg-transparent">' . $loop[1] . '</p>
-                                <p class="card-text bg-transparent">' . $loop[2] . '</p>
+                                <p class="card-text bg-transparent">'.$loop[1].'</p>
+                                <p class="card-text bg-transparent">'.$loop[2].'</p>
                                 <button class="btn btn-danger">Delete Loop</button>
                             </div>
                         </div>
                     </div>
                     ';
                 }
-                ?>
+?>
             </div> -->
             <!-- ------------------------------------ -->
 
             <!------------------- ALL loops (cards) (New)  tashin ------------------->
-            <div class="row">
-                <div class="col-sm-6">
-                    <div class="card">
-                        <div class="card-body">
-                            <h5 class="card-title">Doctor Suggestion</h5>
-                            <p class="card-text">With supporting text below as a natural lead-in to additional content.</p>
+            <div class="row bg-white">
+                <div class="col-sm-6 bg-white">
+                    <div class="card bg-transparent">
+                        <div class="card-body bg-transparent">
+                            <h5 class="card-title bg-transparent">Doctor Suggestion</h5>
+                            <p class="card-text bg-transparent">With supporting text below as a natural lead-in to
+                                additional content.</p>
                             <a href="#" class="btn btn-primary">View/Edit Loop</a>
                             <a href="#" class="btn btn-success">Delete Loop</a>
                         </div>
@@ -399,37 +393,36 @@ include '../Includes/HappyJar.php'; // uncomment
                 </div>
 
                 <?php
-                foreach ($structuredData as $loopName => $activities) { ?>
-                    <div class="col-sm-6">
-                        <div class="card">
-                            <div class="card-body">
-                                <h5 class="card-title"> <?php echo $loopName; ?></h5>
+foreach ($structuredData as $loopName => $activities) { ?>
+                <div class="col-sm-6 bg-transparent">
+                    <div class="card bg-transparent">
+                        <div class="card-body bg-transparent">
+                            <h5 class="card-title bg-transparent"> <?php echo $loopName; ?></h5>
+                            <p class="card-text bg-transparent">
+                                <?php
+                    echo 'Do: ';
+    foreach ($activities['do'] as $doItem) {
+        echo "$doItem ,";
+    }
+    echo "\n"; ?>
+                            </p>
 
-                                <p class="card-text">
-                                    <?php
-                                    echo "Do: ";
-                                    foreach ($activities['do'] as $doItem) {
-                                        echo "$doItem ,";
-                                    }
-                                    echo "\n";   ?>
-                                </p>
+                            <p class="card-text bg-transparent">
+                                <?php
+    echo 'Can Do: ';
+    foreach ($activities['canDo'] as $canDoItem) {
+        echo "$canDoItem ,";
+    }
+    echo "\n";
+    ?>
+                            </p>
 
-                                <p class="card-text">
-                                    <?php
-                                    echo "Can Do: ";
-                                    foreach ($activities['canDo'] as $canDoItem) {
-                                        echo "$canDoItem ,";
-                                    }
-                                    echo "\n";
-                                    ?>
-                                </p>
-
-                                <!-- card btn -->
-                                <a href="#" class="btn btn-primary">View/Edit Loop</a>
-                                <a href="#" class="btn btn-success">Delete Loop</a>
-                            </div>
+                            <!-- card btn -->
+                            <a href="#" class="btn btn-primary">View/Edit Loop</a>
+                            <a href="#" class="btn btn-success">Delete Loop</a>
                         </div>
                     </div>
+                </div>
                 <?php } ?>
             </div>
             <!-- ------------------------------------------------------------------- -->
