@@ -307,7 +307,7 @@ $conn->close();
                     <br>
                     <blockquote class="blockquote mb-0">
                         <p class="bg-white">Namaz is the key to paradise.</p>
-                        <footer class="blockquote-footer bg-white">Prophet Muhammad (peace be upon him)
+                        <footer class="blockquote-footer bg-white">Prophet Muhammad SAW (peace be upon him)
                         </footer>
                     </blockquote>
                     <br>
