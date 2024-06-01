@@ -48,6 +48,19 @@ $sql = "SELECT ntc.name, ntc.Details, ntc.cntUser, ntc.displayPicture
 $result = mysqli_query($conn, $sql);
 $Recommended_comm = mysqli_fetch_all($result);
 
+// ---------------------------- for Joined Community
+$sql = "SELECT ntc.name, ntc.Details, ntc.cntUser, ntc.displayPicture 
+        FROM (SELECT id, name, Details, cntUser, displayPicture
+                FROM category
+            ) as ntc
+        INNER JOIN 
+            user_joined_category as uj
+            ON ntc.id = uj.cat_id
+        WHERE uj.userHandle = 'tashin19';";
+
+$result = mysqli_query($conn, $sql);
+$joinedCommunity = mysqli_fetch_all($result);
+
 // ------------------------------------- inner Page search -----------------------------
 $search_text = '';
 
@@ -56,7 +69,7 @@ if (isset($_POST['search'])) {
 
     $sql = "SELECT DISTINCT name, Details, cntUser, displayPicture
             FROM category
-            WHERE name LIKE '%".$search_text."%' || details LIKE '%".$search_text."%' ;";
+            WHERE name LIKE '%" . $search_text . "%' || details LIKE '%" . $search_text . "%' ;";
 
     $result = mysqli_query($conn, $sql);
 
@@ -115,7 +128,7 @@ mysqli_close($conn);
             </div>
 
             <!-- inner Search add tashin-->
-             
+
 
         </div>
         <div class="bg-white">
@@ -140,6 +153,26 @@ mysqli_close($conn);
             </div>
             <hr>
 
+            <!--------------------------------- Joined community --------------------------------->
+
+            <h4 class="bg-white">Joined Community</h4>
+            <div class="row bg-white">
+
+                <?php foreach ($joinedCommunity as $ptr) { ?>
+                    <div class="col-sm-auto bg-white">
+                        <div class="card bg-white" style="width: 18rem;">
+                            <img src="<?php echo htmlspecialchars($ptr[3]); ?>" class="card-img-top" alt="...">
+                            <div class="card-body bg-white">
+                                <h5 class="card-title bg-white"><?php echo htmlspecialchars($ptr[0]); ?></h5>
+                                <p class="card-text"><?php echo htmlspecialchars($ptr[1]); ?></p>
+                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                            </div>
+                        </div>
+                    </div>
+                <?php } ?>
+
+            </div>
+
             <!--------------------------------- Recommended for you --------------------------------->
 
             <h4 class="bg-white">Recommended for you</h4>
@@ -159,6 +192,9 @@ mysqli_close($conn);
                 <?php } ?>
 
             </div>
+            <!-- ----------- -->
+
+
         </div>
         </div>
     </main>
