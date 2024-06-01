@@ -57,6 +57,37 @@ if (isset($_GET['country_name'])) {
         $searchQuery = $_GET['country_name'];
         $results = fetchResults($conn, $userHandle, $searchQuery);
 }
+
+//............gpt...........
+// Ensure $filters is always an array
+
+
+if (isset($_POST['notes'])) {
+        echo 'Notes is checked<br>';
+}
+if (isset($_POST['journal'])) {
+        echo 'Notes is checked<br>';
+}
+if (isset($_POST['blog'])) {
+        echo 'Notes is checked<br>';
+}
+if (isset($_POST['library'])) {
+        echo 'Notes is checked<br>';
+}
+if (isset($_POST['title'])) {
+        echo 'Notes is checked<br>';
+}
+if (isset($_POST['details'])) {
+        echo 'Notes is checked<br>';
+}
+if (isset($_POST['date'])) {
+        echo 'Notes is checked<br>';
+}
+
+
+//............
+
+
 ?>
 
 <!DOCTYPE html>
@@ -82,38 +113,218 @@ if (isset($_GET['country_name'])) {
         include('../Includes/Sidebar.php'); // uncomment
         include('../Includes/HappyJar.php'); // uncomment
         ?>
-        <main class="main bg-white shadow">
-                <h2>Search Results for "<?php echo htmlspecialchars($_GET['country_name']); ?>"</h2>
-                <?php
-                if (isset($_GET['country_name'])) {
+        <main class="main bg-white shadow m-0 p-0">
 
-                        // print_r($results['notes']);
-                        // // ----------------------------------------------------------------
-                        // echo "<h3>Notes</h3>";
-                        // foreach ($results['notes'] as $note) {
-                        //         echo "<p>Title: " . htmlspecialchars($note[0]) . "<br>Details: " . htmlspecialchars($note[1]) . "<br>Created At: " . htmlspecialchars($note[2]) . "</p>";
-                        // }
-                        // // ----------------------------------------------------------------
 
-                        echo "<h3>Notes</h3>";
-                        foreach ($results['notes'] as $note) {
-                                echo "<p>Title: " . htmlspecialchars($note[0]) . "<br>Details: " . htmlspecialchars($note[1]) . "<br>Created At: " . htmlspecialchars($note[2]) . "</p>";
-                        }
+                <!--................ Gpt.............. -->
 
-                        echo "<h3>Journals</h3>";
-                        foreach ($results['journals'] as $journal) {
-                                echo "<p>Title: " . htmlspecialchars($journal[0]) . "<br>Details: " . htmlspecialchars($journal[1]) . "<br>Last Update: " . htmlspecialchars($journal[2]) . "</p>";
+                <form id="filterForm" action="global-search-bar.php" method="POST">
+                        <div class="main">
+                                <div class="row align-items-start">
+                                        <div class="col-1">
+                                                <div class="form-check">
+                                                        <input class="form-check-input filter-checkbox" type="checkbox" name="notes" id="notes" <?php if (isset($_POST['notes'])) echo 'checked'; ?>>
+                                                        <label class="form-check-label" for="flexCheckDefault1">
+                                                                Notes
+                                                        </label>
+                                                </div>
+                                        </div>
+                                        <div class="col-1">
+                                                <div class="form-check">
+                                                        <input class="form-check-input filter-checkbox" type="checkbox" name="journal" id="journal">
+                                                        <label class="form-check-label" for="flexCheckChecked1">
+                                                                Journal
+                                                        </label>
+                                                </div>
+                                        </div>
+                                        <div class="col-1">
+                                                <div class="form-check">
+                                                        <input class="form-check-input filter-checkbox" type="checkbox" name="blog" id="blog">
+                                                        <label class="form-check-label" for="flexCheckDefault2">
+                                                                Blog
+                                                        </label>
+                                                </div>
+                                        </div>
+                                        <div class="col-1">
+                                                <div class="form-check">
+                                                        <input class="form-check-input filter-checkbox" type="checkbox" name="library" id="library">
+                                                        <label class="form-check-label" for="flexCheckChecked2">
+                                                                Library
+                                                        </label>
+                                                </div>
+                                        </div>
+                                </div>
+                                <div class="row align-items-start">
+                                        <div class="col-1">
+                                                <div class="form-check">
+                                                        <input class="form-check-input filter-checkbox" type="checkbox" name="title" id="title">
+                                                        <label class="form-check-label" for="flexCheckDefault3">
+                                                                Title
+                                                        </label>
+                                                </div>
+                                        </div>
+                                        <div class="col-1">
+                                                <div class="form-check">
+                                                        <input class="form-check-input filter-checkbox" type="checkbox" name="details" id="details">
+                                                        <label class="form-check-label" for="flexCheckChecked3">
+                                                                Details
+                                                        </label>
+                                                </div>
+                                        </div>
+                                        <div class="col-1">
+                                                <div class="form-check">
+                                                        <input class="form-check-input filter-checkbox" type="checkbox" name="date" id="date">
+                                                        <label class="form-check-label" for="flexCheckChecked4">
+                                                                Date
+                                                        </label>
+                                                </div>
+                                        </div>
+                                        <div class="col-3" id="date-range" style="display:block;">
+                                                <label for="fromDate">From:</label>
+                                                <input type="date" id="fromDate" name="fromDate" class="form-control">
+                                                <label for="toDate">To:</label>
+                                                <input type="date" id="toDate" name="toDate" class="form-control">
+                                        </div>
+                                </div>
+                        </div>
+                </form>
+
+                <!-- <script>
+                        document.addEventListener('DOMContentLoaded', function() {
+                                const checkboxes = document.querySelectorAll('.filter-checkbox');
+                                const form = document.getElementById('filterForm');
+                                const dateRangeContainer = document.getElementById('date-range');
+
+                                checkboxes.forEach(checkbox => {
+                                        checkbox.addEventListener('change', handleCheckboxChange);
+                                });
+
+                                function handleCheckboxChange() {
+                                        if (this.value === 'date') {
+                                                if (this.checked) {
+                                                        dateRangeContainer.style.display = 'block';
+                                                } else {
+                                                        dateRangeContainer.style.display = 'none';
+                                                }
+                                        }
+                                        form.submit();
+                                }
+                        });
+                </script> -->
+
+                <!-- Bootstrap JavaScript Bundle with Popper -->
+                <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-GFO+dQNH+5KeRfREh14HpyRHg6hZ3kRuEn++CfIMkYXfZrf/3jrjGFAq1qjbiMQT" crossorigin="anonymous"></script>
+                <!-- ............................ -->
+
+                <!-- <div class="main">
+                        <div class="row align-items-start">
+                                <div class="col-1">
+                                        <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                        Notes
+                                                </label>
+                                        </div>
+                                </div>
+                                <div class="col-1">
+                                        <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                        Jpurnal
+                                                </label>
+                                        </div>
+                                </div>
+                                <div class="col-1">
+                                        <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                        Blog
+                                                </label>
+                                        </div>
+                                </div>
+                                <div class="col-1">
+                                        <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                        Library
+                                                </label>
+                                        </div>
+                                </div>
+                        </div>
+                        <div class="row align-items-start">
+                                <div class="col-1">
+                                        <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckDefault">
+                                                <label class="form-check-label" for="flexCheckDefault">
+                                                        Title
+                                                </label>
+                                        </div>
+                                </div>
+                                <div class="col-1">
+                                        <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                        Details
+                                                </label>
+                                        </div>
+                                </div>
+                                <div class="col-1">
+                                        <div class="form-check">
+                                                <input class="form-check-input" type="checkbox" value="" id="flexCheckChecked" checked>
+                                                <label class="form-check-label" for="flexCheckChecked">
+                                                        Date
+                                                </label>
+                                        </div>
+                                </div>
+
+                        </div>
+
+                        <div id="results" class="mt-3">
+                        <!-- Example of search results -->
+                <div class="result-item" data-category="notes" data-date="2023-05-01"></div>
+                <div class="result-item" data-category="journal" data-date="2023-05-02"></div>
+                <div class="result-item" data-category="blog" data-date="2023-05-03"></div>
+                <div class="result-item" data-category="library" data-date="2023-05-04"></div>
+                <div class="result-item" data-category="title" data-date="2023-05-05"></div>
+                <div class="result-item" data-category="details" data-date="2023-05-06"></div>
+                <div class="result-item" data-category="date" data-date="2023-05-07"></div>
+                </div>
+
+                </div> -->
+                <div class="main bg-white shadow">
+                        <h2>Search Results for "<?php echo htmlspecialchars($_GET['country_name']); ?>"</h2>
+                        <?php
+                        if (isset($_GET['country_name'])) {
+
+                                // print_r($results['notes']);
+                                // // ----------------------------------------------------------------
+                                // echo "<h3>Notes</h3>";
+                                // foreach ($results['notes'] as $note) {
+                                //         echo "<p>Title: " . htmlspecialchars($note[0]) . "<br>Details: " . htmlspecialchars($note[1]) . "<br>Created At: " . htmlspecialchars($note[2]) . "</p>";
+                                // }
+                                // // ----------------------------------------------------------------
+
+                                echo "<h3>Notes</h3>";
+                                foreach ($results['notes'] as $note) {
+                                        echo "<p>Title: " . htmlspecialchars($note[0]) . "<br>Details: " . htmlspecialchars($note[1]) . "<br>Created At: " . htmlspecialchars($note[2]) . "</p>";
+                                }
+
+                                echo "<h3>Journals</h3>";
+                                foreach ($results['journals'] as $journal) {
+                                        echo "<p>Title: " . htmlspecialchars($journal[0]) . "<br>Details: " . htmlspecialchars($journal[1]) . "<br>Last Update: " . htmlspecialchars($journal[2]) . "</p>";
+                                }
+                                echo "<h3>Blogs</h3>";
+                                foreach ($results['blogs'] as $blog) {
+                                        echo "<p>Topic Name: " . htmlspecialchars($blog[0]) . "<br>Description: " . htmlspecialchars($blog[1]) . "<br>Created At: " . htmlspecialchars($blog[2]) . "<br>User Handle: " . htmlspecialchars($blog[3]) . "</p>";
+                                }
+                                echo "<h3>Life Library</h3>";
+                                foreach ($results['library'] as $library) {
+                                        echo "<p>Book Name: " . htmlspecialchars($library[0]) . "<br>Author Name: " . htmlspecialchars($library[1]) . "<br>Details: " . htmlspecialchars($library[2]) . "</p>";
+                                }
                         }
-                        echo "<h3>Blogs</h3>";
-                        foreach ($results['blogs'] as $blog) {
-                                echo "<p>Topic Name: " . htmlspecialchars($blog[0]) . "<br>Description: " . htmlspecialchars($blog[1]) . "<br>Created At: " . htmlspecialchars($blog[2]) . "<br>User Handle: " . htmlspecialchars($blog[3]) . "</p>";
-                        }
-                        echo "<h3>Life Library</h3>";
-                        foreach ($results['library'] as $library) {
-                                echo "<p>Book Name: " . htmlspecialchars($library[0]) . "<br>Author Name: " . htmlspecialchars($library[1]) . "<br>Details: " . htmlspecialchars($library[2]) . "</p>";
-                        }
-                }
-                ?>
+                        ?>
+                </div>
+
         </main>
 </body>
 
