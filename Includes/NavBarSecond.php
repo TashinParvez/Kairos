@@ -129,7 +129,6 @@ foreach ($result as $row) {
                 <!------------------------------------ search bar ------------------------------------>
 
                 <form class="searchBar bg-white" method="GET" action="../Includes/global-search-bar.php">
-                <!-- <form class="searchBar bg-white" method="GET" action="../Includes/nomanTry.php"> -->
                     <span id="search-txt" class="z-10000">Search</span>
                     <input type="search" class="bg-white align-items-center border-secondary" name="country_name" value="<?php echo isset($_GET['country_name']) ? htmlspecialchars($_GET['country_name']) : ''; ?>" id="country_name" placeholder="Search Keyword" autocomplete="off" required style="width: 800px;" />
                     <button class="btn btn-outline-success my-2 my-sm-0" type="submit">

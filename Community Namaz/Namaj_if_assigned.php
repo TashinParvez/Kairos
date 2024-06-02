@@ -1,66 +1,73 @@
-<?php 
+<?php
 
-//---------------------------- Graph Code ----------------------------------------
-// avg prev him after
-$sql = "SELECT * 
-        FROM (SELECT j.userHandle, nc.date, AVG(nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha) as total_namaz
-              FROM user_joined_category as j
-              INNER JOIN
-              namaz_c as nc 
-              ON nc.userHandle = j.userHandle
-                WHERE j.cat_id = 2
-                GROUP BY nc.date
-            ) as AVG
+include('../Dashboard/connect_db.php');
 
-        UNION ALL
+// session_start(); // Start the session
+// $userHandle = mysqli_real_escape_string($conn, $_SESSION['userHandle']); // after linked all page. it will be uncommented
+$userHandle = mysqli_real_escape_string($conn, 'abcdefgh'); // after linked all page. it will be deleted
 
-        SELECT * 
-        FROM (SELECT j.userHandle, nc.date, nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha as total_namaz
-              FROM user_joined_category as j 
-              INNER JOIN
-              namaz_c as nc 
-              ON nc.userHandle = j.userHandle
-              WHERE joined_date <
-                    (    SELECT joined_date
-                   		 FROM user_joined_category
-                  		 WHERE userHandle = 'tashin19' && cat_id = 2
-                    ) && nc.date BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE
-                    && j.cat_id = 2
-                ORDER BY joined_date DESC
-                LIMIT 2
-            ) as earlier_entries
 
-        UNION ALL
+// //---------------------------- Graph Code ----------------------------------------
+// // avg prev him after
+// $sql = "SELECT * 
+//         FROM (SELECT j.userHandle, nc.date, AVG(nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha) as total_namaz
+//               FROM user_joined_category as j
+//               INNER JOIN
+//               namaz_c as nc 
+//               ON nc.userHandle = j.userHandle
+//                 WHERE j.cat_id = 2
+//                 GROUP BY nc.date
+//             ) as AVG
 
-        SELECT * 
-        FROM (SELECT j.userHandle, nc.date, (nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha) as total_namaz
-              FROM user_joined_category as j
-              INNER JOIN
-              namaz_c as nc
-              ON nc.userHandle = j.userHandle
-              WHERE j.userHandle = 'tashin19' && j.cat_id = 2
-            ) as himself
-            
-        UNION ALL
+//         UNION ALL
 
-        SELECT * 
-        FROM (SELECT j.userHandle, nc.date, nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha as total_namaz
-              FROM user_joined_category as j 
-              INNER JOIN
-              namaz_c as nc 
-              ON nc.userHandle = j.userHandle
-                WHERE joined_date >
-                    (   SELECT joined_date
-                   		FROM user_joined_category
-                  		WHERE userHandle = 'tashin19' && cat_id = 2
-                    ) && nc.date BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE
-                    && j.cat_id = 2
-                ORDER BY joined_date DESC
-                LIMIT 2
-            ) as later_entries;";
+//         SELECT * 
+//         FROM (SELECT j.userHandle, nc.date, nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha as total_namaz
+//               FROM user_joined_category as j 
+//               INNER JOIN
+//               namaz_c as nc 
+//               ON nc.userHandle = j.userHandle
+//               WHERE joined_date <
+//                     (    SELECT joined_date
+//                    		 FROM user_joined_category
+//                   		 WHERE userHandle = 'tashin19' && cat_id = 2
+//                     ) && nc.date BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE
+//                     && j.cat_id = 2
+//                 ORDER BY joined_date DESC
+//                 LIMIT 2
+//             ) as earlier_entries
 
-$result = mysqli_query($conn, $sql);
-$graphsdata = mysqli_fetch_all($result);
+//         UNION ALL
+
+//         SELECT * 
+//         FROM (SELECT j.userHandle, nc.date, (nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha) as total_namaz
+//               FROM user_joined_category as j
+//               INNER JOIN
+//               namaz_c as nc
+//               ON nc.userHandle = j.userHandle
+//               WHERE j.userHandle = 'tashin19' && j.cat_id = 2
+//             ) as himself
+
+//         UNION ALL
+
+//         SELECT * 
+//         FROM (SELECT j.userHandle, nc.date, nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha as total_namaz
+//               FROM user_joined_category as j 
+//               INNER JOIN
+//               namaz_c as nc 
+//               ON nc.userHandle = j.userHandle
+//                 WHERE joined_date >
+//                     (   SELECT joined_date
+//                    		FROM user_joined_category
+//                   		WHERE userHandle = 'tashin19' && cat_id = 2
+//                     ) && nc.date BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE
+//                     && j.cat_id = 2
+//                 ORDER BY joined_date DESC
+//                 LIMIT 2
+//             ) as later_entries;";
+
+// $result = mysqli_query($conn, $sql);
+// $graphsdata = mysqli_fetch_all($result);
 
 // Sample data generation
 function generateRandomData($count, $min, $max)
@@ -111,8 +118,8 @@ $chartData = [
         [
             'label' => 'Self',
             'data' => $self,
-            'borderColor' => 'rgba(0, 128, 0, 0.5)',
-            'backgroundColor' => 'rgba(0, 128, 0, 0.5)',
+            'borderColor' => 'rgba(0, 128, 0, 0.7)',
+            'backgroundColor' => 'rgba(0, 128, 0, 0.7)',
         ],
         [
             'label' => 'After 1',
@@ -131,6 +138,33 @@ $chartData = [
 
 // Convert PHP array to JSON
 $chartDataJson = json_encode($chartData);
+
+
+// ...........Namaz main page work ................
+
+if (isset($_POST['update'])) {
+    $Fajr = isset($_POST['Fajr']) ? 1 : 0;
+    $Dhuhr = isset($_POST['Dhuhr']) ? 1 : 0;
+    $Asr = isset($_POST['Asr']) ? 1 : 0;
+    $Maghrib = isset($_POST['Maghrib']) ? 1 : 0;
+    $Isha = isset($_POST['Isha']) ? 1 : 0;
+
+    $sql = "INSERT INTO namaz_c(userHandle, fajar, dhuhr, asr, magrib, isha)
+            VALUES ('$userHandle', $Fajr, $Dhuhr, $Asr, $Maghrib, $Isha)";
+
+    // save to db and check
+    if (mysqli_query($conn, $sql)) {
+        // success
+        header('Location: Namaj_main.php');
+    } else {
+        echo 'query error: ' . mysqli_error($conn);
+    }
+
+    // close connection
+    mysqli_close($conn);
+}
+
+//................................
 
 
 ?>
@@ -242,39 +276,39 @@ $chartDataJson = json_encode($chartData);
                         <div class="progress-bar" style="width: 0%">0%</div>
 
                     </div>
-                    <form action="Puja.php" method="post">
+                    <form action="\Community Namaz\Namaj_if_assigned.php" method="post">
                         <div class="container bg-white">
                             <div class="form-check form-switch bg-white">
-                                <input class="form-check-input" type="checkbox" value="morning" id="Fajr" name="Fajr">
+                                <input class="form-check-input" type="checkbox" id="Fajr" name="Fajr">
                                 Fajr
                             </div>
                             <div>
                                 <div class="form-check form-switch bg-white">
-                                    <input class="form-check-input" type="checkbox" value="evening" id="Dhuhr" name="Dhuhr">
+                                    <input class="form-check-input" type="checkbox" id="Dhuhr" name="Dhuhr">
                                     Dhuhr
                                 </div>
                             </div>
                             <div>
                                 <div class="form-check form-switch bg-white">
-                                    <input class="form-check-input" type="checkbox" value="evening" id="Asr" name="Asr">
+                                    <input class="form-check-input" type="checkbox" id="Asr" name="Asr">
                                     Asr
                                 </div>
                             </div>
                             <div>
                                 <div class="form-check form-switch bg-white">
-                                    <input class="form-check-input" type="checkbox" value="evening" id="Maghrib" name="Maghrib">
+                                    <input class="form-check-input" type="checkbox" id="Maghrib" name="Maghrib">
                                     Maghrib
                                 </div>
                             </div>
                             <div>
                                 <div class="form-check form-switch bg-white">
-                                    <input class="form-check-input" type="checkbox" value="evening" id="Isha" name="Isha">
+                                    <input class="form-check-input" type="checkbox" id="Isha" name="Isha">
                                     Isha
                                 </div>
                             </div>
                         </div>
+                        <button class="btn btn-outline-primary mb-2" type="submit" name="update">Today's Update</button>
                     </form>
-                    <button class="btn btn-outline-primary mb-2" type="submit" name="update">Today's Update</button>
                 </div>
             </div>
 
