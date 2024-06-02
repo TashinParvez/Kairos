@@ -20,7 +20,6 @@ $userHandle = mysqli_real_escape_string($conn, 'bijoy123'); // after linked all 
 
 $noteTitle = $noteDetails = $noteCreatedAt = '';
 $public = 0; // public = 0 means private
-
 // Save Notes
 if (isset($_POST['saveNote'])) {
     if (isset($_POST['public'])) {
@@ -143,7 +142,7 @@ $sql = "SELECT title, details, created_at, l.labelName
         WHERE uinfo.userHandle = 'bijoy123' AND l.labelName = 'Books';";
 
 $resultantNotes = mysqli_query($conn, $sql);  // get query result
-
+$today = date('F j, Y', strtotime('today')); 
 // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
 // $Notes = mysqli_fetch_all($resultantNotes); // conver to array
 
@@ -522,7 +521,18 @@ include '../Includes/HappyJar.php'; // uncomment
 
 
     <main class="main bg-white shadow z-0">
-        <div class="container bg-white m-0">
+    <div class="container bg-white m-0 text-center mt-5">
+        <h2 class="bg-transparent">Good Morning Aranya</h2>
+        <p class="bg-transparent" style="color:gray"><?php echo ''.$today; ?></p>
+        <div class="container bg-transparent text-center d-flex justify-content-center align-items-center">
+            <div class="progress w-50" role="progressbar" aria-label="Example with label" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" style="width: 0%">0%</div>
+            </div>
+        </div>
+    </div>
+
+
+            <div class="container bg-white">
             <h2 class="bg-transparent">Your Notes</h2>
             <div class="row bg-white mt-3">
                 <div class="col-lg-auto bg-white" style="      position: sticky;      z-index: 1000;">
@@ -649,7 +659,6 @@ foreach ($Notes as $index => $note) {
                                         </span>
                                     </div>
                                 </button>
-
                             </div>
                         </div>
 
@@ -660,6 +669,7 @@ foreach ($Notes as $index => $note) {
                 </div>
 
             </div>
+        </div>
         </div>
 
     </main>
