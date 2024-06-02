@@ -17,7 +17,7 @@ $cat_id = 2; // for namaz
 $sql = "SELECT * 
         FROM user_post
         WHERE categoryID = $cat_id 
-        ORDER BY created_at DESC;"; 
+        ORDER BY created_at DESC;";
 
 $result = mysqli_query($conn, $sql);
 $allpost = mysqli_fetch_all($result);
@@ -48,33 +48,66 @@ $result = mysqli_query($conn, $sql);
 
 
 //---------------------------- Graph Code ----------------------------------------
+// avg prev him after
 $sql = "SELECT * 
-        FROM (  SELECT *
-                FROM user_joined_category
-                WHERE joined_date < 
-                (SELECT joined_date
-                FROM user_joined_category
-                WHERE userHandle = 'tashin19')
+        FROM (SELECT j.userHandle, nc.date, AVG(nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha) as total_namaz
+              FROM user_joined_category as j
+              INNER JOIN
+              namaz_c as nc 
+              ON nc.userHandle = j.userHandle
+                WHERE j.cat_id = 2
+                GROUP BY nc.date
+            ) as AVG
+
+        UNION ALL
+
+        SELECT * 
+        FROM (SELECT j.userHandle, nc.date, nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha as total_namaz
+              FROM user_joined_category as j 
+              INNER JOIN
+              namaz_c as nc 
+              ON nc.userHandle = j.userHandle
+              WHERE joined_date <
+                    (    SELECT joined_date
+                   		 FROM user_joined_category
+                  		 WHERE userHandle = 'tashin19' && cat_id = 2
+                    ) && nc.date BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE
+                    && j.cat_id = 2
                 ORDER BY joined_date DESC
                 LIMIT 2
             ) as earlier_entries
+
+        UNION ALL
+
+        SELECT * 
+        FROM (SELECT j.userHandle, nc.date, (nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha) as total_namaz
+              FROM user_joined_category as j
+              INNER JOIN
+              namaz_c as nc
+              ON nc.userHandle = j.userHandle
+              WHERE j.userHandle = 'tashin19' && j.cat_id = 2
+            ) as himself
             
         UNION ALL
 
         SELECT * 
-        FROM (  SELECT *
-                FROM user_joined_category
+        FROM (SELECT j.userHandle, nc.date, nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha as total_namaz
+              FROM user_joined_category as j 
+              INNER JOIN
+              namaz_c as nc 
+              ON nc.userHandle = j.userHandle
                 WHERE joined_date >
-                (SELECT joined_date
-                FROM user_joined_category
-                WHERE userHandle = 'tashin19')
-                ORDER BY joined_date ASC
+                    (   SELECT joined_date
+                   		FROM user_joined_category
+                  		WHERE userHandle = 'tashin19' && cat_id = 2
+                    ) && nc.date BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE
+                    && j.cat_id = 2
+                ORDER BY joined_date DESC
                 LIMIT 2
             ) as later_entries;";
 
 $result = mysqli_query($conn, $sql);
 $graphsdata = mysqli_fetch_all($result);
-
 
 
 //---------------------------- update todays namaz ----------------------------------------
@@ -123,7 +156,6 @@ $sql = "INSERT INTO `user_post` (`userHandle`, `created_at`, `title`, `descripti
         VALUES ('$userHandle', current_timestamp(), '$title', '$description', '0', '$cat_id');";
 
 $result = mysqli_query($conn, $sql);
-$graphsdata = mysqli_fetch_all($result);
 
 
 
