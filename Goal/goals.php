@@ -2,7 +2,7 @@
 
 include '../Dashboard/connect_db.php'; // Daatabase connection
 $currentDateTimeObject = new DateTime();
-$todaysDate = $currentDateTimeObject->format('d/m/Y'); // today's date
+$todaysDate = $currentDateTimeObject->format('Y-m-d'); // today's date
 // echo "Today's date is: " . $todaysDate;
 $time = $currentDateTimeObject->format('H:i:s');
 // echo "Time is: " . $time;
@@ -12,29 +12,29 @@ session_start(); // Start the session
 $userHandle = mysqli_real_escape_string($conn, 'tashin19'); // after linked all page. it will be deleted
 
 // .......*** Create Goal ***...........
-$goalName = $startDate = $endDate = '';
-$errors = ['goalName' => '', 'endDate' => ''];
+$task = $finishDate = '';
+$errors = ['task' => '', 'finishDate' => ''];
 
-if (isset($_POST['createGoal'])) {
+if (isset($_POST['addTask'])) {
     // ................ Retrieve all data from input field & escape sql chars ...............
-    $goalName = mysqli_real_escape_string($conn, $_POST['goalName']);
-    $endDate = mysqli_real_escape_string($conn, $_POST['startDate']);  // need to read
+    $task = mysqli_real_escape_string($conn, $_POST['task']);
+    $finishDate = mysqli_real_escape_string($conn, $_POST['finishDate']);  // need to read
 
     // .............. All input field validation checking ...................
     // check goal name
-    if (empty($goalName)) {
-        $errors['goalName'] = 'This field cannot be empty!';
+    if (empty($task)) {
+        $errors['task'] = 'This field cannot be empty!';
     }
 
     // check end date
-    if (empty($endDate)) {
-        $errors['endDate'] = 'This field cannot be empty!';
+    if (empty($finishDate)) {
+        $errors['finishDate'] = 'This field cannot be empty!';
     }
 
     if (!array_filter($errors)) {
         // create sql
-        $sql = "INSERT INTO `goals` (`userHandle`, `goalName`, `startDate`, `endDate`) 
-                VALUES ('$userHandle', '$goalName', current_timestamp(), STR_TO_DATE('$endDate', '%d/%m/%Y'));";
+        $sql = "INSERT INTO goals (userHandle, goalName, endDate) 
+                VALUES ('$userHandle', '$task', '$finishDate');";
 
         // save to db and check
         if (mysqli_query($conn, $sql)) {
@@ -106,17 +106,16 @@ if (isset($_POST['counterMinus'])) {
     mysqli_close($conn);
 }
 
-// After checked a goal
-if ($_SERVER['REQUEST_METHOD'] == 'POST') {
-    if (isset($_POST['goal_checkbox'])) {
-        // Retrieve the values sent via POST
-        $goalName = $_POST['goalName'];
-        $startDate = $_POST['startDate'];
-        $endDate = $_POST['endDate'];
+
+// Check if the form is submitted
+if ($_SERVER["REQUEST_METHOD"] == "POST") {
+    // Access the checked checkbox, if any
+    if (isset($_POST["checkedItem"])) {
+        $checkedItem = $_POST["checkedItem"];
 
         // Sample SQL update query
-        $sql = "UPDATE goals SET status = 1
-                WHERE userHandle = '$userHandle' AND goalName = '$goalName' AND startDate = '$startDate' AND endDate = '$endDate'";
+        $sql = "UPDATE goals SET status = 1, completedDate = current_timestamp()
+                WHERE userHandle = '$userHandle' AND goalName = '$checkedItem'";
 
         if (mysqli_query($conn, $sql)) {
             // success
@@ -126,42 +125,86 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             echo 'Error updating goal: ' . mysqli_error($conn);
         }
     } else {
-        // Checkbox not checked
-        echo 'Checkbox not checked.';
+        echo "No checkboxes are checked.";
     }
 }
+
+
+
+// After checked a goal
+// if ($_SERVER['REQUEST_METHOD'] == 'POST') {
+//     if (isset($_POST['goal_checkbox'])) {
+//         // Retrieve the values sent via POST
+//         $goalName = $_POST['goalName'];
+//         $startDate = $_POST['startDate'];
+//         $endDate = $_POST['endDate'];
+
+//         // Sample SQL update query
+//         $sql = "UPDATE goals SET status = 1
+//                 WHERE userHandle = '$userHandle' AND goalName = '$goalName' AND startDate = '$startDate' AND endDate = '$endDate'";
+
+//         if (mysqli_query($conn, $sql)) {
+//             // success
+//             header('Location: goals.php');
+//         } else {
+//             // Database update failed
+//             echo 'Error updating goal: ' . mysqli_error($conn);
+//         }
+//     } else {
+//         // Checkbox not checked
+//         echo 'Checkbox not checked.';
+//     }
+// }
+
+// Only one time execute...
+
+$sql = "SELECT userHandle FROM page_count WHERE userHandle = '$userHandle'";
+$result = mysqli_query($conn, $sql);
+if (!(mysqli_num_rows($result) > 0)) {
+    $sql = "INSERT INTO page_count (userHandle, todaysDate) 
+            VALUES ('$userHandle', DATE_FORMAT(CURRENT_DATE, '%Y-%m-%d'));";
+    mysqli_query($conn, $sql);
+}
+
 
 // .......*** Generally work for Goal page ***...........
 
 $goalsThatTimeRemains = '';
 
+
+
 // ............. Page count reset ............
 
-// if ($time > '06:00:00') {
-//     $sql = "SELECT DATE_FORMAT(todaysDate, '%d/%m/%Y') AS todaysDate
-//                 FROM page_count
-//                 WHERE userHandle = '$userHandle'";
+$sql = "SELECT DATEDIFF(CURRENT_DATE, DATE_FORMAT(todaysDate, '%Y-%m-%d')) AS dateDifference
+        FROM page_count
+        WHERE userHandle = '$userHandle';";
 
-//     $result = mysqli_query($conn, $sql);  // get query result
-//     $tempDate = mysqli_fetch_assoc($result); // conver to array
 
-//     if ($todaysDate !== $tempDate['todaysDate']) {
-//         $sql = "UPDATE page_count
-//                     SET todaysDate = '$todaysDate', totalCount = totalCount + dailyCount, dailyCount = 0
-//                     WHERE userHandle = '$userHandle'";
+$result = mysqli_fetch_assoc(mysqli_query($conn, $sql));  // Execute query
 
-//         // save to db and check
-//         if (mysqli_query($conn, $sql)) {
-//             // success
-//             header('Location: goals.php');
-//         } else {
-//             echo 'query error: ' . mysqli_error($conn);
-//         }
-//     }
+if ($result['dateDifference'] != 0) {
+    // Prepare SQL query to update the database
+    $sql = "UPDATE page_count
+                SET todaysDate = current_timestamp(), 
+                    totalCount = totalCount + dailyCount, 
+                    dailyCount = 0
+                WHERE userHandle = '$userHandle'";
 
-//     // close connection
-//     mysqli_close($conn);
-// }
+    // Execute update query and check for success
+    if (mysqli_query($conn, $sql)) {
+        // Redirect to goals.php on success
+        header('Location: goals.php');
+    } else {
+        // Print error message if query fails
+        echo 'Query error: ' . mysqli_error($conn);
+    }
+    // Close the database connection
+    mysqli_close($conn);
+}
+
+
+
+
 
 //  For 3 types of table
 
@@ -241,6 +284,14 @@ $sql = "SELECT joinDate,
 
 $result = mysqli_query($conn, $sql);
 $life = mysqli_fetch_all($result);
+
+$sql = "SELECT dailyCount, totalCount
+FROM page_count
+WHERE userHandle = '$userHandle';";
+
+$result = mysqli_query($conn, $sql);
+$count = mysqli_fetch_assoc($result);
+
 
 // for memory free
 mysqli_free_result($result);
@@ -425,25 +476,30 @@ mysqli_close($conn);
                                                 <?php
                                                 $cnt = 1;
                                                 foreach ($goalsExceededDeadline as $goal) { ?>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <?php echo $cnt; ?>
-                                                        </th>
-                                                        <td>
-                                                            <?php echo htmlspecialchars($goal[0]); ?>
-                                                        </td>
-                                                        <td>
-                                                            <?php echo htmlspecialchars($goal[2]); ?>
-                                                        </td>
-                                                        <td>
-                                                            <?php echo htmlspecialchars($goal[3]); ?>
-                                                        </td>
-                                                        <td>
-                                                            <button type="button" class="border-0 bg-transparent">
+                                                    <form action="goals.php" method="post">
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <?php echo $cnt; ?>
+                                                            </th>
+                                                            <td>
+                                                                <?php echo htmlspecialchars($goal[0]); ?>
+                                                            </td>
+                                                            <td>
+                                                                <?php echo htmlspecialchars($goal[2]); ?>
+                                                            </td>
+                                                            <td>
+                                                                <?php echo htmlspecialchars($goal[3]); ?>
+                                                            </td>
+                                                            <td>
+                                                                <!-- <button type="button" class="border-0 bg-transparent">
                                                                 <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
-                                                            </button>
-                                                        </td>
-                                                    </tr>
+                                                            </button> -->
+                                                                <button type="button" class="border-0 bg-transparent">
+                                                                    <input class="form-check-input mt-0" type="checkbox" value="<?php echo $goal[0]; ?>" name="checkedItem" aria-label="Checkbox for following text input" onchange="this.form.submit()">
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </form>
                                                     <?php ++$cnt; ?>
                                                 <?php }
                                                 ?>
@@ -486,27 +542,27 @@ mysqli_close($conn);
                                                 <?php
                                                 $cnt = 1;
                                                 foreach ($goalsThatTimeRemains as $goal) { ?>
-                                                    <tr>
-                                                        <th scope="row">
-                                                            <?php echo $cnt; ?>
-                                                        </th>
-                                                        <td>
-                                                            <?php echo htmlspecialchars($goal[0]); ?>
-                                                        </td>
-                                                        <td>
-                                                            <?php echo htmlspecialchars($goal[2]); ?>
-                                                        </td>
-                                                        <td>
-                                                            <?php echo htmlspecialchars($goal[3]); ?>
-                                                        </td>
-                                                        <td>
-                                                            <button type="button" class="border-0 bg-transparent">
-                                                                <input class="form-check-input mt-0 goal-checkbox" goalName="<?php echo htmlspecialchars($goal[0]); ?>" startDate="<?php echo htmlspecialchars($goal[1]); ?>" endDate="<?php echo htmlspecialchars($goal[2]); ?>" type="checkbox" value="" aria-label="Checkbox for following text input">
-
-                                                                <!-- <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input"> -->
-                                                            </button>
-                                                        </td>
-                                                    </tr>
+                                                    <form action="goals.php" method="post">
+                                                        <tr>
+                                                            <th scope="row">
+                                                                <?php echo $cnt; ?>
+                                                            </th>
+                                                            <td>
+                                                                <?php echo htmlspecialchars($goal[0]); ?>
+                                                            </td>
+                                                            <td>
+                                                                <?php echo htmlspecialchars($goal[2]); ?>
+                                                            </td>
+                                                            <td>
+                                                                <?php echo htmlspecialchars($goal[3]); ?>
+                                                            </td>
+                                                            <td>
+                                                                <button type="button" class="border-0 bg-transparent">
+                                                                    <input class="form-check-input mt-0" type="checkbox" value="<?php echo $goal[0]; ?>" name="checkedItem" aria-label="Checkbox for following text input" onchange="this.form.submit()">
+                                                                </button>
+                                                            </td>
+                                                        </tr>
+                                                    </form>
                                                     <?php ++$cnt; ?>
                                                 <?php }
                                                 ?>
@@ -568,24 +624,29 @@ mysqli_close($conn);
 
                 <!-- Book Page read counter -->
                 <div class="bg-white p-3">
+
                     <!-- example of life progress Bar -->
                     <!-- <iframe src="https://indify.co/widgets/live/counter/y2ZzVIgNb0qDCpQyOYDl" width="100%" height="300px" frameborder="0"></iframe> -->
-                    <div class="row bg-white">
-                        <div class="col-2 bg-transparent">
-                            <button type="button" class="btn btn-light shadow" style="height:40px; width:40px;">-</button>
-                        </div>
-                        <div class="col-2 bg-transparent" style="justify-content:center; align-items:center">
-                            <div class="container bg-white" style="height:40px; width:40px; justify-content:center; align-items:center; font-size:1.8rem">
-                                <p class="pCount bg-white">0</p>
+                    <form action="goals.php" method="POST">
+                        <div class="row bg-white">
+                            <label for="bookPageCounter" class="label-control">Today's Read Pages</label>
+                            <div class="col-2 bg-transparent">
+                                <button type="submit" class="btn btn-light shadow" name="counterMinus" id="counterMinus" style="height:40px; width:40px;">-</button>
                             </div>
+                            <div class="col-2 bg-transparent" style="justify-content:center; align-items:center">
+                                <div class="container bg-white" style="height:40px; width:40px; justify-content:center; align-items:center; font-size:1.8rem">
+                                    <p class="pCount bg-white"><?php echo $count['dailyCount']; ?></p>
+                                </div>
+                            </div>
+                            <div class="col-2 bg-transparent">
+                                <button type="submit" class="btn btn-light shadow" name="counterPlus" id="counterPlus" style="height:40px; width:40px;">+</button>
+                            </div>
+                            <div class="col-3 bg-transparent">
+                                <button type="button" class="btn btn-secondary shadow" style="display: none;">Reset</button>
+                            </div>
+                            <label for="totalreadpages" class="label-control">Total Read Pages: <?php echo $count['totalCount']; ?></label>
                         </div>
-                        <div class="col-2 bg-transparent">
-                            <button type="button" class="btn btn-light shadow" style="height:40px; width:40px;">+</button>
-                        </div>
-                        <div class="col-3 bg-transparent">
-                            <button type="button" class="btn btn-secondary shadow">Reset</button>
-                        </div>
-                    </div>
+                    </form>
                 </div>
 
 
@@ -613,24 +674,27 @@ mysqli_close($conn);
                     <h1 class="modal-title fs-5 bg-transparent" id="exampleModalLabel">New Task</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body">
+                <form action="goals.php" method="POST">
+                    <div class="modal-body">
 
-                    <div class="input-group mb-3">
-                        <span class="input-group-text" id="inputGroup-sizing-default">Task Info</span>
-                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
+                        <div class="input-group mb-3">
+                            <span class="input-group-text" id="inputGroup-sizing-default">Task Info</span>
+                            <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default" name="task" id="task">
+                        </div>
+
+                        <input id="finishDate" name="finishDate" type="date" width="462" placeholder="With in the date you want to finish" />
+                        <!-- <script>
+                            $('#finishDate').datepicker({
+                                uiLibrary: 'bootstrap5'
+                            });
+                        </script> -->
+
                     </div>
-
-                    <input id="datepicker" width="462" placeholder="With in the date you want to finish" />
-                    <script>
-                        $('#datepicker').datepicker({
-                            uiLibrary: 'bootstrap5'
-                        });
-                    </script>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-primary">Add</button>
-                </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="submit" class="btn btn-primary" name="addTask" id="addTask">Add</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
