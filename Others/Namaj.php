@@ -50,12 +50,12 @@ $result = mysqli_query($conn, $sql);
 //---------------------------- Graph Code ----------------------------------------
 // avg prev him after
 $sql = "SELECT * 
-        FROM (SELECT j.userHandle, nc.date, AVG(nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha) as total_namaz
-              FROM user_joined_category as j
-              INNER JOIN
-              namaz_c as nc 
-              ON nc.userHandle = j.userHandle
-                WHERE j.cat_id = 2
+        FROM (SELECT userHandle, nc.date, AVG(nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha) as total_namaz, 1
+              FROM 
+              namaz_c as nc
+              
+                WHERE nc.categoryID = 2
+                && nc.date BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE
                 GROUP BY nc.date
             ) as AVG
 
