@@ -384,7 +384,7 @@ mysqli_close($conn);
 
     <!-- ------------------------ Main Segment ------------------------------- -->
 
-    <main class="main bg-white shadow z-2">
+    <main class="main bg-white shadow">
         <div class="stat bg-white">
             <!-- Some Charts here -->
         </div>
@@ -592,32 +592,47 @@ mysqli_close($conn);
 
 
                 <!-------------- Life Progress bars -------------->
-                <div class="bg-white">
-                    Yearly
-                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 0%">0%</div>
-                    </div>
-                    Monthly
-                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 25%">25%</div>
-                    </div>
-                    Weekly
-                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 50%">50%</div>
-                    </div>
-                    Daily
-                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 75%">75%</div>
-                    </div>
-                    Over-all
-                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
-                        <div class="progress-bar" style="width: 100%">100%</div>
-                    </div>
+                <?php
+// Calculate the percentage of the year passed
+$currentDayOfYear = date('z') + 1; // 'z' gives the day of the year (0-365), +1 to make it 1-366
+$totalDaysOfYear = date('L') ? 366 : 365; // 'L' returns 1 if it's a leap year, 0 otherwise
+$percentagePassedYear = floor(($currentDayOfYear / $totalDaysOfYear) * 100);
 
-                    <!-- example of life progress Bar -->
-                    <!-- <iframe src="https://indify.co/widgets/live/progressBar/1k2RuBJJRsOo3Lo02len" width="100%" height="300px" frameborder="0"></iframe> -->
+// Calculate the percentage of the month passed
+$currentDayOfMonth = date('j'); // 'j' gives the day of the month (1-31)
+$totalDaysOfMonth = date('t'); // 't' gives the number of days in the current month
+$percentagePassedMonth = floor(($currentDayOfMonth / $totalDaysOfMonth) * 100);
 
-                </div>
+// Calculate the percentage of the week passed
+$currentDayOfWeek = date('w'); // 'w' gives the day of the week (0-6, Sunday is 0)
+$totalDaysOfWeek = 7;
+$percentagePassedWeek = floor(($currentDayOfWeek / $totalDaysOfWeek) * 100);
+
+// Calculate the percentage of the day passed
+$currentHourOfDay = date('G'); // 'G' gives the hour of the day (0-23)
+$totalHoursOfDay = 24;
+$percentagePassedDay = floor(($currentHourOfDay / $totalHoursOfDay) * 100);
+?>
+
+<div class="bg-white">
+    Yearly
+    <div class="progress" role="progressbar" aria-label="Yearly progress" aria-valuenow="<?php echo $percentagePassedYear; ?>" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" style="width: <?php echo $percentagePassedYear; ?>%"><?php echo $percentagePassedYear; ?>%</div>
+    </div>
+    Monthly
+    <div class="progress" role="progressbar" aria-label="Monthly progress" aria-valuenow="<?php echo $percentagePassedMonth; ?>" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" style="width: <?php echo $percentagePassedMonth; ?>%"><?php echo $percentagePassedMonth; ?>%</div>
+    </div>
+    Weekly
+    <div class="progress" role="progressbar" aria-label="Weekly progress" aria-valuenow="<?php echo $percentagePassedWeek; ?>" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" style="width: <?php echo $percentagePassedWeek; ?>%"><?php echo $percentagePassedWeek; ?>%</div>
+    </div>
+    Daily
+    <div class="progress" role="progressbar" aria-label="Daily progress" aria-valuenow="<?php echo $percentagePassedDay; ?>" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" style="width: <?php echo $percentagePassedDay; ?>%"><?php echo $percentagePassedDay; ?>%</div>
+    </div>
+</div>
+
 
 
 
@@ -629,7 +644,7 @@ mysqli_close($conn);
                     <!-- <iframe src="https://indify.co/widgets/live/counter/y2ZzVIgNb0qDCpQyOYDl" width="100%" height="300px" frameborder="0"></iframe> -->
                     <form action="goals.php" method="POST">
                         <div class="row bg-white">
-                            <label for="bookPageCounter" class="label-control">Today's Read Pages</label>
+                            <label for="bookPageCounter" class="label-control bg-white m-3">Today's Read Pages</label>
                             <div class="col-2 bg-transparent">
                                 <button type="submit" class="btn btn-light shadow" name="counterMinus" id="counterMinus" style="height:40px; width:40px;">-</button>
                             </div>
@@ -644,7 +659,7 @@ mysqli_close($conn);
                             <div class="col-3 bg-transparent">
                                 <button type="button" class="btn btn-secondary shadow" style="display: none;">Reset</button>
                             </div>
-                            <label for="totalreadpages" class="label-control">Total Read Pages: <?php echo $count['totalCount']; ?></label>
+                            <label for="totalreadpages" class="label-control bg-white m-3">Total Read Pages: <?php echo $count['totalCount']; ?></label>
                         </div>
                     </form>
                 </div>
