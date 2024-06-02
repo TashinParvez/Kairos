@@ -369,3 +369,7 @@ p {
 .searchBar:hover #search-txt {
   display: none;
 }
+.searchBar:hover #search-txt,
+.searchBar:focus-within #search-txt {
+  display: none; /* Hide the span when search bar is extended */
+}
