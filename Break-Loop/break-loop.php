@@ -9,90 +9,97 @@ $conn = mysqli_connect($servername, $username, $password, $databasename);
 
 // check connection
 if (!$conn) {
-    exit('Sorry failed to connect: '.mysqli_connect_error());
+    exit('Sorry failed to connect: ' . mysqli_connect_error());
 }
 
 // ---------------------------------------- USer clicked helped btn ----------------------------------
 $userHandle = 'tashin19';
-$feelings = 'happy, sad, excited';
-$doing = 'facebook, insta';
 
-// ----------------------------------------->> r1
+if (isset($_POST['help'])) {
 
-$feelingsArray = array_map('trim', explode(',', $feelings)); // for__feelings
-$conditions = [];
-foreach ($feelingsArray as $feeling) {
-    $conditions[] = "feelings LIKE '%".$feeling."%'";
-}
+    $feelings = mysqli_real_escape_string($conn, $_POST['feeling']);
+    $doing = mysqli_real_escape_string($conn, $_POST['doing']);
+    // echo $feelings;
+    // echo $doing;
 
-$doingsArray = array_map('trim', explode(',', $doing));  // for__doings
-$doing_conditions = [];
-foreach ($doingsArray as $ptr) {
-    $doing_conditions[] = "la.do LIKE '%".$ptr."%'";
-}
+    // ----------------------------------------->> r1
 
-$sql = "SELECT DISTINCT *
+    $feelingsArray = array_map('trim', explode(',', $feelings)); // for__feelings
+    $conditions = [];
+    foreach ($feelingsArray as $feeling) {
+        $conditions[] = "feelings LIKE '%" . $feeling . "%'";
+    }
+
+    $doingsArray = array_map('trim', explode(',', $doing));  // for__doings
+    $doing_conditions = [];
+    foreach ($doingsArray as $ptr) {
+        $doing_conditions[] = "la.do LIKE '%" . $ptr . "%'";
+    }
+
+    $sql = "SELECT DISTINCT *
         FROM loopname as ln 
         INNER JOIN 
         loop_activities as la 
         ON ln.no = la.loopNo
         WHERE userHandle = '$userHandle' AND  (";
 
-$sql .= implode(' OR ', $conditions);
-$sql .= ') AND (';
+    $sql .= implode(' OR ', $conditions);
+    $sql .= ') AND (';
 
-$sql .= implode(' OR ', $doing_conditions);
-$sql .= ')';
+    $sql .= implode(' OR ', $doing_conditions);
+    $sql .= ')';
 
-$result = mysqli_query($conn, $sql);
-$output = mysqli_fetch_all($result);
+    $result = mysqli_query($conn, $sql);
+    $output = mysqli_fetch_all($result);
 
-// echo ($sql);
+    // echo ($sql);
 
-// ----------------------------------------->> r2  [when r1 is null == no loop select]
-// have to print what can feel
+    // ----------------------------------------->> r2  [when r1 is null == no loop select]
+    // have to print what can feel
 
-if (!empty($output)) {
-    $sql = "SELECT DISTINCT *
+    if (!empty($output)) {
+        $sql = "SELECT DISTINCT *
             FROM loopname as ln
             INNER JOIN
             loop_activities as la
             ON ln.no = la.loopNo
             WHERE userHandle = '$userHandle' AND  (";
 
-    $sql .= implode(' OR ', $doing_conditions); // only doing conditions
-    $sql .= ')';
-    // echo ($sql);
-
-    $result = mysqli_query($conn, $sql);
-    $output = mysqli_fetch_all($result);
-
-    if (!empty($output)) { // doctor suggestion on basis of feeling
-        $feelingsArray = array_map('trim', explode(',', $feelings)); // for__feelings
-        $conditions = [];
-        foreach ($feelingsArray as $feeling) {
-            $conditions[] = "la.do LIKE '%".$feeling."%'";
-        }
-
-        $sql = 'SELECT loopName, do, canDo
-                FROM loopname as ln
-                INNER JOIN
-                loop_activities as la 
-                ON ln.no = la.loopNo
-                WHERE ln.no = 6
-                AND (';
-
-        $sql .= implode(' OR ', $conditions); // feelings
+        $sql .= implode(' OR ', $doing_conditions); // only doing conditions
         $sql .= ')';
-
         // echo ($sql);
 
         $result = mysqli_query($conn, $sql);
         $output = mysqli_fetch_all($result);
     }
+    // doctor
+
+    $feelingsArray = array_map('trim', explode(',', $feelings)); // for__feelings
+    $conditions = [];
+    foreach ($feelingsArray as $feeling) {
+        $conditions[] = "la.do LIKE '%" . $feeling . "%'";
+    }
+
+    $sql = 'SELECT loopName, do, canDo
+            FROM loopname as ln
+            INNER JOIN
+            loop_activities as la 
+            ON ln.no = la.loopNo
+            WHERE ln.no = 6
+            AND (';
+
+    $sql .= implode(' OR ', $conditions); // feelings
+    $sql .= ')';
+
+    // echo ($sql);
+
+    $result = mysqli_query($conn, $sql);
+    $output_doctor = mysqli_fetch_all($result);
 }
 
 // ----------------------------------------------------------------------------------------------------
+
+
 
 $userHandle = 'tashin19'; // need to change
 
@@ -205,16 +212,12 @@ $sql = "DELETE FROM loopname
     <link rel="icon" type="image/x-icon" href="/Images/Picture1.png">
     </link>
 
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
 
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css"
-        integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
-    <link
-        href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap"
-        rel="stylesheet">
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../Includes/style.css">
 </head>
 
@@ -222,105 +225,103 @@ $sql = "DELETE FROM loopname
     <?php
     include '../Includes/NavBarSecond.php'; // uncomment
 
-include '../Includes/Sidebar.php'; // uncomment
-include '../Includes/HappyJar.php'; // uncomment
-?>
+    include '../Includes/Sidebar.php'; // uncomment
+    include '../Includes/HappyJar.php'; // uncomment
+    ?>
     <style>
-    * {
+        * {
 
-        background-color: ;
-    }
-
-    .bg-custom {
-        background-color: #f1f4fb;
-    }
-
-    @import url("https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap");
-
-    .wrapper {
-        display: flex;
-    }
-
-    .wrapper .static-txt {
-        color: black;
-        font-size: 60px;
-        font-weight: 400;
-    }
-
-    .wrapper .dynamic-txts {
-        margin-left: 5px;
-        height: 90px;
-        line-height: 90px;
-        overflow: hidden;
-    }
-
-    .dynamic-txts li {
-        list-style: none;
-        color: #FC6D6D;
-        font-size: 65px;
-        font-weight: 500;
-        position: relative;
-        top: 0;
-        animation: slide 12s steps(4) infinite;
-    }
-
-    @keyframes slide {
-        100% {
-            top: -360px;
-        }
-    }
-
-    .dynamic-txts li span {
-        position: relative;
-        margin: 5px 0;
-        line-height: 90px;
-    }
-
-    .dynamic-txts li span::after {
-        content: "";
-        position: absolute;
-        left: 0;
-        height: 150%;
-        width: 100%;
-        background: white;
-        border-left: 2px solid #FC6D6D;
-        animation: typing 3s steps(10) infinite;
-    }
-
-    @keyframes typing {
-
-        40%,
-        60% {
-            left: calc(100% + 30px);
+            background-color: ;
         }
 
-        100% {
+        .bg-custom {
+            background-color: #f1f4fb;
+        }
 
+        @import url("https://fonts.googleapis.com/css2?family=Reddit+Mono:wght@200..900&display=swap");
+
+        .wrapper {
+            display: flex;
+        }
+
+        .wrapper .static-txt {
+            color: black;
+            font-size: 60px;
+            font-weight: 400;
+        }
+
+        .wrapper .dynamic-txts {
+            margin-left: 5px;
+            height: 90px;
+            line-height: 90px;
+            overflow: hidden;
+        }
+
+        .dynamic-txts li {
+            list-style: none;
+            color: #FC6D6D;
+            font-size: 65px;
+            font-weight: 500;
+            position: relative;
+            top: 0;
+            animation: slide 12s steps(4) infinite;
+        }
+
+        @keyframes slide {
+            100% {
+                top: -360px;
+            }
+        }
+
+        .dynamic-txts li span {
+            position: relative;
+            margin: 5px 0;
+            line-height: 90px;
+        }
+
+        .dynamic-txts li span::after {
+            content: "";
+            position: absolute;
             left: 0;
+            height: 150%;
+            width: 100%;
+            background: white;
+            border-left: 2px solid #FC6D6D;
+            animation: typing 3s steps(10) infinite;
         }
 
-    }
+        @keyframes typing {
 
-    .main {
-        z-index: 1;
-        /* Ensure the main content is at a lower z-index */
-    }
+            40%,
+            60% {
+                left: calc(100% + 30px);
+            }
 
-    .modal-backdrop {
-        z-index: 1050;
-        /* Ensure the backdrop is at a high z-index */
-    }
+            100% {
 
-    .modal {
-        z-index: 1060;
-        /* Ensure the modal itself is higher */
-    }
+                left: 0;
+            }
+
+        }
+
+        .main {
+            z-index: 1;
+            /* Ensure the main content is at a lower z-index */
+        }
+
+        .modal-backdrop {
+            z-index: 1050;
+            /* Ensure the backdrop is at a high z-index */
+        }
+
+        .modal {
+            z-index: 1060;
+            /* Ensure the modal itself is higher */
+        }
     </style>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js"
-        integrity="sha384-oBqDVmMz4fnFO9gybBdP7rK64KtK3LQN1z7l5/3pLVKz8Y7D2DdmW/z73aXPx0bB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.7/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz4fnFO9gybBdP7rK64KtK3LQN1z7l5/3pLVKz8Y7D2DdmW/z73aXPx0bB" crossorigin="anonymous">
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js"
-        integrity="sha384-ho+j7jyWK8fNQe+A12qEbdw+Tph2t4z3Ib6WTMC2COBvN1n6QpgYtTL2Awr9dcyB" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-ho+j7jyWK8fNQe+A12qEbdw+Tph2t4z3Ib6WTMC2COBvN1n6QpgYtTL2Awr9dcyB" crossorigin="anonymous">
     </script>
 
     <main class="main bg-white shadow">
@@ -336,8 +337,7 @@ include '../Includes/HappyJar.php'; // uncomment
                 </ul>
             </div>
             <div class="row bg-transparent">
-                <div class="col-1 bg-transparent"><button type="button" class="btn btn-primary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">YES</button></div>
+                <div class="col-1 bg-transparent"><button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal1">YES</button></div>
                 <div class="col-1 bg-transparent"><button type="button" class="btn btn-secondary">NO</button></div>
 
             </div>
@@ -349,8 +349,7 @@ include '../Includes/HappyJar.php'; // uncomment
                 <h2 class="col-4 bg-transparent">Loops</h2>
 
 
-                <button type="button" class="btn col-2 btn-secondary" data-bs-toggle="modal"
-                    data-bs-target="#exampleModal2">
+                <button type="button" class="btn col-2 btn-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal2">
 
                     Create New loop
                 </button>
@@ -364,17 +363,17 @@ include '../Includes/HappyJar.php'; // uncomment
                     echo '
                     <div class="col bg-transparent">
                         <div class="card shadow-sm bg-transparent">
-                            <div class="card-header bg-transparent">'.$loop[0].'</div>
+                            <div class="card-header bg-transparent">' . $loop[0] . '</div>
                             <div class="card-body bg-transparent">
-                                <p class="card-text bg-transparent">'.$loop[1].'</p>
-                                <p class="card-text bg-transparent">'.$loop[2].'</p>
+                                <p class="card-text bg-transparent">' . $loop[1] . '</p>
+                                <p class="card-text bg-transparent">' . $loop[2] . '</p>
                                 <button class="btn btn-danger">Delete Loop</button>
                             </div>
                         </div>
                     </div>
                     ';
                 }
-?>
+                ?>
             </div> -->
             <!-- ------------------------------------ -->
 
@@ -393,36 +392,36 @@ include '../Includes/HappyJar.php'; // uncomment
                 </div>
 
                 <?php
-foreach ($structuredData as $loopName => $activities) { ?>
-                <div class="col-sm-6 bg-transparent">
-                    <div class="card bg-transparent">
-                        <div class="card-body bg-transparent">
-                            <h5 class="card-title bg-transparent"> <?php echo $loopName; ?></h5>
-                            <p class="card-text bg-transparent">
-                                <?php
-                    echo 'Do: ';
-    foreach ($activities['do'] as $doItem) {
-        echo "$doItem ,";
-    }
-    echo "\n"; ?>
-                            </p>
+                foreach ($structuredData as $loopName => $activities) { ?>
+                    <div class="col-sm-6 bg-transparent">
+                        <div class="card bg-transparent">
+                            <div class="card-body bg-transparent">
+                                <h5 class="card-title bg-transparent"> <?php echo $loopName; ?></h5>
+                                <p class="card-text bg-transparent">
+                                    <?php
+                                    echo 'Do: ';
+                                    foreach ($activities['do'] as $doItem) {
+                                        echo "$doItem ,";
+                                    }
+                                    echo "\n"; ?>
+                                </p>
 
-                            <p class="card-text bg-transparent">
-                                <?php
-    echo 'Can Do: ';
-    foreach ($activities['canDo'] as $canDoItem) {
-        echo "$canDoItem ,";
-    }
-    echo "\n";
-    ?>
-                            </p>
+                                <p class="card-text bg-transparent">
+                                    <?php
+                                    echo 'Can Do: ';
+                                    foreach ($activities['canDo'] as $canDoItem) {
+                                        echo "$canDoItem ,";
+                                    }
+                                    echo "\n";
+                                    ?>
+                                </p>
 
-                            <!-- card btn -->
-                            <a href="#" class="btn btn-primary">View/Edit Loop</a>
-                            <a href="#" class="btn btn-success">Delete Loop</a>
+                                <!-- card btn -->
+                                <a href="#" class="btn btn-primary">View/Edit Loop</a>
+                                <a href="#" class="btn btn-success">Delete Loop</a>
+                            </div>
                         </div>
                     </div>
-                </div>
                 <?php } ?>
             </div>
             <!-- ------------------------------------------------------------------- -->
@@ -434,39 +433,40 @@ foreach ($structuredData as $loopName => $activities) { ?>
 
     <!------------------------------ Modal (YES -> Are you procrastinating? wasting time?) ------------------------------>
 
-    <div class="modal fade z-10" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel">
+    <div class="modal fade z-10" id="exampleModal1" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="false">
         <div class="modal-dialog modal-dialog-centered z-1000">
             <div class="modal-content z-1000">
                 <div class="modal-header z-1000">
                     <h1 class="modal-title fs-5 z-1000 bg-transparent" id="exampleModalLabel">Modal title</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <div class="modal-body" style="z-index:100">
-                    <form>
+                <form action="break-loop.php" method="post">
+                    <div class="modal-body" style="z-index:100">
+
                         <div class="row mb-3">
                             <label for="input1" class="col-sm-6 col-form-label">What are you feeling?</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="input1">
+                                <input type="text" name="feeling" id="feeling" class="form-control" id="input1">
                             </div>
                         </div>
                         <div class="row mb-3">
                             <label for="input2" class="col-sm-6 col-form-label">Are you doing something?</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="input2">
+                                <input type="text" name="doing" id="doing" class="form-control" id="input2">
                             </div>
                         </div>
-                    </form>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                    <button type="submit" class="btn btn-primary">Help</button>
-                </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                        <button type="button" id="help" name="help" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModal3" onchange="this.form.submit()">Help</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <div class="modal fade z-10" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2"
-        aria-hidden="true">
+    <div class="modal fade z-10" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
         <!-------------- New loop Modal -------------->
         <!--------------------------------------------------->
 
@@ -528,6 +528,60 @@ foreach ($structuredData as $loopName => $activities) { ?>
             </div>
         </div>
 
+    </div>
+
+    <div class="modal fade z-10" id="exampleModal3" tabindex="-1" aria-labelledby="exampleModalLabel" data-bs-backdrop="false">
+        <div class="modal-dialog modal-dialog-centered z-1000">
+            <div class="modal-content z-1000">
+                <div class="modal-header z-1000">
+                    <h1 class="modal-title fs-5 z-1000 bg-transparent" id="exampleModalLabel">Modal title</h1>
+                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                </div>
+                <div class="modal-body" style="z-index:100">
+                    <table class="table table-striped">
+                        <thead>
+                            <tr>
+                                <th scope="col">#</th>
+                                <th scope="col">Goal</th>
+                                <th scope="col">Date to finished</th>
+                                <th scope="col">Overdue</th>
+                                <th scope="col">Status</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table-group-divider">
+                            <?php
+                            $cnt = 1;
+                            foreach ($output_doctor as $output) { ?>
+
+                                <tr>
+                                    <th scope="row">
+                                        <?php echo $cnt; ?>
+                                    </th>
+                                    <td>
+                                        <?php echo htmlspecialchars($goal[0]); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo htmlspecialchars($goal[2]); ?>
+                                    </td>
+                                    <td>
+                                        <?php echo htmlspecialchars($goal[3]); ?>
+                                    </td>
+
+                                </tr>
+
+                                <?php ++$cnt; ?>
+                            <?php }
+                            ?>
+
+                        </tbody>
+                    </table>
+                </div>
+                <!-- <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                    <button type="submit" class="btn btn-primary">Help</button>
+                </div> -->
+            </div>
+        </div>
     </div>
 
 </body>
