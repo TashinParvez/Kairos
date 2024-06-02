@@ -108,10 +108,19 @@ if (isset($_POST['title'])) {
 if (isset($_POST['details'])) {
     echo 'Notes is checked<br>';
 }
-if (isset($_POST['date'])) {
-    echo 'Notes is checked<br>';
-}
+// if (isset($_POST['date'])) {
+//     echo 'Notes is checked<br>';
+// }
+if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (isset($_POST['date'])) {
+        $fromDate = isset($_POST['fromDate']) ? $_POST['fromDate'] : '';
+        $toDate = isset($_POST['toDate']) ? $_POST['toDate'] : '';
 
+        echo 'Date is checked<br>';
+        echo 'From Date: ' . htmlspecialchars($fromDate) . '<br>';
+        echo 'To Date: ' . htmlspecialchars($toDate) . '<br>';
+    }
+}
 
 //............
 
@@ -132,6 +141,47 @@ if (isset($_POST['date'])) {
     <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
     <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="../Includes/style.css">
+
+
+    <style>
+        button {
+            border: none;
+            /* Remove border from the button */
+            background: none;
+            /* Remove background from the button */
+            padding: 0;
+            /* Remove padding from the button */
+            cursor: pointer;
+            /* Change cursor to pointer */
+        }
+
+        .form-check {
+            display: inline-flex;
+            /* Display the checkbox and label inline */
+            align-items: center;
+            /* Align items vertically */
+        }
+
+        .form-check-input {
+            margin-right: 0.5em;
+            /* Adjust margin between checkbox and label */
+        }
+    </style>
+    <script>
+        function toggleDateRange() {
+            const dateCheckbox = document.getElementById('date');
+            const dateRange = document.getElementById('date-range');
+            dateRange.style.display = dateCheckbox.checked ? 'block' : 'none';
+        }
+
+        document.addEventListener('DOMContentLoaded', (event) => {
+            // Initialize the date range visibility based on checkbox state
+            toggleDateRange();
+
+            // Add event listener to the date checkbox
+            document.getElementById('date').addEventListener('change', toggleDateRange);
+        });
+    </script>
 </head>
 
 <body>
@@ -145,15 +195,14 @@ if (isset($_POST['date'])) {
 
 
         <!--................ .............. -->
-
-        <form id="filterForm" action="nomanTry.php" method="POST">
+        <form id="filterForm" action="nomanTry.php?country_name=<?php echo $searchQuery ?>" method="POST">
             <div class="main">
                 <div class="row align-items-start">
                     <div class="col-1">
                         <div class="form-check">
                             <button type="submit" style="border: none;">
                                 <input class="form-check-input filter-checkbox" type="checkbox" name="notes" id="notes" <?php if (isset($_POST['notes'])) echo 'checked'; ?>>
-                                <label class="form-check-label" for="flexCheckDefault1">
+                                <label class="form-check-label" for="notes">
                                     Notes
                                 </label>
                             </button>
@@ -162,8 +211,8 @@ if (isset($_POST['date'])) {
                     <div class="col-1">
                         <div class="form-check">
                             <button type="submit" style="border: none;">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="journal" id="journal">
-                                <label class="form-check-label" for="flexCheckChecked1">
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="journal" id="journal" <?php if (isset($_POST['journal'])) echo 'checked'; ?>>
+                                <label class="form-check-label" for="journal">
                                     Journal
                                 </label>
                             </button>
@@ -172,8 +221,8 @@ if (isset($_POST['date'])) {
                     <div class="col-1">
                         <div class="form-check">
                             <button type="submit" style="border: none;">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="blog" id="blog">
-                                <label class="form-check-label" for="flexCheckDefault2">
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="blog" id="blog" <?php if (isset($_POST['blog'])) echo 'checked'; ?>>
+                                <label class="form-check-label" for="blog">
                                     Blog
                                 </label>
                             </button>
@@ -182,56 +231,40 @@ if (isset($_POST['date'])) {
                     <div class="col-1">
                         <div class="form-check">
                             <button type="submit" style="border: none;">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="library" id="library">
-                                <label class="form-check-label" for="flexCheckChecked2">
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="library" id="library" <?php if (isset($_POST['library'])) echo 'checked'; ?>>
+                                <label class="form-check-label" for="library">
                                     Library
+                                </label>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-1">
+                        <div class="form-check">
+                            <button type="button" onclick="document.getElementById('date').click();" style="border: none;">
+                                <input class="form-check-input filter-checkbox" type="checkbox" name="date" id="date" <?php if (isset($_POST['date'])) echo 'checked'; ?>>
+                                <label class="form-check-label" for="date">
+                                    Date
                                 </label>
                             </button>
                         </div>
                     </div>
                 </div>
                 <div class="row align-items-start">
-                    <div class="col-1">
-                        <div class="form-check">
-                            <button type="submit" style="border: none;">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="title" id="title">
-                                <label class="form-check-label" for="flexCheckDefault3">
-                                    Title
-                                </label>
-                            </button>
-                        </div>
+                    <div class="col-4">
+
                     </div>
-                    <div class="col-1">
-                        <div class="form-check">
-                            <button type="submit" style="border: none;">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="details" id="details">
-                                <label class="form-check-label" for="flexCheckChecked3">
-                                    Details
-                                </label>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-1">
-                        <div class="form-check">
-                            <button type="submit" style="border: none;">
-                                <input class="form-check-input filter-checkbox" type="checkbox" name="date" id="date">
-                                <label class="form-check-label" for="flexCheckChecked4">
-                                    Date
-                                </label>
-                            </button>
-                        </div>
-                    </div>
-                    <div class="col-3" id="date-range" style="display:block;">
+                    <div class="col-3" id="date-range" style="display:none;">
                         <label for="fromDate">From:</label>
-                        <input type="date" id="fromDate" name="fromDate" class="form-control">
+                        <input type="date" id="fromDate" name="fromDate" class="form-control" value="<?php echo isset($_POST['fromDate']) ? $_POST['fromDate'] : ''; ?>">
                         <label for="toDate">To:</label>
-                        <input type="date" id="toDate" name="toDate" class="form-control">
+                        <input type="date" id="toDate" name="toDate" class="form-control" value="<?php echo isset($_POST['toDate']) ? $_POST['toDate'] : ''; ?>">
                     </div>
+                    <button type="submit">Submit</button>
                 </div>
             </div>
         </form>
 
-        
+
         <div class="main bg-white shadow">
             <h2>Search Results for "<?php echo htmlspecialchars($_GET['country_name']); ?>"</h2>
             <?php
@@ -244,23 +277,32 @@ if (isset($_POST['date'])) {
                 //         echo "<p>Title: " . htmlspecialchars($note[0]) . "<br>Details: " . htmlspecialchars($note[1]) . "<br>Created At: " . htmlspecialchars($note[2]) . "</p>";
                 // }
                 // // ----------------------------------------------------------------
-
-                echo "<h3>Notes</h3>";
-                foreach ($results['notes'] as $note) {
-                    echo "<p>Title: " . htmlspecialchars($note[0]) . "<br>Details: " . htmlspecialchars($note[1]) . "<br>Created At: " . htmlspecialchars($note[2]) . "</p>";
+                if (!empty($results['notes'])) {
+                    echo "<h3>Notes</h3>";
+                    foreach ($results['notes'] as $note) {
+                        echo "<p>Title: " . htmlspecialchars($note[0]) . "<br>Details: " . htmlspecialchars($note[1]) . "<br>Created At: " . htmlspecialchars($note[2]) . "</p>";
+                    }
                 }
 
-                echo "<h3>Journals</h3>";
-                foreach ($results['journals'] as $journal) {
-                    echo "<p>Title: " . htmlspecialchars($journal[0]) . "<br>Details: " . htmlspecialchars($journal[1]) . "<br>Last Update: " . htmlspecialchars($journal[2]) . "</p>";
+                if (!empty($results['journals'])) {
+                    echo "<h3>Journals</h3>";
+                    foreach ($results['journals'] as $journal) {
+                        echo "<p>Title: " . htmlspecialchars($journal[0]) . "<br>Details: " . htmlspecialchars($journal[1]) . "<br>Last Update: " . htmlspecialchars($journal[2]) . "</p>";
+                    }
                 }
-                echo "<h3>Blogs</h3>";
-                foreach ($results['blogs'] as $blog) {
-                    echo "<p>Topic Name: " . htmlspecialchars($blog[0]) . "<br>Description: " . htmlspecialchars($blog[1]) . "<br>Created At: " . htmlspecialchars($blog[2]) . "<br>User Handle: " . htmlspecialchars($blog[3]) . "</p>";
+
+                if (!empty($results['blogs'])) {
+                    echo "<h3>Blogs</h3>";
+                    foreach ($results['blogs'] as $blog) {
+                        echo "<p>Topic Name: " . htmlspecialchars($blog[0]) . "<br>Description: " . htmlspecialchars($blog[1]) . "<br>Created At: " . htmlspecialchars($blog[2]) . "<br>User Handle: " . htmlspecialchars($blog[3]) . "</p>";
+                    }
                 }
-                echo "<h3>Life Library</h3>";
-                foreach ($results['library'] as $library) {
-                    echo "<p>Book Name: " . htmlspecialchars($library[0]) . "<br>Author Name: " . htmlspecialchars($library[1]) . "<br>Details: " . htmlspecialchars($library[2]) . "</p>";
+
+                if (!empty($results['library'])) {
+                    echo "<h3>Life Library</h3>";
+                    foreach ($results['library'] as $library) {
+                        echo "<p>Book Name: " . htmlspecialchars($library[0]) . "<br>Author Name: " . htmlspecialchars($library[1]) . "<br>Details: " . htmlspecialchars($library[2]) . "</p>";
+                    }
                 }
             }
             ?>

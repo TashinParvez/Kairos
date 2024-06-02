@@ -40,7 +40,7 @@ if (isset($_POST['createGoal'])) {
         if (mysqli_query($conn, $sql)) {
             header('Location: goals.php');
         } else {
-            echo 'query error: '.mysqli_error($conn);
+            echo 'query error: ' . mysqli_error($conn);
         }
     }
 
@@ -64,7 +64,7 @@ if (isset($_POST['completed'])) {
         // success
         header('Location: goals.php');
     } else {
-        echo 'query error: '.mysqli_error($conn);
+        echo 'query error: ' . mysqli_error($conn);
     }
 
     // close connection
@@ -82,7 +82,7 @@ if (isset($_POST['counterPlus'])) {
         // success
         header('Location: goals.php');
     } else {
-        echo 'query error: '.mysqli_error($conn);
+        echo 'query error: ' . mysqli_error($conn);
     }
 
     // close connection
@@ -99,7 +99,7 @@ if (isset($_POST['counterMinus'])) {
         // success
         header('Location: goals.php');
     } else {
-        echo 'query error: '.mysqli_error($conn);
+        echo 'query error: ' . mysqli_error($conn);
     }
 
     // close connection
@@ -123,7 +123,7 @@ if ($_SERVER['REQUEST_METHOD'] == 'POST') {
             header('Location: goals.php');
         } else {
             // Database update failed
-            echo 'Error updating goal: '.mysqli_error($conn);
+            echo 'Error updating goal: ' . mysqli_error($conn);
         }
     } else {
         // Checkbox not checked
@@ -258,67 +258,65 @@ mysqli_close($conn);
     <title>Goals</title>
     <link rel="icon" type="image/x-icon" href="/Images/Picture1.png">
     <!-- Bootstrap links -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script src="https://unpkg.com/gijgo@1.9.14/js/gijgo.min.js" type="text/javascript"></script>
     <link href="https://unpkg.com/gijgo@1.9.14/css/gijgo.min.css" rel="stylesheet" type="text/css" />
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous">
     </script>
     <!-- CSS -->
     <style>
-    body.modal-open .supreme-container {
-        -webkit-filter: blur(1px);
-        -moz-filter: blur(1px);
-        -o-filter: blur(1px);
-        -ms-filter: blur(1px);
-        filter: blur(1px);
-    }
+        body.modal-open .supreme-container {
+            -webkit-filter: blur(1px);
+            -moz-filter: blur(1px);
+            -o-filter: blur(1px);
+            -ms-filter: blur(1px);
+            filter: blur(1px);
+        }
     </style>
 
     <!-- JS -->
     <script>
-    window.addEventListener('scroll', function() {
-        console.log('Scrolling...');
-        var goalButton = document.getElementById('goalButton');
-        console.log('Scroll Y:', window.scrollY);
-        if (window.scrollY > 100) {
-            goalButton.style.display = 'none';
-        } else {
-            goalButton.style.display = 'block';
-        }
-    });
+        window.addEventListener('scroll', function() {
+            console.log('Scrolling...');
+            var goalButton = document.getElementById('goalButton');
+            console.log('Scroll Y:', window.scrollY);
+            if (window.scrollY > 100) {
+                goalButton.style.display = 'none';
+            } else {
+                goalButton.style.display = 'block';
+            }
+        });
     </script>
 
     <script>
-    $(document).ready(function() {
-        $('.goal-checkbox').on('change', function() {
-            if ($(this).is(':checked')) {
-                var goalName = $(this).data('goalName');
-                var startDate = $(this).data('startDate');
-                var endDate = $(this).data('endDate');
+        $(document).ready(function() {
+            $('.goal-checkbox').on('change', function() {
+                if ($(this).is(':checked')) {
+                    var goalName = $(this).data('goalName');
+                    var startDate = $(this).data('startDate');
+                    var endDate = $(this).data('endDate');
 
-                // Send AJAX request to update goal status
-                $.ajax({
-                    url: 'goals.php',
-                    method: 'POST',
-                    data: {
-                        goalName: goalName,
-                        startDate: startDate,
-                        endDate: endDate
-                    },
-                    success: function(response) {
-                        // Handle success response
-                        console.log(response);
-                    },
-                    error: function(xhr, status, error) {
-                        // Handle error
-                        console.error(xhr.responseText);
-                    }
-                });
-            }
+                    // Send AJAX request to update goal status
+                    $.ajax({
+                        url: 'goals.php',
+                        method: 'POST',
+                        data: {
+                            goalName: goalName,
+                            startDate: startDate,
+                            endDate: endDate
+                        },
+                        success: function(response) {
+                            // Handle success response
+                            console.log(response);
+                        },
+                        error: function(xhr, status, error) {
+                            // Handle error
+                            console.error(xhr.responseText);
+                        }
+                    });
+                }
+            });
         });
-    });
     </script>
 
 
@@ -330,8 +328,8 @@ mysqli_close($conn);
 <body>
     <?php
     include '../Includes/NavBarSecond.php'; // uncomment
-include '../Includes/Sidebar.php'; // uncomment
-?>
+    include '../Includes/Sidebar.php'; // uncomment
+    ?>
 
     <!-- ------------------------ Main Segment ------------------------------- -->
 
@@ -346,122 +344,115 @@ include '../Includes/Sidebar.php'; // uncomment
                     <div class="accordion" style="margin:0; padding:0" id="accordionPanelsStayOpenExample">
                         <div class="accordion-item" style="margin:0; padding:0">
                             <h2 class="accordion-header" style="margin:0; padding:0" id="panelsStayOpen-headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false"
-                                    aria-controls="panelsStayOpen-collapseOne">
+                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseOne" aria-expanded="false" aria-controls="panelsStayOpen-collapseOne">
                                     Finished
                                 </button>
 
                             </h2>
-                            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse"
-                                aria-labelledby="panelsStayOpen-headingOne">
+                            <div id="panelsStayOpen-collapseOne" class="accordion-collapse collapse" aria-labelledby="panelsStayOpen-headingOne">
                                 <div class="accordion-body" style="margin:0; padding:0">
 
                                     <?php
-                                if (empty($finishedGoals)) {
-                                    echo "You Haven't finished your any Goal";
-                                } else { ?>
+                                    if (empty($finishedGoals)) {
+                                        echo "You Haven't finished your any Goal";
+                                    } else { ?>
 
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Goal</th>
-                                                <th scope="col">Completed Date</th>
-                                                <th scope="col">Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="table-group-divider">
-                                            <?php
-                                            $cnt = 1;
-                                    foreach ($finishedGoals as $goal) { ?>
-                                            <tr>
-                                                <th scope="row">
-                                                    <?php echo $cnt; ?>
-                                                </th>
-                                                <td>
-                                                    <?php echo htmlspecialchars($goal[0]); ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo htmlspecialchars($goal[3]); ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo 'Finished'; ?>
-                                                </td>
-                                            </tr>
-                                            <?php
-                                        ++$cnt;
-                                    }
-                                    ?>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Goal</th>
+                                                    <th scope="col">Completed Date</th>
+                                                    <th scope="col">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-group-divider">
+                                                <?php
+                                                $cnt = 1;
+                                                foreach ($finishedGoals as $goal) { ?>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <?php echo $cnt; ?>
+                                                        </th>
+                                                        <td>
+                                                            <?php echo htmlspecialchars($goal[0]); ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo htmlspecialchars($goal[3]); ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo 'Finished'; ?>
+                                                        </td>
+                                                    </tr>
+                                                <?php
+                                                    ++$cnt;
+                                                }
+                                                ?>
 
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
                                     <?php }
-                                ?>
+                                    ?>
                                 </div>
                             </div>
                         </div>
 
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="panelsStayOpen-headingTwo">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true"
-                                    aria-controls="panelsStayOpen-collapseTwo">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseTwo" aria-expanded="true" aria-controls="panelsStayOpen-collapseTwo">
                                     Overdue Tasks
                                 </button>
                             </h2>
-                            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show"
-                                aria-labelledby="panelsStayOpen-headingTwo">
+                            <div id="panelsStayOpen-collapseTwo" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingTwo">
                                 <div class="accordion-body" style="margin:0; padding:0">
 
                                     <?php
-                                if (empty($goalsThatTimeRemains)) {
-                                    echo "You don't have any Goals remain";
-                                } else { ?>
+                                    if (empty($goalsThatTimeRemains)) {
+                                        echo "You don't have any Goals remain";
+                                    } else { ?>
 
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Goal</th>
-                                                <th scope="col">Date to finished</th>
-                                                <th scope="col">Overdue</th>
-                                                <th scope="col">Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="table-group-divider">
-                                            <?php
-                                            $cnt = 1;
-                                    foreach ($goalsExceededDeadline as $goal) { ?>
-                                            <tr>
-                                                <th scope="row">
-                                                    <?php echo $cnt; ?>
-                                                </th>
-                                                <td>
-                                                    <?php echo htmlspecialchars($goal[0]); ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo htmlspecialchars($goal[2]); ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo htmlspecialchars($goal[3]); ?>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="border-0 bg-transparent">
-                                                        <input class="form-check-input mt-0" type="checkbox" value=""
-                                                            aria-label="Checkbox for following text input">
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <?php ++$cnt; ?>
-                                            <?php }
-                                    ?>
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Goal</th>
+                                                    <th scope="col">Date to finished</th>
+                                                    <th scope="col">Overdue</th>
+                                                    <th scope="col">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-group-divider">
+                                                <?php
+                                                $cnt = 1;
+                                                foreach ($goalsExceededDeadline as $goal) { ?>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <?php echo $cnt; ?>
+                                                        </th>
+                                                        <td>
+                                                            <?php echo htmlspecialchars($goal[0]); ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo htmlspecialchars($goal[2]); ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo htmlspecialchars($goal[3]); ?>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="border-0 bg-transparent">
+                                                                <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input">
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <?php ++$cnt; ?>
+                                                <?php }
+                                                ?>
 
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
 
                                     <?php }
-                                ?>
+                                    ?>
 
                                 </div>
                             </div>
@@ -469,70 +460,62 @@ include '../Includes/Sidebar.php'; // uncomment
 
                         <div class="accordion-item">
                             <h2 class="accordion-header" id="panelsStayOpen-headingThree">
-                                <button class="accordion-button" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true"
-                                    aria-controls="panelsStayOpen-collapseThree">
+                                <button class="accordion-button" type="button" data-bs-toggle="collapse" data-bs-target="#panelsStayOpen-collapseThree" aria-expanded="true" aria-controls="panelsStayOpen-collapseThree">
                                     Scheduled Tasks
                                 </button>
                             </h2>
-                            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show"
-                                aria-labelledby="panelsStayOpen-headingThree">
+                            <div id="panelsStayOpen-collapseThree" class="accordion-collapse collapse show" aria-labelledby="panelsStayOpen-headingThree">
                                 <div class="accordion-body" style="margin:0; padding:0">
 
                                     <?php
-                                if (empty($goalsThatTimeRemains)) {
-                                    echo "You don't have any Goals remain";
-                                } else { ?>
+                                    if (empty($goalsThatTimeRemains)) {
+                                        echo "You don't have any Goals remain";
+                                    } else { ?>
 
-                                    <table class="table table-striped">
-                                        <thead>
-                                            <tr>
-                                                <th scope="col">#</th>
-                                                <th scope="col">Goal</th>
-                                                <th scope="col">Date to finished</th>
-                                                <th scope="col">Remaining Days</th>
-                                                <th scope="col">Status</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody class="table-group-divider">
-                                            <?php
-                                            $cnt = 1;
-                                    foreach ($goalsThatTimeRemains as $goal) { ?>
-                                            <tr>
-                                                <th scope="row">
-                                                    <?php echo $cnt; ?>
-                                                </th>
-                                                <td>
-                                                    <?php echo htmlspecialchars($goal[0]); ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo htmlspecialchars($goal[2]); ?>
-                                                </td>
-                                                <td>
-                                                    <?php echo htmlspecialchars($goal[3]); ?>
-                                                </td>
-                                                <td>
-                                                    <button type="button" class="border-0 bg-transparent">
-                                                        <input class="form-check-input mt-0 goal-checkbox"
-                                                            goalName="<?php echo htmlspecialchars($goal[0]); ?>"
-                                                            startDate="<?php echo htmlspecialchars($goal[1]); ?>"
-                                                            endDate="<?php echo htmlspecialchars($goal[2]); ?>"
-                                                            type="checkbox" value=""
-                                                            aria-label="Checkbox for following text input">
+                                        <table class="table table-striped">
+                                            <thead>
+                                                <tr>
+                                                    <th scope="col">#</th>
+                                                    <th scope="col">Goal</th>
+                                                    <th scope="col">Date to finished</th>
+                                                    <th scope="col">Remaining Days</th>
+                                                    <th scope="col">Status</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody class="table-group-divider">
+                                                <?php
+                                                $cnt = 1;
+                                                foreach ($goalsThatTimeRemains as $goal) { ?>
+                                                    <tr>
+                                                        <th scope="row">
+                                                            <?php echo $cnt; ?>
+                                                        </th>
+                                                        <td>
+                                                            <?php echo htmlspecialchars($goal[0]); ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo htmlspecialchars($goal[2]); ?>
+                                                        </td>
+                                                        <td>
+                                                            <?php echo htmlspecialchars($goal[3]); ?>
+                                                        </td>
+                                                        <td>
+                                                            <button type="button" class="border-0 bg-transparent">
+                                                                <input class="form-check-input mt-0 goal-checkbox" goalName="<?php echo htmlspecialchars($goal[0]); ?>" startDate="<?php echo htmlspecialchars($goal[1]); ?>" endDate="<?php echo htmlspecialchars($goal[2]); ?>" type="checkbox" value="" aria-label="Checkbox for following text input">
 
-                                                        <!-- <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input"> -->
-                                                    </button>
-                                                </td>
-                                            </tr>
-                                            <?php ++$cnt; ?>
-                                            <?php }
-                                    ?>
+                                                                <!-- <input class="form-check-input mt-0" type="checkbox" value="" aria-label="Checkbox for following text input"> -->
+                                                            </button>
+                                                        </td>
+                                                    </tr>
+                                                    <?php ++$cnt; ?>
+                                                <?php }
+                                                ?>
 
-                                        </tbody>
-                                    </table>
+                                            </tbody>
+                                        </table>
 
                                     <?php }
-                                ?>
+                                    ?>
 
                                 </div>
                             </div>
@@ -541,8 +524,7 @@ include '../Includes/Sidebar.php'; // uncomment
 
 
                     <!-- Button trigger modal -->
-                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal"
-                        data-bs-target="#exampleModal">
+                    <button type="button" class="btn btn-outline-secondary" data-bs-toggle="modal" data-bs-target="#exampleModal">
                         Add new Task
                     </button>
 
@@ -556,28 +538,23 @@ include '../Includes/Sidebar.php'; // uncomment
                 <!-------------- Life Progress bars -------------->
                 <div class="bg-white">
                     Yearly
-                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25"
-                        aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                         <div class="progress-bar" style="width: 0%">0%</div>
                     </div>
                     Monthly
-                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25"
-                        aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                         <div class="progress-bar" style="width: 25%">25%</div>
                     </div>
                     Weekly
-                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25"
-                        aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                         <div class="progress-bar" style="width: 50%">50%</div>
                     </div>
                     Daily
-                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25"
-                        aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                         <div class="progress-bar" style="width: 75%">75%</div>
                     </div>
                     Over-all
-                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25"
-                        aria-valuemin="0" aria-valuemax="100">
+                    <div class="progress" role="progressbar" aria-label="Example with label" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100">
                         <div class="progress-bar" style="width: 100%">100%</div>
                     </div>
 
@@ -595,18 +572,15 @@ include '../Includes/Sidebar.php'; // uncomment
                     <!-- <iframe src="https://indify.co/widgets/live/counter/y2ZzVIgNb0qDCpQyOYDl" width="100%" height="300px" frameborder="0"></iframe> -->
                     <div class="row bg-white">
                         <div class="col-2 bg-transparent">
-                            <button type="button" class="btn btn-light shadow"
-                                style="height:40px; width:40px;">-</button>
+                            <button type="button" class="btn btn-light shadow" style="height:40px; width:40px;">-</button>
                         </div>
                         <div class="col-2 bg-transparent" style="justify-content:center; align-items:center">
-                            <div class="container bg-white"
-                                style="height:40px; width:40px; justify-content:center; align-items:center; font-size:1.8rem">
+                            <div class="container bg-white" style="height:40px; width:40px; justify-content:center; align-items:center; font-size:1.8rem">
                                 <p class="pCount bg-white">0</p>
                             </div>
                         </div>
                         <div class="col-2 bg-transparent">
-                            <button type="button" class="btn btn-light shadow"
-                                style="height:40px; width:40px;">+</button>
+                            <button type="button" class="btn btn-light shadow" style="height:40px; width:40px;">+</button>
                         </div>
                         <div class="col-3 bg-transparent">
                             <button type="button" class="btn btn-secondary shadow">Reset</button>
@@ -643,15 +617,14 @@ include '../Includes/Sidebar.php'; // uncomment
 
                     <div class="input-group mb-3">
                         <span class="input-group-text" id="inputGroup-sizing-default">Task Info</span>
-                        <input type="text" class="form-control" aria-label="Sizing example input"
-                            aria-describedby="inputGroup-sizing-default">
+                        <input type="text" class="form-control" aria-label="Sizing example input" aria-describedby="inputGroup-sizing-default">
                     </div>
 
                     <input id="datepicker" width="462" placeholder="With in the date you want to finish" />
                     <script>
-                    $('#datepicker').datepicker({
-                        uiLibrary: 'bootstrap5'
-                    });
+                        $('#datepicker').datepicker({
+                            uiLibrary: 'bootstrap5'
+                        });
                     </script>
                 </div>
                 <div class="modal-footer">
