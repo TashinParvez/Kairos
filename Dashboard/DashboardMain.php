@@ -20,7 +20,6 @@ $userHandle = mysqli_real_escape_string($conn, 'bijoy123'); // after linked all 
 
 $noteTitle = $noteDetails = $noteCreatedAt = '';
 $public = 0; // public = 0 means private
-
 // Save Notes
 if (isset($_POST['saveNote'])) {
     if (isset($_POST['public'])) {
@@ -168,6 +167,9 @@ if (isset($_POST['btnSrch'])) {
 }
 
 
+
+$resultantNotes = mysqli_query($conn, $sql);  // get query result
+$today = date('F j, Y', strtotime('today')); 
 
 // $Notes = mysqli_fetch_assoc($resultantNotes); // conver to array
 // $Notes = mysqli_fetch_all($resultantNotes); // conver to array
@@ -526,7 +528,18 @@ mysqli_close($conn);
 
 
     <main class="main bg-white shadow z-0">
-        <div class="container bg-white m-0">
+    <div class="container bg-white m-0 text-center mt-5">
+        <h2 class="bg-transparent">Good Morning Aranya</h2>
+        <p class="bg-transparent" style="color:gray"><?php echo ''.$today; ?></p>
+        <div class="container bg-transparent text-center d-flex justify-content-center align-items-center">
+            <div class="progress w-50" role="progressbar" aria-label="Example with label" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
+                <div class="progress-bar" style="width: 0%">0%</div>
+            </div>
+        </div>
+    </div>
+
+
+            <div class="container bg-white">
             <h2 class="bg-transparent">Your Notes</h2>
             <div class="row bg-white mt-3">
                 <div class="col-lg-auto bg-white" style="      position: sticky;      z-index: 1000;">
@@ -591,55 +604,81 @@ mysqli_close($conn);
                         <!-- cards create -->
                         <?php
 
-                        $hoverClasses = [
-                            'card-hover-1',
-                            'card-hover-2',
-                            'card-hover-3',
-                            'card-hover-4',
-                            'card-hover-5',
-                            'card-hover-6',
-                            'card-hover-7',
-                            'card-hover-8',
-                            'card-hover-9',
-                            'card-hover-10',
-                        ];
 
-                        foreach ($Notes as $index => $note) {
-                            $randomClass = $hoverClasses[array_rand($hoverClasses)];
-                        ?>
-                            <div class="col bg-transparent">
-                                <div class="card h-100 card-hover shadow <?php echo $randomClass; ?>" style="outline-color:white;">
-                                    <button type="button" id="card-btn" class="card-link btn btn-link p-0 m-0 " data-bs-toggle="modal" data-bs-target="#editNoteModal" data-note-title="<?php echo htmlspecialchars($note[0]); ?>" data-note-details="<?php echo htmlspecialchars($note[1]); ?>" data-note-createdAt="<?php echo htmlspecialchars($note[2]); ?>" data-note-public="<?php echo htmlspecialchars($note[3]); ?>" style="text-decoration: none; color: inherit;">
-                                        <div class="card-body bg-transparent text-start">
-                                            <h4 class="card-title bg-transparent">
-                                                <?php echo htmlspecialchars($note[0]); ?>
-                                            </h4>
-                                            <p class="card-text bg-transparent">
-                                                <?php echo htmlspecialchars($note[1]); ?>
-                                            </p>
-                                        </div>
-                                        <div class="card-footer bg-transparent text-end" style="align-items: end; border-top: none;">
-                                            <span class="bg-transparent">
-                                                <svg class="bg-transparent" width="20px" height="20px" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                                                    <path d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12Z" stroke="#1C274C" stroke-width="1.5" />
-                                                    <path d="M7 4V2.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                                                    <path d="M17 4V2.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                                                    <path d="M2.5 9H21.5" stroke="#1C274C" stroke-width="1.5" stroke-linecap="round" />
-                                                    <path d="M18 17C18 17.5523 17.5523 18 17 18C16.4477 18 16 17.5523 16 17C16 16.4477 16.4477 16 17 16C17.5523 16 18 16.4477 18 17Z" fill="#1C274C" />
-                                                    <path d="M18 13C18 13.5523 17.5523 14 17 14C16.4477 14 16 13.5523 16 13C16 12.4477 16.4477 12 17 12C17.5523 12 18 12.4477 18 13Z" fill="#1C274C" />
-                                                    <path d="M13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17Z" fill="#1C274C" />
-                                                    <path d="M13 13C13 13.5523 12.5523 14 12 14C11.4477 14 11 13.5523 11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13Z" fill="#1C274C" />
-                                                    <path d="M8 17C8 17.5523 7.55228 18 7 18C6.44772 18 6 17.5523 6 17C6 16.4477 6.44772 16 7 16C7.55228 16 8 16.4477 8 17Z" fill="#1C274C" />
-                                                    <path d="M8 13C8 13.5523 7.55228 14 7 14C6.44772 14 6 13.5523 6 13C6 12.4477 6.44772 12 7 12C7.55228 12 8 12.4477 8 13Z" fill="#1C274C" />
-                                                </svg>
-                                                <small class="text-muted bg-transparent">
-                                                    <?php echo htmlspecialchars($note[2]); ?>
-                                                </small>
-                                            </span>
-                                        </div>
-                                    </button>
+                            $hoverClasses = [
+                                'card-hover-1',
+                                'card-hover-2',
+                                'card-hover-3',
+                                'card-hover-4',
+                                'card-hover-5',
+                                'card-hover-6',
+                                'card-hover-7',
+                                'card-hover-8',
+                                'card-hover-9',
+                                'card-hover-10',
+                            ];
 
-                                </div>
+foreach ($Notes as $index => $note) {
+    $randomClass = $hoverClasses[array_rand($hoverClasses)];
+    ?>
+                        <div class="col bg-transparent">
+                            <div class="card h-100 card-hover shadow <?php echo $randomClass; ?>"
+                                style="outline-color:white;">
+                                <button type="button" id="card-btn" class="card-link btn btn-link p-0 m-0 "
+                                    data-bs-toggle="modal" data-bs-target="#editNoteModal"
+                                    data-note-title="<?php echo htmlspecialchars($note[0]); ?>"
+                                    data-note-details="<?php echo htmlspecialchars($note[1]); ?>"
+                                    data-note-createdAt="<?php echo htmlspecialchars($note[2]); ?>"
+                                    data-note-public="<?php echo htmlspecialchars($note[3]); ?>"
+                                    style="text-decoration: none; color: inherit;">
+                                    <div class="card-body bg-transparent text-start">
+                                        <h4 class="card-title bg-transparent">
+                                            <?php echo htmlspecialchars($note[0]); ?>
+                                        </h4>
+                                        <p class="card-text bg-transparent">
+                                            <?php echo htmlspecialchars($note[1]); ?>
+                                        </p>
+                                    </div>
+                                    <div class="card-footer bg-transparent text-end"
+                                        style="align-items: end; border-top: none;">
+                                        <span class="bg-transparent">
+                                            <svg class="bg-transparent" width="20px" height="20px" viewBox="0 0 24 24"
+                                                fill="none" xmlns="http://www.w3.org/2000/svg">
+                                                <path
+                                                    d="M2 12C2 8.22876 2 6.34315 3.17157 5.17157C4.34315 4 6.22876 4 10 4H14C17.7712 4 19.6569 4 20.8284 5.17157C22 6.34315 22 8.22876 22 12V14C22 17.7712 22 19.6569 20.8284 20.8284C19.6569 22 17.7712 22 14 22H10C6.22876 22 4.34315 22 3.17157 20.8284C2 19.6569 2 17.7712 2 14V12Z"
+                                                    stroke="#1C274C" stroke-width="1.5" />
+                                                <path d="M7 4V2.5" stroke="#1C274C" stroke-width="1.5"
+                                                    stroke-linecap="round" />
+                                                <path d="M17 4V2.5" stroke="#1C274C" stroke-width="1.5"
+                                                    stroke-linecap="round" />
+                                                <path d="M2.5 9H21.5" stroke="#1C274C" stroke-width="1.5"
+                                                    stroke-linecap="round" />
+                                                <path
+                                                    d="M18 17C18 17.5523 17.5523 18 17 18C16.4477 18 16 17.5523 16 17C16 16.4477 16.4477 16 17 16C17.5523 16 18 16.4477 18 17Z"
+                                                    fill="#1C274C" />
+                                                <path
+                                                    d="M18 13C18 13.5523 17.5523 14 17 14C16.4477 14 16 13.5523 16 13C16 12.4477 16.4477 12 17 12C17.5523 12 18 12.4477 18 13Z"
+                                                    fill="#1C274C" />
+                                                <path
+                                                    d="M13 17C13 17.5523 12.5523 18 12 18C11.4477 18 11 17.5523 11 17C11 16.4477 11.4477 16 12 16C12.5523 16 13 16.4477 13 17Z"
+                                                    fill="#1C274C" />
+                                                <path
+                                                    d="M13 13C13 13.5523 12.5523 14 12 14C11.4477 14 11 13.5523 11 13C11 12.4477 11.4477 12 12 12C12.5523 12 13 12.4477 13 13Z"
+                                                    fill="#1C274C" />
+                                                <path
+                                                    d="M8 17C8 17.5523 7.55228 18 7 18C6.44772 18 6 17.5523 6 17C6 16.4477 6.44772 16 7 16C7.55228 16 8 16.4477 8 17Z"
+                                                    fill="#1C274C" />
+                                                <path
+                                                    d="M8 13C8 13.5523 7.55228 14 7 14C6.44772 14 6 13.5523 6 13C6 12.4477 6.44772 12 7 12C7.55228 12 8 12.4477 8 13Z"
+                                                    fill="#1C274C" />
+                                            </svg>
+                                            <small class="text-muted bg-transparent">
+                                                <?php echo htmlspecialchars($note[2]); ?>
+                                            </small>
+                                        </span>
+                                    </div>
+                                </button>
+
                             </div>
 
                         <?php } ?>
@@ -649,6 +688,7 @@ mysqli_close($conn);
                 </div>
 
             </div>
+        </div>
         </div>
 
     </main>

@@ -68,7 +68,7 @@ switch ($duration) {
 
         $result = mysqli_query($conn, $sql);
         $weeklyData = mysqli_fetch_all($result);
-        print_r($weeklyData);
+        // print_r($weeklyData);
 
         $labels = array();
         $labels[0] = $weeklyData[0][3];
@@ -223,8 +223,8 @@ switch ($duration) {
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Kairos</title>
-
+    <title>Admin Dashboard</title>
+    <link rel="icon" type="image/x-icon" href="\Admin-Panel\Kairos-removebg-preview.png">
     <!-- Bootstrap links -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
     <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
@@ -232,19 +232,16 @@ switch ($duration) {
 
     <!-- CSS -->
     <link rel="stylesheet" href="/Admin-Panel/">
-    <!-- <link rel="stylesheet" href="/Includes/style.css"> -->
-
-
-
 </head>
 
 <body>
     <?php include('sidebar.php'); ?>
 
     <!-- Main part -->
-    <main>
+    <main class="main-content">
         <div class="container d-flex p-3 ">
-
+            <h1>User Count</h1>
+            <hr>
             <!-- Filtered by -->
             <script>
                 function submitForm(duration) {
@@ -256,15 +253,36 @@ switch ($duration) {
             <form id="durationForm" action="admin-dashboard.php" method="post">
                 <input type="hidden" name="duration" id="durationInput">
             </form>
-            <button class="btn btn-primary" type="button" onclick="submitForm('weakly')" id="weakly" name="weakly">Weakly</button>
-            <button class="btn btn-primary" type="button" onclick="submitForm('monthly')" id="monthly" name="monthly">Monthly</button>
-            <button class="btn btn-primary" type="button" onclick="submitForm('yearly')" id="yearly" name="yearly">Yearly</button>
+            <button class="btn btn-primary m-2" type="button" onclick="submitForm('weakly')" id="weakly" name="weakly">Weakly</button>
+            
+            <button class="btn btn-primary m-2" type="button" onclick="submitForm('monthly')" id="monthly" name="monthly">Monthly</button>
+            
+            <button class="btn btn-primary m-2" type="button" onclick="submitForm('yearly')" id="yearly" name="yearly">Yearly</button>
 
             <!-- ............... -->
         </div>
-        <canvas id="myChart" width="200" height="100"></canvas>
+        <div class="main">
+        <div class="container h-25 w-50 p-1 m-1 b-2">
+            <div class="row">
+                <div class="col-4 p-2 m-2">
+                    <h1>Pending approvals:</h1>
+                    <div class="row p-2 m-2">
+                        Book Approval: 10
+                    </div>
+                    <div class="row p-2 m-2">
+                        Notes Approval: 10
+                    </div>
+                    <div class="row p-2 m-2">
+                        Mail Sent: Yes
+                    </div>
+                </div>
+                <div class="col-7">
+                    <canvas id="myChart" width="100" height="70"></canvas>
+                </div>
+            </div>
+        </div>
+        </div>
     </main>
-
 
     <!-- JavaScript -->
     <script>

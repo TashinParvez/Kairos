@@ -120,15 +120,138 @@ mysqli_close($conn);
             max-height: 4.5em;
             /* Assuming a line height of 1.5em */
         }
+        :root {
+        --rad: .7rem;
+        --dur: .3s;
+        --color-dark: #2f2f2f;
+        --color-light: #fff;
+        --color-brand: #57bd84;
+        --font-fam: 'Lato', sans-serif;
+        --height: 5rem;
+        --btn-width: 6rem;
+        --bez: cubic-bezier(0, 0, 0.43, 1.49);
+    }
+
+    #srchForm {
+        position: relative;
+        max-width: 30rem;
+        background: var(--color-brand);
+        border-radius: var(--rad);
+    }
+
+    #srchBar,
+    #btnSrch {
+        height: var(--height);
+        font-family: var(--font-fam);
+        border: 0;
+        color: var(--color-dark);
+        font-size: 1.8rem;
+    }
+
+    #srchBar[type="search"] {
+        outline: 0;
+        width: 100%;
+        background: var(--color-light);
+        padding: 0 1.6rem;
+        border-radius: var(--rad);
+        appearance: none;
+        transition: all var(--dur) var(--bez);
+        transition-property: width, border-radius;
+        z-index: 1;
+        position: relative;
+    }
+
+    #btnSrch {
+        display: none;
+        position: absolute;
+        top: 0;
+        right: 0;
+        width: var(--btn-width);
+        font-weight: bold;
+        background: var(--color-brand);
+        border-radius: 0 var(--rad) var(--rad) 0;
+    }
+
+    #srchBar:not(:placeholder-shown) {
+        border-radius: var(--rad) 0 0 var(--rad);
+        width: calc(100% - var(--btn-width));
+
+        +button {
+            display: block;
+        }
+    }
+
+    label {
+        position: absolute;
+        clip: rect(1px, 1px, 1px, 1px);
+        padding: 0;
+        border: 0;
+        height: 1px;
+        width: 1px;
+        overflow: hidden;
+    }
+
+    #srchBar[type="search"] {
+        width: 100%;
+        /* Ensure it takes full width within form */
+    }
+
+    #srchBar:not(:placeholder-shown) {
+        width: calc(100% - var(--btn-width));
+        /* Adjusted width calculation */
+        border-radius: var(--rad) 0 0 var(--rad);
+
+        +button {
+            display: block;
+        }
+
+    }
+
+    #srchForm {
+        position: relative;
+        max-width: 30rem;
+        background: var(--color-brand);
+        border-radius: var(--rad);
+    }
+
+    #srchBar,
+    #btnSrch {
+        height: 47px;
+        /* Adjust the height to 48px */
+        font-family: var(--font-fam);
+        border: 0;
+        color: var(--color-dark);
+        font-size: 1rem;
+    }
+
+    #srchBar[type="search"] {
+        width: 100%;
+    }
+
+    #srchBar:not(:placeholder-shown) {
+        width: calc(100% - var(--btn-width));
+        border-radius: var(--rad) 0 0 var(--rad);
+
+        +button {
+            display: block;
+        }
+    }
     </style>
     <main class="main shadow bg-white">
         <div class="row bg-white">
-            <div class="col-sm-6 bg-white">
+            <div class="col-9 bg-white">
                 <h1>Communities</h1>
             </div>
 
-            <!-- inner Search add tashin-->
-
+            <div class="col-3 bg-white rounded">
+            <div class="rounded bg-white" style="position: sticky; z-index: 1000;">
+                        <form id="srchForm" class="border shadow" onsubmit="event.preventDefault();" role="search">
+                            <label for="search" style=" color:white;">Search for stuff</label>
+                            <input id="srchBar" type="search" placeholder="Search..." autofocus required />
+                            <button id="btnSrch" type="submit">Go</button>
+                        </form>
+                    </div>
+            </div>
 
         </div>
         <div class="bg-white">
@@ -140,11 +263,11 @@ mysqli_close($conn);
                 <?php foreach ($communities as $ptr) { ?>
                     <div class="col-sm-auto bg-white">
                         <div class="card bg-white" style="width: 18rem;">
-                            <img src="<?php echo htmlspecialchars($ptr[3]); ?>" class="card-img-top" alt="...">
+                            <img src="<?php echo htmlspecialchars($ptr[3]); ?>" class="card-img-top h-200 w-200 rounded" alt="...">
                             <div class="card-body bg-white">
                                 <h5 class="card-title bg-white"><?php echo htmlspecialchars($ptr[0]); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($ptr[1]); ?></p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <a href="#" class="btn btn-primary">Visit</a>
                             </div>
                         </div>
                     </div>
@@ -181,11 +304,11 @@ mysqli_close($conn);
                 <?php foreach ($Recommended_comm as $ptr) { ?>
                     <div class="col-sm-auto bg-white">
                         <div class="card bg-white" style="width: 18rem;">
-                            <img src="<?php echo htmlspecialchars($ptr[3]); ?>" class="card-img-top" alt="...">
+                            <img src="<?php echo htmlspecialchars($ptr[3]); ?>" class="card-img-top h-200 w-200 rounded" alt="...">
                             <div class="card-body bg-white">
                                 <h5 class="card-title bg-white"><?php echo htmlspecialchars($ptr[0]); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($ptr[1]); ?></p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <a href="#" class="btn btn-primary">Be the guest</a>
                             </div>
                         </div>
                     </div>
@@ -211,9 +334,10 @@ mysqli_close($conn);
 
         document.addEventListener("DOMContentLoaded", function() {
             const messageElement = document.getElementById('message');
-            truncateText(messageElement, 20); // Adjust the word limit as needed
+            truncateText(messageElement, 10); // Adjust the word limit as needed
         });
     </script>
+    
 </body>
 
 </html>
