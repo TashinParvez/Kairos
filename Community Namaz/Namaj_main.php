@@ -13,6 +13,28 @@ $userHandle = 'aarifeen';
 
 $cat_id = 2; // for namaz
 
+// Save Notes
+if (isset($_POST['save'])) {
+
+    $title = mysqli_real_escape_string($conn, $_POST['title']);
+    $details = mysqli_real_escape_string($conn, $_POST['details']);
+
+    // create sql
+    $sql = "INSERT INTO user_post(userHandle, title, description, categoryID)
+            VALUES('$userHandle', '$title', '$details', '$cat_id')";
+
+    // save to db and check
+    if (mysqli_query($conn, $sql)) {
+        // success
+        header('Location: Namaj_main.php');
+    } else {
+        echo 'query error: ' . mysqli_error($conn);
+    }
+
+    // close connection
+    mysqli_close($conn);
+}
+
 //---------------------------- ALL Post Data Fetch -------------------------------------
 $sql = "SELECT * 
         FROM user_post
@@ -93,8 +115,8 @@ if (isset($_POST['search'])) {
 $title = '';
 $description = '';
 
-$sql = "INSERT INTO `user_post` (`userHandle`, `created_at`, `title`, `description`, `userInteractions`, `categoryID`) 
-        VALUES ('$userHandle', current_timestamp(), '$title', '$description', '0', '$cat_id');";
+$sql = "INSERT INTO `user_post` (`userHandle`, `created_at`, `title`, `description`, `categoryID`) 
+        VALUES ('$userHandle', current_timestamp(), '$title', '$description', '$cat_id');";
 
 $result = mysqli_query($conn, $sql);
 
@@ -307,7 +329,7 @@ $conn->close();
                     <br>
                     <blockquote class="blockquote mb-0">
                         <p class="bg-white">Namaz is the key to paradise.</p>
-                        <footer class="blockquote-footer bg-white">Prophet Muhammad (peace be upon him)
+                        <footer class="blockquote-footer bg-white">Prophet Muhammad SAW (peace be upon him)
                         </footer>
                     </blockquote>
                     <br>
@@ -322,7 +344,7 @@ $conn->close();
             <div class="row bg-white m-0 mb-2" style="display: flex; align-items: flex-end;">
                 <!-- Write Your Note Field (70% width) -->
                 <div class="col-lg-9 bg-white m-0 p-0" style="position: sticky; z-index: 1000;">
-                    <button id="openModalInput" style="outline:none;" class="form-control form-control-lg mt-3 pt-3 pb-3 d-flex align-items-center shadow" type="button" placeholder="Write Your Note" aria-label=".form-control-lg example">
+                    <button id="openModalInput" style="outline:none;" class="form-control form-control-lg mt-3 pt-3 pb-3 d-flex align-items-center shadow" type="button" placeholder="Write Your Note" aria-label=".form-control-lg example" data-bs-toggle="modal" data-bs-target="#editNoteModal">
                         <svg class="bg-white me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 22C1 21.4477 1.44772 21 2 21H22C22.5523 21 23 21.4477 23 22C23 22.5523 22.5523 23 22 23H2C1.44772 23 1 22.5523 1 22Z" fill="#0F0F0F" />
                             <path fill-rule="evenodd" clip-rule="evenodd" d="M18.3056 1.87868C17.1341 0.707107 15.2346 0.707107 14.063 1.87868L3.38904 12.5526C2.9856 12.9561 2.70557 13.4662 2.5818 14.0232L2.04903 16.4206C1.73147 17.8496 3.00627 19.1244 4.43526 18.8069L6.83272 18.2741C7.38969 18.1503 7.89981 17.8703 8.30325 17.4669L18.9772 6.79289C20.1488 5.62132 20.1488 3.72183 18.9772 2.55025L18.3056 1.87868ZM15.4772 3.29289C15.8677 2.90237 16.5009 2.90237 16.8914 3.29289L17.563 3.96447C17.9535 4.35499 17.9535 4.98816 17.563 5.37868L15.6414 7.30026L13.5556 5.21448L15.4772 3.29289ZM12.1414 6.62869L4.80325 13.9669C4.66877 14.1013 4.57543 14.2714 4.53417 14.457L4.0014 16.8545L6.39886 16.3217C6.58452 16.2805 6.75456 16.1871 6.88904 16.0526L14.2272 8.71448L12.1414 6.62869Z" fill="#0F0F0F" />
@@ -446,50 +468,45 @@ $conn->close();
             }
         });
     </script>
-    <div class="modal fade" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
+
+    <div class="modal fade z-1000" id="editNoteModal" tabindex="-1" aria-labelledby="editNoteModalLabel" aria-hidden="true">
+        <div class="modal-dialog modal-dialog">
             <div class="modal-content">
                 <div class="modal-header">
-                    <h5 class="modal-title" id="editNoteModalLabel">Edit Note</h5>
+                    <h5 class="modal-title" id="exampleModalLabel">Write
+                        Your Post</h5>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form id="editNoteForm" action="DashboardMain.php" method="POST">
+                <form action="Namaj_main.php" method="POST">
                     <div class="modal-body">
-                        <div class="mb-3">
-                            <label for="noteTitle" class="form-label">Title</label>
-                            <input type="text" class="form-control" id="noteTitle" name="noteTitle">
-                        </div>
-                        <div class="mb-3">
-                            <label for="noteDetails" class="form-label">Details</label>
-                            <textarea class="form-control" id="noteDetails" name="noteDetails" rows="3"></textarea>
-                        </div>
 
                         <div class="mb-3">
-                            <input type="text" class="form-control" id="noteCreatedAt" name="noteCreatedAt" style="color: inherit;" readonly>
+                            <label for="noteTitle" class="form-label">
+                                Title</label>
+                            <input type="text" class="form-control" id="title" name="title" placeholder="Title.." required>
+                        </div>
+                        <div class="mb-3">
+                            <label for="noteDetails" class="form-label">
+                                Details</label>
+                            <textarea class="form-control bg-white" id="details" name="details" rows="3" placeholder="Datails.." required></textarea>
                         </div>
                     </div>
                     <div class="modal-footer">
                         <div class="container">
                             <div class="row align-items-start">
-                                <div class="col-5">
-                                    <div class="form-check form-switch">
-                                        <input class="form-check-input" type="checkbox" role="switch" id="public" name="public">
-                                        <p class="form-check-label bg-transparent" for="public">Public</p>
-                                    </div>
+                                <div class="col-8">
+
+                                </div>
+                                <div class="col-4">
+                                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
+                                    <button type="submit" class="btn btn-primary" name="save">Post</button>
                                 </div>
                             </div>
                         </div>
-                        <div class="col-7">
-                            <button type="submit" class="btn btn-danger" name="deleteNote">Delete Note</button>
-                            <button type="submit" class="btn btn-primary" name="saveChanges">Save
-                                changes</button>
-                        </div>
                     </div>
+                </form>
             </div>
         </div>
-        </form>
-    </div>
-    </div>
     </div>
 
 </body>

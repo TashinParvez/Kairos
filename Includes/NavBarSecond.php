@@ -129,9 +129,10 @@ foreach ($result as $row) {
                 <!------------------------------------ search bar ------------------------------------>
 
                 <form class="searchBar bg-white" method="GET" action="../Includes/global-search-bar.php">
-                    <span id="search-txt" class="z-10000">Search</span>
+                    <span id="search-txt" class="z-10000" style="width: 500px;">Search</span>
                     <input type="search" class="bg-white align-items-center border-secondary" name="country_name" value="<?php echo isset($_GET['country_name']) ? htmlspecialchars($_GET['country_name']) : ''; ?>" id="country_name" placeholder="Search Keyword" autocomplete="off" required style="width: 800px;" />
-                    <button class="btn btn-outline-success my-2 my-sm-0" type="submit">
+                    <button class="btn btn-outline-success my-2 my-sm-0" style="color: transparent; background-color: transparent; border: none;" type="submit">Button Text</button>
+
                         <i class="fa fa-search"></i>
                     </button>
                 </form>
