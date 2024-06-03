@@ -631,11 +631,11 @@ $percentagePassedDay = floor(($currentHourOfDay / $totalHoursOfDay) * 100);
                     <li><a class="dropdown-item" href="#" onclick="submitForm('alphabetical')"> alphabetically</a></li>
                 </ul> -->
 
-                <?php foreach ($labels as $label) { ?>
+                <!-- <?php foreach ($labels as $label) { ?>
                     <div class="second col-sm-auto" style="position: sticky; z-index: 1000;">
                         <a style="text-decoration:none;" href="#" class="hover-underline-animation" onclick="submitForm('<?php echo htmlspecialchars($label[0]); ?>')"><?php echo htmlspecialchars($label[0]); ?></a>
                     </div>
-                <?php } ?>
+                <?php } ?> -->
                 <!-- ............... -->
             </div>
             <div class="container m-0 bg-transparent p-0 mt-2" style="outline:none;">

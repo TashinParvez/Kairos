@@ -163,8 +163,8 @@ mysqli_close($conn);
         });
     </script>
     <!-- ------------------------MOST READ------------------- -->
-    <div class="container bg-white">
-        <H4 class="bg-white">Most Read</H4>
+    <div class="container bg-white m-0 ">
+        <H2 class="bg-white">Most Read</H2>
         <hr class="double">
         <div class="container bg-white">
             <div class="row mt-1 p-2 bg-white">
@@ -184,7 +184,7 @@ mysqli_close($conn);
         </div>
     </div>
     <!------------------ Recently added read ------------------>
-    <div class="container bg-white">
+    <div class="container bg-white m-0">
         <H4 class="bg-white">Recently Added</H4>
         <hr class="double bg-white">
         <div class="container bg-white" style="background: snow;">
@@ -209,35 +209,46 @@ mysqli_close($conn);
     </div>
     <!------------------------- alphabetically listed ------------------------->
 
-    <div class="container bg-white">
-        <H4 class="bg-white">ALL BOOKS</H4>
+    <div class="container bg-white m-0">
+        <H4 class="bg-white">All Books</H4>
         <hr class="double bg-white">
         <div class="row row-cols-1 row-cols-md-3 g-4 mt-4 bg-white">
             <?php
             foreach ($ABCDRead as $book) { ?>
                 <div class="col bg-white">
                     <div class="card mb-3 bg-white" style="max-width: 540px;">
-                        <div class="row g-0 bg-white">
-                            <div class="col-md-4 bg-white">
-                            </div>
-                            <div class="col-md-8 bg-white">
-                                <div class="card-body bg-white">
-                                    <h5 class="card-title bg-white">
-                                        <?php echo htmlspecialchars($book[0]); ?>
-                                    </h5>
-                                    <h6 class="bg-white">
-                                        <?php echo htmlspecialchars($book[1]); ?>
-                                    </h6>
-                                    <p class="card-text bg-white">
-                                        <?php echo htmlspecialchars($book[2]); ?>
-                                    </p>
-                                    <p class="card-text bg-white"><small class="text-muted bg-white">Last updated by
-                                            <?php echo htmlspecialchars($book[3]); ?>
-                                            <?php echo ' '; ?>
-                                            <?php echo htmlspecialchars($book[4]); ?>
-                                        </small></p>
-                                </div>
-                            </div>
+                    <div id="book-card" class="card-body bg-white">
+    <a href="bookRead.php" class="stretched-link"></a>
+    <h5 class="card-title bg-white">
+        <?php echo htmlspecialchars($book[0]); ?>
+    </h5>
+    <h6 class="bg-white">
+        <?php echo htmlspecialchars($book[1]); ?>
+    </h6>
+    <p class="card-text bg-white">
+        <?php echo htmlspecialchars($book[2]); ?>
+    </p>
+    <p class="card-text bg-white"><small class="text-muted bg-white">Last updated by
+        <?php echo htmlspecialchars($book[3]); ?>
+        <?php echo ' '; ?>
+        <?php echo htmlspecialchars($book[4]); ?>
+    </small></p>
+
+<style>
+#book-card {
+    position: relative;
+}
+
+#book-card a.stretched-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+</style>
+
                         </div>
                     </div>
                 </div>
