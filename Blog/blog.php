@@ -11,7 +11,7 @@ $search_text = '';
 if (isset($_POST['search'])) { // Showing searched blogs
     $search_text = $_POST['search_field'];
 
-    // query for showing search's blogs
+    // query for showing search's blogs__Project
     $sql = "SELECT concat(COALESCE(concat(firstName, ' '), ''), COALESCE(lastName, '')) AS name, date(b.created_at) AS created_date, topicName, description, created_at
             FROM blog AS b INNER JOIN user_info AS u
             ON b.userHandle = u.userHandle

@@ -98,10 +98,10 @@ if (isset($_POST['flexSwitchCheckDefault'])) {
     ?>
     <main class=" main bg-white shadow z-0 pr-0">
         <div class="row bg-white">
-            <div class="col-auto bg-white">
-                <img src="else.svg" alt="" srcset="">
+            <div class="col-auto bg-white rounded">
+                <img src="else.svg" alt="" class="rounded">
             </div>
-            <div class="col-auto bg-transparent" style="align-items:center;">
+            <div class="col-auto bg-transparent mb-3" style="align-items:center;">
                 <h1 class="bg-transparent">How was this day back then</h1>
                 <br>
                 <blockquote class="blockquote mb-0">
@@ -110,8 +110,8 @@ if (isset($_POST['flexSwitchCheckDefault'])) {
                     </footer>
                 </blockquote>
                 <br>
-                <div class="form-check form-switch bg-transparent">
-                    <form action="Memories.php" method="POST">
+                <div class="form-check form-switch bg-white m-0 p-0">
+                    <form action="Memories.php" method="POST" class="bg-white m-0 p-0">
                         <!-- <button type="submit">
                             <input class="form-check-input bg-transparent" type="checkbox" role="switch" id="flexSwitchCheckDefault" name="flexSwitchCheckDefault" <?php if ($flag == 1) echo 'checked'; ?> >
                             <label class="form-check-label bg-transparent" for="flexSwitchCheckDefault">Switch of notifiation
@@ -132,13 +132,12 @@ if (isset($_POST['flexSwitchCheckDefault'])) {
 
                 </div>
             </div>
-            <br>
             <!-- -------------------------------Notes--------------------------------------- -->
 
             <?php
             if ($notes != null && !empty($notes)) { ?>
 
-                <h4>Notes</h4>
+                <h4 class="bg-white">Notes</h4>
                 <hr>
                 <?php foreach ($notes as $ptr) { ?>
                     <div class="row bg-transparent pt-3 pr-4">
@@ -164,7 +163,7 @@ if (isset($_POST['flexSwitchCheckDefault'])) {
 
             <?php
             if ($journals != null && !empty($journals)) { ?>
-                <h4>Journals</h4>
+                <h4 class="bg-white">Journals</h4>
                 <hr>
                 <?php foreach ($journals as $ptr) { ?>
                     <div class="row bg-transparent pt-3 pr-4">
