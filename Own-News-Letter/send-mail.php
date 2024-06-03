@@ -165,7 +165,6 @@ foreach ($users_send_mail as $ptr) {
     if (mail($to_email, $subject, $message, $headers)) {
         echo "Email successfully sent to $to_email...";
 
-        header('Location: \Admin-Panel\SendMail.php');
     } else {
         echo "Email sending failed...";
     }
