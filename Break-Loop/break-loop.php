@@ -137,7 +137,7 @@ foreach ($allloops as $row) {
 
 // ------------------------Noman---------------- New Loop Create ----------------------------------
 if (isset($_POST['createLoop'])) {
-    
+
     $loopName = mysqli_real_escape_string($conn, $_POST['loopName']);
 
     $p1DoThis = mysqli_real_escape_string($conn, $_POST['p1DoThis']);
@@ -207,11 +207,11 @@ $sql = "SELECT ln.loopName, la.do, la.canDo
         WHERE userHandle = 'doctor1'
         ORDER BY ln.loopName";
 
-     
- 
 
-    $result = mysqli_query($conn, $sql);
-    $output_doctor_sugg = mysqli_fetch_all($result);
+
+
+$result = mysqli_query($conn, $sql);
+$output_doctor_sugg = mysqli_fetch_all($result);
 
 // mysqli_query($conn, $sql);  // delete loop name
 
@@ -404,8 +404,8 @@ $sql = "SELECT ln.loopName, la.do, la.canDo
                         <div class="card-body bg-transparent">
                             <h5 class="card-title bg-transparent">Doctor Suggestion</h5>
                             <p class="card-text bg-transparent">Feeling : confused, lonely, lonely, tired, unfocused
-                            Can DO: take a break, Call a friend or family member, Join a social group or online community, Take a short nap, Go for a walk</p>
-                            <a href="#" class="btn btn-primary">View/Edit Loop</a>
+                                Can DO: take a break, Call a friend or family member, Join a social group or online community, Take a short nap, Go for a walk</p>
+                            <a href="#" class="btn btn-primary" style="display: none;">View/Edit Loop</a>
                             <a href="#" class="btn btn-success">Delete Loop</a>
                         </div>
                     </div>
@@ -437,7 +437,7 @@ $sql = "SELECT ln.loopName, la.do, la.canDo
                                 </p>
 
                                 <!-- card btn -->
-                                <a href="#" class="btn btn-primary">View/Edit Loop</a>
+                                <a href="#" class="btn btn-primary" style="display: none;">View/Edit Loop</a>
                                 <a href="#" class="btn btn-success">Delete Loop</a>
                             </div>
                         </div>

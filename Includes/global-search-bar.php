@@ -198,6 +198,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                 <form id="filterForm" action="global-search-bar.php?country_name=<?php echo $searchQuery ?>" method="POST">
                         <div class="main">
                                 <div class="row align-items-start">
+                                        <label for="filters" class="label-control ml-1">Filters</label>
                                         <div class="col-1">
                                                 <div class="form-check">
                                                         <button type="submit" style="border: none;">
@@ -238,7 +239,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                         </button>
                                                 </div>
                                         </div>
-                                        <div class="col-1">
+                                        <div class="col-1" style="display: none;">
                                                 <div class="form-check">
                                                         <button type="button" onclick="document.getElementById('date').click();" style="border: none;">
                                                                 <input class="form-check-input filter-checkbox" type="checkbox" name="date" id="date" <?php if (isset($_POST['date'])) echo 'checked'; ?>>
@@ -259,7 +260,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
                                                 <label for="toDate">To:</label>
                                                 <input type="date" id="toDate" name="toDate" class="form-control" value="<?php echo isset($_POST['toDate']) ? $_POST['toDate'] : ''; ?>">
                                         </div>
-                                        <button type="submit">Submit</button>
+                                        <button type="submit" style="display: none;">Submit</button>
                                 </div>
                         </div>
                 </form>
