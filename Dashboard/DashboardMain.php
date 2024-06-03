@@ -5,6 +5,7 @@ $servername = 'localhost';
 $username = 'root';
 $password = '';
 $databasename = 'Kairos';
+$usernamefull  =  'Tashin Parvez';
 
 // connection obj
 $conn = mysqli_connect($servername, $username, $password, $databasename);
@@ -95,6 +96,9 @@ if (isset($_POST['saveChanges']) || isset($_POST['deleteNote'])) {
     // close connection
     mysqli_close($conn);
 }
+
+
+
 
 // ----------------- For label of users ---------------
 
@@ -529,7 +533,7 @@ mysqli_close($conn);
 
     <main class="main bg-white shadow z-0">
         <div class="container bg-white m-0 text-center mt-5">
-            <h2 class="bg-transparent">Good Morning Aranya</h2>
+            <h2 class="bg-transparent">Good Morning <?php echo '' . $usernamefull; ?></h2>
             <p class="bg-transparent" style="color:gray"><?php echo '' . $today; ?></p>
             <div class="container bg-transparent text-center d-flex justify-content-center align-items-center">
                 <div class="progress w-50" role="progressbar" aria-label="Example with label" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
@@ -654,15 +658,16 @@ mysqli_close($conn);
                                     </button>
 
                                 </div>
-
-                            <?php } ?>
                             </div>
 
-                            <!-- ----------------------------------- -->
+                        <?php } ?>
                     </div>
 
+                    <!-- ----------------------------------- -->
                 </div>
+
             </div>
+        </div>
         </div>
 
     </main>
