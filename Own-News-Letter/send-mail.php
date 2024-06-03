@@ -16,7 +16,7 @@ $result = mysqli_query($conn, $sql);
 
 $users_send_mail = mysqli_fetch_all($result);
 
-// print_r($notes);
+// print_r($users_send_mail);
 
 foreach ($users_send_mail as $ptr) {
     $userhandle = $ptr[0];
