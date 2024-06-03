@@ -64,9 +64,9 @@
                     <input class="form-control" type="text" placeholder="Your answer" aria-label="default input example" />
                 </div>
                 <div class="container d-flex justify-content-end">
-                    <button type="submit" name="save" class="btn btn-outline-secondary">
+                    <a href="\Dashboard\modal.php" type="submit" name="save" class="btn btn-outline-secondary">
                         Next
-                    </button>
+                    </a>
                 </div>
                 <br />
             </div>

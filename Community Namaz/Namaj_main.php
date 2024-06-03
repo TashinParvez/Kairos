@@ -343,7 +343,6 @@ $conn->close();
         <div class="container m-0 bg-transparent p-0 mt-2" style="outline:none;">
             <div class="row bg-white m-0 mb-2" style="display: flex; align-items: flex-end;">
                 <!-- Write Your Note Field (70% width) -->
-                <div class="col-lg-9 bg-white m-0 p-0" style="position: sticky; z-index: 1000;">
                     <button id="openModalInput" style="outline:none;" class="form-control form-control-lg mt-3 pt-3 pb-3 d-flex align-items-center shadow" type="button" placeholder="Write Your Note" aria-label=".form-control-lg example" data-bs-toggle="modal" data-bs-target="#editNoteModal">
                         <svg class="bg-white me-2" width="20" height="20" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
                             <path d="M1 22C1 21.4477 1.44772 21 2 21H22C22.5523 21 23 21.4477 23 22C23 22.5523 22.5523 23 22 23H2C1.44772 23 1 22.5523 1 22Z" fill="#0F0F0F" />
@@ -351,13 +350,6 @@ $conn->close();
                         </svg>
                         <span class="bg-transparent" style="color:gray; font-size: 1rem;">Post in the community</span>
                     </button>
-                </div>
-                <div class="col-lg-3 bg-transparent m-0 bg-transparent" style="position: sticky; z-index: 1000;">
-                    <form id="srchForm" class="border shadow" onsubmit="event.preventDefault();" role="search">
-                        <label for="search" style=" color:white;">Search for stuff</label>
-                        <input id="srchBar" type="search" placeholder="Search..." autofocus required />
-                        <button id="btnSrch" type="submit">Go</button>
-                    </form>
                 </div>
             </div>
         </div>

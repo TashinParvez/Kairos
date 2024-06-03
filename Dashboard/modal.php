@@ -147,7 +147,7 @@ mysqli_close($conn);
     <!-- extra Large Modal For Interest Page -->
 
     <button type="button" class="btn btn-primary" data-bs-toggle="modal" data-bs-target="#exampleModalXl">
-        Extra large modal
+        
     </button>
 
     <div class="modal fade" id="exampleModalXl" data-bs-backdrop="static" tabindex="-1"
@@ -206,8 +206,8 @@ mysqli_close($conn);
                         </datalist>
                         <br>
                         <div class="container d-flex justify-content-end">
-                            <button type="submit" name="skip" class="btn btn-outline-secondary">Skip</button>
-                            <button type="submit" name="save" class="btn btn-outline-secondary">Save</button>
+                            <a href="\Dashboard\DashboardMain.php" type="submit" name="skip" class="btn btn-outline-secondary">Skip</a>
+                            <a href="\Dashboard\DashboardMain.php" type="submit" name="save" class="btn btn-outline-secondary">Save</a>
                         </div>
                     </form>
 

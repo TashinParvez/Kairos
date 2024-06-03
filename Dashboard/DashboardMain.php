@@ -519,6 +519,46 @@ mysqli_close($conn);
                 display: block;
             }
         }
+        .card-hover-1 {
+    border-bottom: 2px solid #aed6f1; /* Light blue */
+}
+
+.card-hover-2 {
+    border-bottom: 2px solid #a9dfbf; /* Soft Green */
+}
+
+.card-hover-3 {
+    border-bottom: 2px solid #f5b7b1; /* Soft Pink */
+}
+
+.card-hover-4 {
+    border-bottom: 2px solid #f7cac9; /* Soft Orange */
+}
+
+.card-hover-5 {
+    border-bottom: 2px solid #d2b4de; /* Soft Purple */
+}
+
+.card-hover-6 {
+    border-bottom: 2px solid #f9e79f; /* Soft Yellow */
+}
+
+.card-hover-7 {
+    border-bottom: 2px solid #f1948a; /* Soft Red */
+}
+
+.card-hover-8 {
+    border-bottom: 2px solid #a2d9ce; /* Soft Teal */
+}
+
+.card-hover-9 {
+    border-bottom: 2px solid #d7bde2; /* Soft Brown */
+}
+
+.card-hover-10 {
+    border-bottom: 2px solid #d5dbdb; /* Soft Gray */
+}
+
     </style>
 </head>
 
@@ -535,10 +575,33 @@ mysqli_close($conn);
         <div class="container bg-white m-0 text-center mt-5">
             <h2 class="bg-transparent">Good Morning <?php echo '' . $usernamefull; ?></h2>
             <p class="bg-transparent" style="color:gray"><?php echo '' . $today; ?></p>
-            <div class="container bg-transparent text-center d-flex justify-content-center align-items-center">
-                <div class="progress w-50" role="progressbar" aria-label="Example with label" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100">
-                    <div class="progress-bar" style="width: 0%">0%</div>
-                </div>
+            <div class="container bg-transparent text-center justify-content-center align-items-center">
+            <?php
+// Calculate the percentage of the day passed
+$currentHourOfDay = date('G'); // 'G' gives the hour of the day (0-23)
+$totalHoursOfDay = 24;
+$percentagePassedDay = floor(($currentHourOfDay / $totalHoursOfDay) * 100);
+?>
+
+<div class="bg-white p-0 m-0 d-flex justify-content-center align-items-center">
+    <span class="bg-white me-3">Today's progress</span>
+    <div class="progress w-25" role="progressbar" aria-label="Daily progress" aria-valuenow="<?php echo $percentagePassedDay; ?>" aria-valuemin="0" aria-valuemax="100">
+        <div class="progress-bar" style="width: <?php echo $percentagePassedDay; ?>%"><?php echo $percentagePassedDay; ?>%</div>
+    </div>
+</div>
+
+<style>
+
+    .progress-bar {
+        font-size: 1.2em; /* Adjust the font size for better readability */
+        line-height: 30px; /* Center the text vertically */
+    }
+
+    .bg-white.d-flex {
+        width: 100%; /* Adjust the container width as needed */
+    }
+</style>
+
             </div>
         </div>
 
