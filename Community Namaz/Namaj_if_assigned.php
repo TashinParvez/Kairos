@@ -82,16 +82,23 @@ function generateRandomData($count, $min, $max)
 // Number of data points
 $dataCount = 7;
 
-// Generate data for each person
-$average = generateRandomData($dataCount, -100, 100);
-$previous1 = generateRandomData($dataCount, -100, 100);
-$previous2 = generateRandomData($dataCount, -100, 100);
-$self = generateRandomData($dataCount, -100, 100);
-$after1 = generateRandomData($dataCount, -100, 100);
-$after2 = generateRandomData($dataCount, -100, 100);
+
+$average = array(2, 2.5, 4, 5, 2.9, 2, 4);
+$previous1 = array(1, 3, 3, 2, 1, 5, 2);
+$previous2 = array(2, 1, 1, 3, 4, 4, 3);
+$self = array(1, 2, 1, 3, 2, 5, 2);
+$after1 = array(1, 1, 5, 4, 2, 4, 3);
+$after2 = array(1, 3, 2, 2, 1, 2, 3);
+// // Generate data for each person
+// $average = generateRandomData($dataCount, -100, 100);
+// $previous1 = generateRandomData($dataCount, -100, 100);
+// $previous2 = generateRandomData($dataCount, -100, 100);
+// $self = generateRandomData($dataCount, -100, 100);
+// $after1 = generateRandomData($dataCount, -100, 100);
+// $after2 = generateRandomData($dataCount, -100, 100);
 
 // Labels for the chart (e.g., months)
-$labels = ['January', 'February', 'March', 'April', 'May', 'June', 'July'];
+$labels = ['02/06/2024', '01/06/2024', '31/05/2024', '30/05/2024', '29/05/2024', '28/05/2024', '27/05/2024'];
 
 // Prepare data in the format required by Chart.js
 $chartData = [
