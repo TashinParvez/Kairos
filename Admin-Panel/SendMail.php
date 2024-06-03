@@ -1,3 +1,24 @@
+<?php
+include('../Dashboard/connect_db.php'); // database connection
+
+
+$users_send_mail = '';
+if (isset($_POST['retrieveData'])) {
+
+    $sql = "SELECT userHandle, firstName, mail
+FROM user_info
+WHERE personal_journal_mail = 0;";
+
+    $result = mysqli_query($conn, $sql);
+
+    $users_send_mail = mysqli_fetch_all($result);
+}
+
+if (isset($_POST['sendMail'])) {
+    // tashin
+}
+
+?>
 <!DOCTYPE html>
 <html lang="en">
 
@@ -17,33 +38,37 @@
 
 <body>
     <style>
-        #scroll{
+        #scroll {
             height: 500px;
         }
     </style>
     <?php include('sidebar.php'); ?>
     <main class="main-content m-0 p-0 h-100 w-100 m-0">
-            <div class="row m-0">
-                <div class="col-8 p-0 m-0">
-                    <div class="container shadow rounded h-100 w-100 p-0 m-0" id="scroll">
-                        Test InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest Inputs
-                        Test InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest Inputs
-                        Test InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest Inputs
-                        Test InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest Inputs
-                        Test InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest Inputs
-                        Test InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest Inputs
-                        Test InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest Inputs
-                        Test InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest Inputs
-                        Test InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest Inputs
-                        Test InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest InputsTest Inputs
-                    </div>
+        <div class="row m-0">
+            <div class="col-8 p-0 m-0">
+                <div class="container shadow rounded h-100 w-100 p-0 m-0" id="scroll">
+                    Emails..........
+                    </br>
+                    <?php
+                    if (isset($_POST['retrieveData'])) {
+                        foreach ($users_send_mail as $mail) {
+                            echo $mail[2]; ?> </br>
+                    <?php
+                        }
+                    }
+                    ?>
                 </div>
-                <div class="col-4">
-                <button type="button" class="btn btn-primary">Retrieve Data</button>
-                </div>
+            </div>
+            <div class="col-4">
+                <form action="SendMail.php" method="post">
+                    <button type="submit" class="btn btn-primary" name="retrieveData">Retrieve Data</button>
+                </form>
+            </div>
         </div>
         <br>
-        <button type="button" class="btn btn-primary">Send Mail</button>
+        <form action="SendMail.php" method="post">
+            <button type="submit" class="btn btn-primary" name="sendMail">Send Mail</button>
+        </form>
     </main>
 </body>
 
