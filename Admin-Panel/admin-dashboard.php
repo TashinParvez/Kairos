@@ -16,7 +16,6 @@ switch ($duration) {
     case 'weakly':
 
 
-        //.........gpt......
 
     //     $sql = "SELECT 
     //     CONCAT(
@@ -114,7 +113,7 @@ switch ($duration) {
                 GROUP BY cnt_ntb.duration_range
                 ORDER BY cnt_ntb.duration_ll";*/
 
-        ////////.........gpt.......
+        ////////................
 
         $sql = "SELECT 
                     DATE_FORMAT(LAST_DAY(DATE_SUB(CURRENT_DATE(), INTERVAL (duration_num - 1) MONTH)), '%M-%y') AS month_year,
@@ -149,7 +148,7 @@ switch ($duration) {
         //..........
         break;
     case 'yearly':
-        ////////.........gpt.......
+        ////////................
 
         $sql = "SELECT 
                     DATE_FORMAT(DATE_SUB(CURRENT_DATE(), INTERVAL (year_num - 1) YEAR), '%Y') AS year,

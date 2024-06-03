@@ -49,7 +49,7 @@ $result = mysqli_query($conn, $sql);
 $Recommended_comm = mysqli_fetch_all($result);
 
 // ---------------------------- for Joined Community
-$sql = "SELECT ntc.name, ntc.Details, ntc.cntUser, ntc.displayPicture 
+$sql = "SELECT distinct ntc.name, ntc.Details, ntc.cntUser, ntc.displayPicture 
         FROM (SELECT id, name, Details, cntUser, displayPicture
                 FROM category
             ) as ntc
