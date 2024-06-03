@@ -1,12 +1,13 @@
 <?php
 include '../Dashboard/connect_db.php'; // database connection
+$userHandle = 'munna';     
+$userHandle = ''; 
 
 // session_start(); // Start the session
 // $userHandle = mysqli_real_escape_string($conn, $_SESSION['userHandle']); // after linked all page. it will be uncommented
 // $userHandle = mysqli_real_escape_string($conn, 'munna'); // after linked all page. it will be deleted
 
-$userHandle = null;
-
+// ------------ project
 function fetchRandomGoodThing()
 {
     global $conn;
