@@ -95,7 +95,7 @@ if (isset($_POST['help'])) {
 
     $result = mysqli_query($conn, $sql);
     $output_doctor = mysqli_fetch_all($result);
-    print_r($output_doctor);
+    // print_r($output_doctor);
 }
 
 // ----------------------------------------------------------------------------------------------------
