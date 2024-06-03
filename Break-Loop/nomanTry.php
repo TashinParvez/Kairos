@@ -136,47 +136,44 @@ foreach ($allloops as $row) {
 // echo '</pre>';
 
 // ------------------------Noman---------------- New Loop Create ----------------------------------
-if (isset($_POST['createLoop'])) {
-    
-    $loopName = mysqli_real_escape_string($conn, $_POST['loopName']);
 
-    $p1DoThis = mysqli_real_escape_string($conn, $_POST['p1DoThis']);
-    $p1WantToDoThis = mysqli_real_escape_string($conn, $_POST['p1WantToDoThis']);
+$loopName = 'loop1';
 
-    $p2DoThis = mysqli_real_escape_string($conn, $_POST['p2DoThis']);
-    $p2WantToDoThis = mysqli_real_escape_string($conn, $_POST['p2WantToDoThis']);
+$p1DoThis = null;
+$p1WantToDoThis = null;
 
-    $p3DoThis = mysqli_real_escape_string($conn, $_POST['p3DoThis']);
-    $p3WantToDoThis = mysqli_real_escape_string($conn, $_POST['p3WantToDoThis']);
+$p2DoThis = null;
+$p2WantToDoThis = null;
 
-    // insert
-    $sql = "INSERT INTO loopname (no, loopName, userHandle) 
+$p3DoThis = null;
+$p3WantToDoThis = null;
+
+// insert
+$sql = "INSERT INTO loopname (no, loopName, userHandle) 
         VALUES (NULL, '$loopName', '$userHandle');";
 
-    mysqli_query($conn, $sql);  // insert Done
+// mysqli_query($conn, $sql);  // insert Done
 
-    // get loopNo
-    $sql = "SELECT no
+// get loopNo
+$sql = "SELECT no
         FROM loopname
         WHERE loopName = '$loopName' && userHandle = '$userHandle'";
 
-    $result = mysqli_query($conn, $sql);  // insert Done
+// $result = mysqli_query($conn, $sql);  // insert Done
 
-    $loop = mysqli_fetch_all($result);
-    // print_r($loop);
+// $loop = mysqli_fetch_all($result);
+// print_r($loop);
 
-    $loopNo = $loop[0][0]; // main
-    // $loopNo = 0;  // remove
+// $loopNo = $loop[0][0]; // main
+$loopNo = 0;  // remove
 
-    // push loop info
-    $sql = "INSERT INTO loop_activities (do, canDo, loopNo) 
+// push loop info
+$sql = "INSERT INTO loop_activities (do, canDo, loopNo) 
         VALUES ('$p1DoThis', '$p1WantToDoThis', '$loopNo'),
                ('$p2DoThis', '$p2WantToDoThis', '$loopNo'),
                ('$p3DoThis', '$p3WantToDoThis', '$loopNo');";
 
-    mysqli_query($conn, $sql);  // insert Done
-}
-
+// mysqli_query($conn, $sql);  // insert Done
 
 // ---------------------------------------- DELETE Loops ----------------------------------
 // get loop no
@@ -197,21 +194,6 @@ $sql = "DELETE FROM loop_activities
 
 $sql = "DELETE FROM loopname
         WHERE no = $loopNo && userHandle = '$userHandle'";
-
-
-/// -------------------- doctor suggestion loop code 
-$sql = "SELECT ln.loopName, la.do, la.canDo
-        FROM loopname as ln
-        INNER JOIN loop_activities as la
-        ON ln.no = la.loopNo
-        WHERE userHandle = 'doctor1'
-        ORDER BY ln.loopName";
-
-     
- 
-
-    $result = mysqli_query($conn, $sql);
-    $output_doctor_sugg = mysqli_fetch_all($result);
 
 // mysqli_query($conn, $sql);  // delete loop name
 
@@ -345,6 +327,7 @@ $sql = "SELECT ln.loopName, la.do, la.canDo
 
     <main class="main bg-white shadow">
 
+        <?php print_r($output_doctor); ?>
         <!------------------------------ head Segment ------------------------------>
         <div class="row p-4 p-md-5 mb-4 rounded text-bg-secondary justify-content-center z-8 bg-transparent">
             <div class="wrapper bg-transparent">
@@ -403,8 +386,8 @@ $sql = "SELECT ln.loopName, la.do, la.canDo
                     <div class="card bg-transparent">
                         <div class="card-body bg-transparent">
                             <h5 class="card-title bg-transparent">Doctor Suggestion</h5>
-                            <p class="card-text bg-transparent">Feeling : confused, lonely, lonely, tired, unfocused
-                            Can DO: take a break, Call a friend or family member, Join a social group or online community, Take a short nap, Go for a walk</p>
+                            <p class="card-text bg-transparent">With supporting text below as a natural lead-in to
+                                additional content.</p>
                             <a href="#" class="btn btn-primary">View/Edit Loop</a>
                             <a href="#" class="btn btn-success">Delete Loop</a>
                         </div>
@@ -445,9 +428,6 @@ $sql = "SELECT ln.loopName, la.do, la.canDo
                 <?php } ?>
             </div>
             <!-- ------------------------------------------------------------------- -->
-
-
-
         </div>
     </main>
 
@@ -460,7 +440,7 @@ $sql = "SELECT ln.loopName, la.do, la.canDo
                     <h1 class="modal-title fs-5 z-1000 bg-transparent" id="exampleModalLabel">Modal title</h1>
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
-                <form action="break-loop.php" method="post">
+                <form action="nomanTry.php" method="post">
                     <div class="modal-body" style="z-index:100">
 
                         <div class="row mb-3">
@@ -489,7 +469,7 @@ $sql = "SELECT ln.loopName, la.do, la.canDo
 
     <div class="modal fade z-10" id="exampleModal2" tabindex="-1" aria-labelledby="exampleModalLabel2" aria-hidden="true">
         <!-------------- New loop Modal -------------->
-        <!---------Noman------------------------------------------>
+        <!--------------------------------------------------->
 
         <div class="modal-dialog bg-transparent">
             <div class="modal-content">
@@ -498,11 +478,11 @@ $sql = "SELECT ln.loopName, la.do, la.canDo
                     <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
                 </div>
                 <div class="modal-body">
-                    <form action="break-loop.php" method="post">
+                    <form>
                         <div class="row mb-3">
                             <label for="inputLoopName" class="col-sm-6 col-form-label">Loop Name</label>
                             <div class="col-sm-6">
-                                <input type="text" class="form-control" id="inputLoopName" name="loopName">
+                                <input type="text" class="form-control" id="inputLoopName">
                             </div>
                         </div>
                         <hr>
@@ -512,9 +492,9 @@ $sql = "SELECT ln.loopName, la.do, la.canDo
 
                             <div class="row justify-content-center">
                                 <div class="form-text">You do this</div>
-                                <input type="text" class="col-6 form-control" name="p1DoThis">
+                                <input type="text" class="col-6 form-control">
                                 <div class="form-text">You want to do this</div>
-                                <input type="text" class="col-6 form-control" name="p1WantToDoThis">
+                                <input type="text" class="col-6 form-control">
                             </div>
                         </div>
                         <hr>
@@ -523,9 +503,9 @@ $sql = "SELECT ln.loopName, la.do, la.canDo
                             <label class="form-label">Problem-2</label>
                             <div class="row justify-content-center">
                                 <div class="form-text">You do this</div>
-                                <input type="text" class="col-6 form-control" name="p2DoThis">
+                                <input type="text" class="col-6 form-control">
                                 <div class="form-text">You want to do this</div>
-                                <input type="text" class="col-6 form-control" name="p2WantToDoThis">
+                                <input type="text" class="col-6 form-control">
                             </div>
                         </div>
                         <hr>
@@ -534,15 +514,15 @@ $sql = "SELECT ln.loopName, la.do, la.canDo
                             <label class="form-label">Problem-3</label>
                             <div class="row justify-content-center">
                                 <div class="form-text">You do this</div>
-                                <input type="text" class="col-6 form-control" name="p3DoThis">
+                                <input type="text" class="col-6 form-control">
                                 <div class="form-text">You want to do this</div>
-                                <input type="text" class="col-6 form-control" name="p3WantToDoThis">
+                                <input type="text" class="col-6 form-control">
                             </div>
                         </div>
                         <hr>
                         <div class="modal-footer">
                             <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Close</button>
-                            <button type="submit" class="btn btn-primary" name="createLoop" id="createLoop">Create Loop</button>
+                            <button type="submit" class="btn btn-primary">Create Loop</button>
                         </div>
                     </form>
                 </div>
@@ -594,6 +574,10 @@ $sql = "SELECT ln.loopName, la.do, la.canDo
                                         <td>
                                             <?php echo htmlspecialchars($output[5]); ?>
                                         </td>
+                                        <td>
+                                            <?php echo htmlspecialchars($output[6]); ?>
+                                        </td>
+
                                     </tr>
 
                                     <?php ++$cnt; ?>
