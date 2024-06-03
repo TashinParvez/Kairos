@@ -276,7 +276,7 @@ if (isset($_POST['update'])) {
                         <div class="progress-bar" style="width: 0%">0%</div>
 
                     </div>
-                    <form action="\Community Namaz\Namaj_if_assigned.php" method="post">
+                    <form action="\Community Namaz\Namaj_if_assigned.php" method="post" class="bg-white">
                         <div class="container bg-white">
                             <div class="form-check form-switch bg-white">
                                 <input class="form-check-input" type="checkbox" id="Fajr" name="Fajr">
@@ -307,7 +307,7 @@ if (isset($_POST['update'])) {
                                 </div>
                             </div>
                         </div>
-                        <button class="btn btn-outline-primary mb-2" type="submit" name="update">Today's Update</button>
+                        <button class="btn btn-outline-primary mb-2 " type="submit" name="update">Today's Update</button>
                     </form>
                 </div>
             </div>

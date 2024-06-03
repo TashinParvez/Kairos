@@ -122,40 +122,35 @@ mysqli_close($conn);
 <html lang="en">
 
 <head>
-    <meta charset="UTF-8">
+<meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Edit Profile</title>
-    <link rel="stylesheet" href="editProfile.php">
-    <link rel="stylesheet" href="../Dashboard/style.css">
-    <link rel="stylesheet" href="library.css">
-
-    <!-- Bootstrap links -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
-
+    <title>Kairos</title>
+    <link rel="icon" type="image/x-icon" href="/Images/Picture1.png">
+    </link>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.3.1/css/all.css" integrity="sha384-mzrmE5qonljUremFsqc01SB46JvROS7bZs3IO2EmfFsd15uHvIt+Y8vEf7N7fWAU" crossorigin="anonymous">
+    <link href="https://fonts.googleapis.com/css2?family=Ubuntu:ital,wght@0,300;0,400;0,500;0,700;1,300;1,400;1,500;1,700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../Includes/style.css">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js" integrity="sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r" crossorigin="anonymous">
+    </script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js" integrity="sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy" crossorigin="anonymous">
+    </script>
 
 </head>
 
 <body>
     <!-- Navbar -->
 
-    <?php include('/Kairos/Dashboard/navbar.php'); ?>
+    <?php
+    include '../Includes/NavBarSecond.php'; // uncomment
+    include '../Includes/Sidebar.php'; // uncomment
+    include '../Includes/HappyJar.php'; // uncomment
+    ?>
     <!-- Search bar -->
 
-
-    <div class="container-fluid">
-        <div class="row m-0">
-            <div class="row justify-content-center mt-3" style="overflow-x: hidden;">
-                <div class="col-lg-6">
-                    <div class="input-group">
-                        <input type="search" class="form-control rounded" placeholder="Which one you are looking for..." aria-label="Search" aria-describedby="search-addon" />
-                        <button type="button" class="btn btn-outline-primary" data-mdb-ripple-init>Search</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-
+<main class="main bg-white shadow">
     <script>
         // Initialization for ES Users
         import {
@@ -167,55 +162,42 @@ mysqli_close($conn);
             Ripple
         });
     </script>
-
-
     <!-- ------------------------MOST READ------------------- -->
-
-    <div class="container">
-        <H4>Most Read</H4>
+    <div class="container bg-white m-0 ">
+        <H2 class="bg-white">Most Read</H2>
         <hr class="double">
-
-        <div class="container" style="background: snow;">
-
-            <div class="row mt-1 p-2">
-
+        <div class="container bg-white">
+            <div class="row mt-1 p-2 bg-white">
                 <?php
                 foreach ($mostRead as $read) { ?>
 
-                    <div class="col card ms-2 me-2 "><img src="../Images/logo2.png">
-                        <div class="card-body">
-                            <div class="layer">
-
-                                <h6> <?php echo htmlspecialchars($read[0]); ?></h6>
-                                <p> <?php echo htmlspecialchars($read[1]); ?> </p>
+                    <div class="col card ms-2 me-2 bg-white">
+                        <div class="card-body bg-white">
+                            <div class="layer bg-white">
+                                <h6 class="bg-white"> <?php echo htmlspecialchars($read[0]); ?></h6>
+                                <p class="bg-white"> <?php echo htmlspecialchars($read[1]); ?> </p>
                             </div>
                         </div>
                     </div>
-
                 <?php } ?>
-
             </div>
         </div>
     </div>
-
-
     <!------------------ Recently added read ------------------>
-
-
-    <div class="container">
-        <H4>Recently Added</H4>
-        <hr class="double">
-        <div class="container" style="background: snow;">
-            <div class="row mt-1 p-2">
+    <div class="container bg-white m-0">
+        <H4 class="bg-white">Recently Added</H4>
+        <hr class="double bg-white">
+        <div class="container bg-white" style="background: snow;">
+            <div class="row mt-1 p-2 bg-white">
 
                 <?php
                 foreach ($recentlyAdded as $read) { ?>
 
-                    <div class="col card ms-2 me-2 "><img src="../Images/logo2.png">
-                        <div class="card-body">
-                            <div class="layer">
-                                <h6> <?php echo htmlspecialchars($read[0]); ?></h6>
-                                <p> <?php echo htmlspecialchars($read[1]); ?> </p>
+                    <div class="col card ms-2 me-2 bg-white">
+                        <div class="card-body bg-white">
+                            <div class="layer bg-white">
+                                <h6 class="bg-white"> <?php echo htmlspecialchars($read[0]); ?></h6>
+                                <p class="bg-white"> <?php echo htmlspecialchars($read[1]); ?> </p>
                             </div>
                         </div>
                     </div>
@@ -225,43 +207,48 @@ mysqli_close($conn);
             </div>
         </div>
     </div>
-
-
     <!------------------------- alphabetically listed ------------------------->
 
-    <div class="container">
-
-        <H4>ALL BOOKS</H4>
-        <hr class="double">
-
-        <div class="row row-cols-1 row-cols-md-3 g-4 mt-4">
-
+    <div class="container bg-white m-0">
+        <H4 class="bg-white">All Books</H4>
+        <hr class="double bg-white">
+        <div class="row row-cols-1 row-cols-md-3 g-4 mt-4 bg-white">
             <?php
             foreach ($ABCDRead as $book) { ?>
-                <div class="col">
-                    <div class="card mb-3" style="max-width: 540px;">
-                        <div class="row g-0">
-                            <div class="col-md-4">
-                                <img src="../Images/logo2.png" class="img-fluid rounded-start" alt="...">
-                            </div>
-                            <div class="col-md-8">
-                                <div class="card-body">
-                                    <h5 class="card-title">
-                                        <?php echo htmlspecialchars($book[0]); ?>
-                                    </h5>
-                                    <h6>
-                                        <?php echo htmlspecialchars($book[1]); ?>
-                                    </h6>
-                                    <p class="card-text">
-                                        <?php echo htmlspecialchars($book[2]); ?>
-                                    </p>
-                                    <p class="card-text"><small class="text-muted">Last updated by
-                                            <?php echo htmlspecialchars($book[3]); ?>
-                                            <?php echo ' '; ?>
-                                            <?php echo htmlspecialchars($book[4]); ?>
-                                        </small></p>
-                                </div>
-                            </div>
+                <div class="col bg-white">
+                    <div class="card mb-3 bg-white" style="max-width: 540px;">
+                    <div id="book-card" class="card-body bg-white">
+    <a href="bookRead.php" class="stretched-link"></a>
+    <h5 class="card-title bg-white">
+        <?php echo htmlspecialchars($book[0]); ?>
+    </h5>
+    <h6 class="bg-white">
+        <?php echo htmlspecialchars($book[1]); ?>
+    </h6>
+    <p class="card-text bg-white">
+        <?php echo htmlspecialchars($book[2]); ?>
+    </p>
+    <p class="card-text bg-white"><small class="text-muted bg-white">Last updated by
+        <?php echo htmlspecialchars($book[3]); ?>
+        <?php echo ' '; ?>
+        <?php echo htmlspecialchars($book[4]); ?>
+    </small></p>
+
+<style>
+#book-card {
+    position: relative;
+}
+
+#book-card a.stretched-link {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: 1;
+}
+</style>
+
                         </div>
                     </div>
                 </div>
@@ -269,7 +256,7 @@ mysqli_close($conn);
         </div>
     </div>
     </div>
-
+    </main>
 </body>
 
 </html>

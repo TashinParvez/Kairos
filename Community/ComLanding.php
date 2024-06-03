@@ -267,7 +267,7 @@ mysqli_close($conn);
                             <div class="card-body bg-white">
                                 <h5 class="card-title bg-white"><?php echo htmlspecialchars($ptr[0]); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($ptr[1]); ?></p>
-                                <a href="#" class="btn btn-primary">Visit</a>
+                                <a href="\Community Namaz\Namaj_main.php" class="btn btn-primary">Visit</a>
                             </div>
                         </div>
                     </div>
@@ -288,7 +288,7 @@ mysqli_close($conn);
                             <div class="card-body bg-white">
                                 <h5 class="card-title bg-white"><?php echo htmlspecialchars($ptr[0]); ?></h5>
                                 <p class="card-text"><?php echo htmlspecialchars($ptr[1]); ?></p>
-                                <a href="#" class="btn btn-primary">Go somewhere</a>
+                                <a href="#" class="btn btn-primary">Enter</a>
                             </div>
                         </div>
                     </div>
