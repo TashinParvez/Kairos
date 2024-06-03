@@ -7,67 +7,64 @@ include('../Dashboard/connect_db.php');
 $userHandle = mysqli_real_escape_string($conn, 'abcdefgh'); // after linked all page. it will be deleted
 
 
-// //---------------------------- Graph Code ----------------------------------------
-// // avg prev him after
-// $sql = "SELECT * 
-//         FROM (SELECT j.userHandle, nc.date, AVG(nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha) as total_namaz
-//               FROM user_joined_category as j
-//               INNER JOIN
-//               namaz_c as nc 
-//               ON nc.userHandle = j.userHandle
-//                 WHERE j.cat_id = 2
-//                 GROUP BY nc.date
-//             ) as AVG
+//---------------------------- Graph Code ----------------------------------------
+// avg prev him after
+$sql = "SELECT * 
+        FROM (SELECT j.userHandle, nc.date, AVG(nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha) as total_namaz
+              FROM user_joined_category as j
+              INNER JOIN
+              namaz_c as nc 
+              ON nc.userHandle = j.userHandle
+                WHERE j.cat_id = 2
+                GROUP BY nc.date
+            ) as AVG
 
-//         UNION ALL
+        UNION ALL
 
-//         SELECT * 
-//         FROM (SELECT j.userHandle, nc.date, nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha as total_namaz
-//               FROM user_joined_category as j 
-//               INNER JOIN
-//               namaz_c as nc 
-//               ON nc.userHandle = j.userHandle
-//               WHERE joined_date <
-//                     (    SELECT joined_date
-//                    		 FROM user_joined_category
-//                   		 WHERE userHandle = 'tashin19' && cat_id = 2
-//                     ) && nc.date BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE
-//                     && j.cat_id = 2
-//                 ORDER BY joined_date DESC
-//                 LIMIT 2
-//             ) as earlier_entries
+        SELECT * 
+        FROM (SELECT j.userHandle, nc.date, nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha as total_namaz
+              FROM user_joined_category as j 
+              INNER JOIN
+              namaz_c as nc 
+              ON nc.userHandle = j.userHandle
+              WHERE joined_date <
+                    (    SELECT joined_date
+                   		 FROM user_joined_category
+                  		 WHERE userHandle = 'tashin19' && cat_id = 2
+                    ) && nc.date BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE
+                    && j.cat_id = 2
+                ORDER BY joined_date DESC
+                LIMIT 2
+            ) as earlier_entries
 
-//         UNION ALL
+        UNION ALL
 
-//         SELECT * 
-//         FROM (SELECT j.userHandle, nc.date, (nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha) as total_namaz
-//               FROM user_joined_category as j
-//               INNER JOIN
-//               namaz_c as nc
-//               ON nc.userHandle = j.userHandle
-//               WHERE j.userHandle = 'tashin19' && j.cat_id = 2
-//             ) as himself
+        SELECT * 
+        FROM (SELECT j.userHandle, nc.date, (nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha) as total_namaz
+              FROM user_joined_category as j
+              INNER JOIN
+              namaz_c as nc
+              ON nc.userHandle = j.userHandle
+              WHERE j.userHandle = 'tashin19' && j.cat_id = 2
+            ) as himself
 
-//         UNION ALL
+        UNION ALL
 
-//         SELECT * 
-//         FROM (SELECT j.userHandle, nc.date, nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha as total_namaz
-//               FROM user_joined_category as j 
-//               INNER JOIN
-//               namaz_c as nc 
-//               ON nc.userHandle = j.userHandle
-//                 WHERE joined_date >
-//                     (   SELECT joined_date
-//                    		FROM user_joined_category
-//                   		WHERE userHandle = 'tashin19' && cat_id = 2
-//                     ) && nc.date BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE
-//                     && j.cat_id = 2
-//                 ORDER BY joined_date DESC
-//                 LIMIT 2
-//             ) as later_entries;";
-
-// $result = mysqli_query($conn, $sql);
-// $graphsdata = mysqli_fetch_all($result);
+        SELECT * 
+        FROM (SELECT j.userHandle, nc.date, nc.fajar+nc.dhuhr+nc.asr+nc.magrib+nc.isha as total_namaz
+              FROM user_joined_category as j 
+              INNER JOIN
+              namaz_c as nc 
+              ON nc.userHandle = j.userHandle
+                WHERE joined_date >
+                    (   SELECT joined_date
+                   		FROM user_joined_category
+                  		WHERE userHandle = 'tashin19' && cat_id = 2
+                    ) && nc.date BETWEEN DATE_SUB(CURRENT_DATE, INTERVAL 7 DAY) AND CURRENT_DATE
+                    && j.cat_id = 2
+                ORDER BY joined_date DESC
+                LIMIT 2
+            ) as later_entries;";
 
 // Sample data generation
 function generateRandomData($count, $min, $max)
@@ -89,13 +86,6 @@ $previous2 = array(2, 1, 1, 3, 4, 4, 3);
 $self = array(1, 2, 1, 3, 2, 5, 2);
 $after1 = array(1, 1, 5, 4, 2, 4, 3);
 $after2 = array(1, 3, 2, 2, 1, 2, 3);
-// // Generate data for each person
-// $average = generateRandomData($dataCount, -100, 100);
-// $previous1 = generateRandomData($dataCount, -100, 100);
-// $previous2 = generateRandomData($dataCount, -100, 100);
-// $self = generateRandomData($dataCount, -100, 100);
-// $after1 = generateRandomData($dataCount, -100, 100);
-// $after2 = generateRandomData($dataCount, -100, 100);
 
 // Labels for the chart (e.g., months)
 $labels = ['02/06/2024', '01/06/2024', '31/05/2024', '30/05/2024', '29/05/2024', '28/05/2024', '27/05/2024'];
@@ -145,7 +135,8 @@ $chartData = [
 
 // Convert PHP array to JSON
 $chartDataJson = json_encode($chartData);
-
+// $result = mysqli_query($conn, $sql);
+// $graphsdata = mysqli_fetch_all($result);
 
 // ...........Namaz main page work ................
 
