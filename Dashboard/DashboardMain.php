@@ -68,8 +68,13 @@ if (isset($_POST['saveChanges']) || isset($_POST['deleteNote'])) {
     // .....****** If we don't want to store deleted Notes in database, then it will be deleted *******...............
     if (isset($_POST['deleteNote'])) {
         // print($noteCreatedAt);
-        $sql = "DELETE FROM notes
-                WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
+        // $sql = "DELETE FROM notes
+        //         WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
+
+        $sql = "SET FOREIGN_KEY_CHECKS = 0;
+        DELETE FROM notes WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt';
+        SET FOREIGN_KEY_CHECKS = 1;";
+
 
         /*
                 DELETE FROM notes
@@ -79,11 +84,6 @@ if (isset($_POST['saveChanges']) || isset($_POST['deleteNote'])) {
                 */
     }
 
-    // .....****** If we want to store deleted Notes in database, then it will be uncommented *******...............
-    // if (isset($_POST['deleteNote'])) {
-    //     $sql = "UPDATE notes SET deleteStatus = 1
-    //             WHERE userHandle = '$userHandle' AND created_at = '$noteCreatedAt'";
-    // }
 
     // save to db and check
     if (mysqli_query($conn, $sql)) {
