@@ -34,7 +34,7 @@ if (isset($_POST['save']) || isset($_POST['newSlice'])) {
         if (mysqli_query($conn, $sql)) {
             header('Location: Personal-Journal.php');
         } else {
-            echo 'query error: '.mysqli_error($conn);
+            echo 'query error: ' . mysqli_error($conn);
         }
     }
     // close connection
@@ -124,7 +124,7 @@ if (isset($_POST['add'])) {
             // success
             header('Location: #');
         } else {
-            echo 'query error: '.mysqli_error($conn);
+            echo 'query error: ' . mysqli_error($conn);
         }
     }
 }
@@ -213,10 +213,8 @@ mysqli_close($conn);
     <title>Document</title>
     <link rel="icon" type="image/x-icon" href="/Images/Picture1.png">
     <!-- Bootstrap links -->
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet"
-        integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
-    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js"
-        integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-rbsA2VBKQhggwzxH7pPCaAqO46MgnOM80zW1RWuH61DGLwZJEdK2Kadq2F9CUG65" crossorigin="anonymous">
+    <script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous">
     </script>
     <!-- Include jQuery library -->
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
@@ -230,14 +228,14 @@ mysqli_close($conn);
 <body>
     <?php
     include '../Includes/NavBarSecond.php'; // uncomment
-include '../Includes/Sidebar.php'; // uncomment
-?>
+    include '../Includes/Sidebar.php'; // uncomment
+    ?>
 
     <style>
-    .second {
-        background-color: white;
-        color: black;
-    }
+        .second {
+            background-color: white;
+            color: black;
+        }
     </style>
 
 
@@ -259,19 +257,13 @@ include '../Includes/Sidebar.php'; // uncomment
                             <div class="row align-items-center bg-white">
                                 <label for="goodthing1" class="col-sm-2 col-form-label bg-white">1.</label>
                                 <div class="col-sm-10 bg-white">
-                                    <input type="text" class="form-control bg-white" id="goodthing1" name="goodthing1"
-                                        value="<?php echo htmlspecialchars($goodthing1); ?>"
-                                        <?php if ($goodthing1 != null || strlen($goodthing1) != 0) { ?> readonly
-                                        <?php } ?>>
+                                    <input type="text" class="form-control bg-white" id="goodthing1" name="goodthing1" value="<?php echo htmlspecialchars($goodthing1); ?>" <?php if ($goodthing1 != null || strlen($goodthing1) != 0) { ?> readonly <?php } ?>>
                                 </div>
                             </div>
                             <div class="row align-items-center bg-white">
                                 <label for="goodthing2" class="col-sm-2 col-form-label bg-white">2.</label>
                                 <div class="col-sm-10 bg-white">
-                                    <input type="text" class="form-control bg-white" id="goodthing2" name="goodthing2"
-                                        value="<?php echo htmlspecialchars($goodthing2); ?>"
-                                        <?php if ($goodthing2 != null || strlen($goodthing2) != 0) { ?> readonly
-                                        <?php } ?>>
+                                    <input type="text" class="form-control bg-white" id="goodthing2" name="goodthing2" value="<?php echo htmlspecialchars($goodthing2); ?>" <?php if ($goodthing2 != null || strlen($goodthing2) != 0) { ?> readonly <?php } ?>>
                                 </div>
                             </div>
                             <hr class="d-md-none bg-white">
@@ -283,19 +275,13 @@ include '../Includes/Sidebar.php'; // uncomment
                             <div class="row align-items-center bg-white">
                                 <label for="badthing1" class="col-sm-2 col-form-label bg-white">1.</label>
                                 <div class="col-sm-10 bg-white">
-                                    <input type="text" class="form-control bg-white" id="badthing1" name="badthing1"
-                                        value="<?php echo htmlspecialchars($badthing1); ?>"
-                                        <?php if ($badthing1 != null || strlen($badthing1) != 0) { ?> readonly
-                                        <?php } ?>>
+                                    <input type="text" class="form-control bg-white" id="badthing1" name="badthing1" value="<?php echo htmlspecialchars($badthing1); ?>" <?php if ($badthing1 != null || strlen($badthing1) != 0) { ?> readonly <?php } ?>>
                                 </div>
                             </div>
                             <div class="row align-items-center bg-white">
                                 <label for="badthing2" class="col-sm-2 col-form-label bg-white">2.</label>
                                 <div class="col-sm-10 bg-white">
-                                    <input type="text" class="form-control bg-white" id="badthing2" name="badthing2"
-                                        value="<?php echo htmlspecialchars($badthing2); ?>"
-                                        <?php if ($badthing2 != null || strlen($badthing2) != 0) { ?> readonly
-                                        <?php } ?>>
+                                    <input type="text" class="form-control bg-white" id="badthing2" name="badthing2" value="<?php echo htmlspecialchars($badthing2); ?>" <?php if ($badthing2 != null || strlen($badthing2) != 0) { ?> readonly <?php } ?>>
                                 </div>
                             </div>
                             <hr class="d-md-none bg-white">
@@ -317,17 +303,16 @@ include '../Includes/Sidebar.php'; // uncomment
 
                     <div class="row justify-content-around bg-white">
                         <div class="col bg-white">
-                            <h4 class="bg-white">Today's Slice — <span class="bg-white"
-                                    style="color: gray;"><?php echo '@'.$today; ?></span></h4>
+                            <h4 class="bg-white">Today's Slice — <span class="bg-white" style="color: gray;"><?php echo '@' . $today; ?></span></h4>
                         </div>
                         <div class="col bg-white">
-                            <button type="button" class="btn btn-outline-secondary"><a class="bg-transparent"
-                                    href="#todaysSlices" style="text-decoration: none; color: inherit;">Today's All
+                            <button type="button" class="btn btn-outline-secondary"><a class="bg-transparent" href="Diary.php" style="text-decoration: none; color: inherit;">All
+                                    Slice</a> </button>
+                            <button type="button" class="btn btn-outline-secondary"><a class="bg-transparent" href="#todaysSlices" style="text-decoration: none; color: inherit;">Today's All
                                     Slice</a> </button>
                             <button type="button" class="btn btn-outline-secondary" type="submit" name="newSlice">New
                                 Slice</button>
-                            <button type="button" class="btn btn-outline-secondary" type="submit"
-                                name="save">Save</button>
+                            <button type="button" class="btn btn-outline-secondary" type="submit" name="save">Save</button>
                         </div>
                     </div>
                     <hr class="m-0">
@@ -336,8 +321,7 @@ include '../Includes/Sidebar.php'; // uncomment
                     <div class="container bg-white">
                         <div class="row bg-white">
                             <div class="form-floating bg-white">
-                                <textarea class="form-control bg-white" placeholder="Leave a comment here"
-                                    id="floatingTextarea" name="title"></textarea>
+                                <textarea class="form-control bg-white" placeholder="Leave a comment here" id="floatingTextarea" name="title"></textarea>
 
 
                                 <label for="floatingTextarea" class="bg-white">Title</label>
@@ -345,8 +329,7 @@ include '../Includes/Sidebar.php'; // uncomment
                         </div>
                         <div class="row bg-white">
                             <div class="form-floating bg-white">
-                                <textarea class="form-control bg-white" placeholder="Leave a comment here"
-                                    id="floatingTextarea2" name="details" style="height: 40vh"></textarea>
+                                <textarea class="form-control bg-white" placeholder="Leave a comment here" id="floatingTextarea2" name="details" style="height: 40vh"></textarea>
                                 <label for="floatingTextarea2" class="bg-white">Details</label>
                             </div>
                         </div>
@@ -368,29 +351,26 @@ include '../Includes/Sidebar.php'; // uncomment
                     <!-- FOReach Loop -->
 
                     <?php
-                foreach ($todaysSlices as $slice) { ?>
+                    foreach ($todaysSlices as $slice) { ?>
 
-                    <div class="accordion accordion-flush" id="accordionFlushExample">
-                        <div class="accordion-item">
-                            <h2 class="accordion-header" id="flush-headingOne">
-                                <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse"
-                                    data-bs-target="#flush-collapseOne" aria-expanded="false"
-                                    aria-controls="flush-collapseOne">
-                                    <?php echo htmlspecialchars($slice[0]); ?>
-                                    <span class="align-items-end">
-                                        <?php echo htmlspecialchars($slice[2]); ?>
-                                    </span>
-                                </button>
-                            </h2>
-                            <div id="flush-collapseOne" class="accordion-collapse collapse"
-                                aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
-                                <div class="accordion-body">
-                                    <?php echo htmlspecialchars($slice[1]); ?>
-                                    <button type="button" class="btn btn-outline-secondary">Edit</button>
+                        <div class="accordion accordion-flush" id="accordionFlushExample">
+                            <div class="accordion-item">
+                                <h2 class="accordion-header" id="flush-headingOne">
+                                    <button class="accordion-button collapsed" type="button" data-bs-toggle="collapse" data-bs-target="#flush-collapseOne" aria-expanded="false" aria-controls="flush-collapseOne">
+                                        <?php echo htmlspecialchars($slice[0]); ?>
+                                        <span class="align-items-end">
+                                            <?php echo htmlspecialchars($slice[2]); ?>
+                                        </span>
+                                    </button>
+                                </h2>
+                                <div id="flush-collapseOne" class="accordion-collapse collapse" aria-labelledby="flush-headingOne" data-bs-parent="#accordionFlushExample">
+                                    <div class="accordion-body">
+                                        <?php echo htmlspecialchars($slice[1]); ?>
+                                        <button type="button" class="btn btn-outline-secondary">Edit</button>
+                                    </div>
                                 </div>
                             </div>
                         </div>
-                    </div>
 
                     <?php } ?>
                     <!--  -->

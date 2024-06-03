@@ -36,7 +36,7 @@ if (isset($_POST['approve']) || isset($_POST['delete'])) {
 }
 
 
-//----------------- New Notes for approval  --------------- ( SORT )
+//----------------- New Notes for approval  --------------- ( SORT ) __ project
 
 $noteCountsCTE = "WITH NoteCounts AS (
                         SELECT COUNT(*) AS cnt

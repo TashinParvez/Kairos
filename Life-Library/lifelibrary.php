@@ -27,7 +27,7 @@ $mostRead = mysqli_fetch_all($resultantLabel); // conver to array
 // }
 
 
-//----------------------------- For Recently added ---------------------------
+//----------------------------- For Recently added __Project---------------------------
 
 $sql = "SELECT life_library.bookName, life_library.authorName
         FROM notes AS t
@@ -58,7 +58,7 @@ $recentlyAdded = mysqli_fetch_all($result); // conver to array
 
 
 
-//--------------------------------- For Alhabetically -------------------------------
+//--------------------------------- For Alhabetically  __Project-------------------------------
 
 $sql = "SELECT lf.bookName, lf.authorName, CONCAT(LEFT(lf.details, 68), '...') AS 'lf.details',
         CASE

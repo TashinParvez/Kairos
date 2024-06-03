@@ -32,7 +32,7 @@ if (isset($_GET['bookName'])) {
     //     echo '<br>';
     //     echo '<br>';
     // }
-} else {  // ------------------  full else remove after liked with lifelibrary
+} else {  // ------------------  full else remove after liked with lifelibrary__Project
     $bn = 'Atomic Habits';
     $bName = mysqli_real_escape_string($conn, $bn);
 

@@ -29,7 +29,7 @@ $result = mysqli_query($conn, $sql);
 $communities = mysqli_fetch_all($result);
 
 
-// ---------------------------- for Recomendation
+// ---------------------------- for Recomendation  __project
 $sql = "SELECT ntc.name, ntc.Details, ntc.cntUser, ntc.displayPicture 
         FROM (SELECT name, Details, cntUser, displayPicture
               FROM category
@@ -49,7 +49,7 @@ $result = mysqli_query($conn, $sql);
 $Recommended_comm = mysqli_fetch_all($result);
 
 // ---------------------------- for Joined Community
-$sql = "SELECT ntc.name, ntc.Details, ntc.cntUser, ntc.displayPicture 
+$sql = "SELECT distinct ntc.name, ntc.Details, ntc.cntUser, ntc.displayPicture 
         FROM (SELECT id, name, Details, cntUser, displayPicture
                 FROM category
             ) as ntc

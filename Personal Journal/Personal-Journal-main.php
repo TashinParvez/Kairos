@@ -83,7 +83,7 @@ if (isset($_POST['add'])) {
         //     $cnt += 1;
         // }
 
-        // --------------------------------------- SECOND try ---------------------------------------
+        // --------------------------------------- SECOND try  project---------------------------------------
         // echo $badthing1;
         $sql = "INSERT INTO `good_and_bad_things` (`title`, `type`, `date`, `details`, `userHandle`)
                 SELECT NULL, b'1', CURRENT_TIMESTAMP(), details, '$userHandle' 

@@ -16,7 +16,7 @@ $result = mysqli_query($conn, $sql);
 
 $users_send_mail = mysqli_fetch_all($result);
 
-// print_r($notes);
+// print_r($users_send_mail);
 
 foreach ($users_send_mail as $ptr) {
     $userhandle = $ptr[0];
@@ -164,6 +164,8 @@ foreach ($users_send_mail as $ptr) {
 
     if (mail($to_email, $subject, $message, $headers)) {
         echo "Email successfully sent to $to_email...";
+
+        header('Location: \Admin-Panel\SendMail.php');
     } else {
         echo "Email sending failed...";
     }

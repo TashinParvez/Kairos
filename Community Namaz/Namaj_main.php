@@ -9,7 +9,7 @@ if ($conn->connect_error) {
 }
 // $userHandle = $_SESSION['userHandle'];
 
-$userHandle = 'aarifeen';
+$userHandle = 'tashin19';
 
 $cat_id = 2; // for namaz
 
@@ -112,13 +112,13 @@ if (isset($_POST['search'])) {
 }
 
 // ------------------------------------- New Post add btn click -----------------------------
-$title = '';
-$description = '';
+// $title = '';
+// $description = '';
 
-$sql = "INSERT INTO `user_post` (`userHandle`, `created_at`, `title`, `description`, `categoryID`) 
-        VALUES ('$userHandle', current_timestamp(), '$title', '$description', '$cat_id');";
+// $sql = "INSERT INTO `user_post` (`userHandle`, `created_at`, `title`, `description`, `categoryID`) 
+//         VALUES ('$userHandle', current_timestamp(), '$title', '$description', '$cat_id');";
 
-$result = mysqli_query($conn, $sql);
+// $result = mysqli_query($conn, $sql);
 
 $conn->close();
 ?>
